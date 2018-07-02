@@ -1,31 +1,34 @@
 const express = require('express');
 const app = express();
 
+const ANIMAL_SOUNDS = {
+  pig: 'Oink!',
+  cow: 'Moo!',
+  dog: 'Woof Woof!',
+};
+
 app.get('/', (req, res) => {
-  res.send('Hi there!');
+  res.send('Hi there, welcome to my page!')
 });
 
-app.get('/bye', (req, res) => {
-  res.send('Goodbye!');
+app.get('/speak/:animal', (req, res) => {
+  const { animal } = req.params;
+  res.send(`The ${animal} says "${ANIMAL_SOUNDS[animal]}"`)
 });
 
-app.get('/dog', (req, res) => {
-  res.send('Meow!');
-});
-
-app.get('/r/:subRedditName', (req, res) => {
-  res.send(`Welcome to the ${req.params.subRedditName} subreddit`);
-});
-
-app.get('/r/:subRedditName/comments/:id/:title', (req, res) => {
-  console.log(req.params);
-  res.send('Welcome to the comments page');
+app.get('/repeat/:string/:multiplier', (req, res) => {
+  const { string, multiplier } = req.params;
+  let output = [];
+  for (let i = 1; i <= multiplier; i++) {  
+    output.push(string);
+  }
+  res.send(output.join(' '));
 });
 
 app.get('*', (req, res) => {
-  res.send('You are a star!!');
+  res.send('Sorry, page not found...What are you doing with your life?');
 });
 
 app.listen(3000, () => {
-  console.log('server listening on port 3000');
-});
+  console.log('server started')
+})
