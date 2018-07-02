@@ -13,13 +13,13 @@ app.get('/', (req, res) => {
 
 app.get('/speak/:animal', (req, res) => {
   const { animal } = req.params;
-  res.send(`The ${animal} says "${ANIMAL_SOUNDS[animal]}"`)
+  res.send(`The ${animal.toLowerCase()} says "${ANIMAL_SOUNDS[animal]}"`)
 });
 
 app.get('/repeat/:string/:multiplier', (req, res) => {
   const { string, multiplier } = req.params;
   let output = [];
-  for (let i = 1; i <= multiplier; i++) {  
+  for (let i = 1; i <= Number(multiplier); i++) {  
     output.push(string);
   }
   res.send(output.join(' '));
