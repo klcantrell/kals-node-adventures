@@ -9,9 +9,9 @@ app.get('/', (req, res) => {
   res.render('home.pug');
 });
 
-app.get('/fallinlovewith/:thing', (req, res) => {
-  const { thing } = req.params;
-  res.render('love.pug', {thing})
+app.get('/hobbies', (req, res) => {
+  const hobbies = ['coding', 'eating', 'gaming'];
+  res.render('hobbies.pug', {hobbies})
 });
 
 app.listen(3000, () => {
