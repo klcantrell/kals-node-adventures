@@ -1,3 +1,6 @@
 include includes/header
-h1 cool data
-p #{data}
+h1 Movie Data
+ul
+  each movie in data
+    li <strong>#{movie.Title}</strong> - #{movie.Year}
+a(href='/') Search again!

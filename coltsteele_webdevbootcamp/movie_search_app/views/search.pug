@@ -1,0 +1,10 @@
+include includes/header
+h1 Search for a movie
+form(action="/results" method="GET")
+  input(
+    type="text"
+    placeholder="Search for a movie..."
+    name="search"
+    autocomplete="off"
+  )
+  button(type="submit") Submit
