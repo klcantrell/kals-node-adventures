@@ -1,8 +1,0 @@
-include includes/header
-h1 Friends list goes here
-  ul
-  each friend in friends
-    li #{friend}
-form(action="/addfriend" method="post")
-  input(type="text" placeholder="name" name="newfriend" autocomplete="off")
-  button I made a friend
