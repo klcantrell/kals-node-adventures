@@ -1,0 +1,7 @@
+include includes/header
+h1 This is the campground page
+ul.campgrounds
+  each campground in campgrounds
+    li.campground 
+      h3 #{campground.name}
+      img(src=campground.img)

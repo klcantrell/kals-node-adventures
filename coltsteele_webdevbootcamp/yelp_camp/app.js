@@ -94,7 +94,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar _express2 = _interopRequireDefault(_express);\n\nvar _request = __webpack_require__(/*! request */ \"request\");\n\nvar _request2 = _interopRequireDefault(_request);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar app = (0, _express2.default)();\napp.set('view engine', 'pug');\n\nvar baseUrl = 'http://www.omdbapi.com/?apikey=thewdb';\n\napp.get('/', function (req, res) {\n  res.render('search');\n});\n\napp.get('/results', function (req, res) {\n  var search = req.query.search;\n\n  var url = baseUrl + '&s=' + search;\n  (0, _request2.default)(url, function (apiErr, apiRes, apiBody) {\n    if (!apiErr && apiRes.statusCode === 200) {\n      var data = JSON.parse(apiBody).Search;\n      res.render('results', { data: data });\n    }\n  });\n});\n\napp.listen(3000, function () {\n  console.log('movie app has started');\n});\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar _express2 = _interopRequireDefault(_express);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar app = (0, _express2.default)();\n\napp.set('view engine', 'pug');\napp.use(_express2.default.static('public'));\n\napp.get('/', function (req, res) {\n  res.render('landing');\n});\n\napp.get('/campgrounds', function (req, res) {\n  var campgrounds = [{ name: 'Salmon Creek', img: 'https://pixabay.com/get/e83db50a21f4073ed1584d05fb1d4e97e07ee3d21cac104496f1c07fa7ebb7bd_340.jpg' }, { name: 'Granite Hill', img: 'https://pixabay.com/get/e837b1072af4003ed1584d05fb1d4e97e07ee3d21cac104496f1c07fa7ebb7bd_340.jpg' }, { name: 'Mountain Goat\\'s Rest', img: 'https://pixabay.com/get/e834b5062cf4033ed1584d05fb1d4e97e07ee3d21cac104496f1c07fa7ebb7bd_340.jpg' }];\n  res.render('campgrounds', { campgrounds: campgrounds });\n});\n\napp.listen(3000, function () {\n  console.log('YelpCamp server has started');\n});\n\n//# sourceURL=webpack:///./src/app.js?");
 
 /***/ }),
 
@@ -106,17 +106,6 @@ eval("\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"express\");\n\n//# sourceURL=webpack:///external_%22express%22?");
-
-/***/ }),
-
-/***/ "request":
-/*!**************************!*\
-  !*** external "request" ***!
-  \**************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"request\");\n\n//# sourceURL=webpack:///external_%22request%22?");
 
 /***/ })
 
