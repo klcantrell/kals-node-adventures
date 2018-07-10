@@ -1,7 +1,15 @@
 include includes/header
-h1 This is the campground page
-ul.campgrounds
-  each campground in campgrounds
-    li.campground 
-      h3 #{campground.name}
-      img(src=campground.img)
+.container
+  header.jumbotron
+    .container
+      h1 Welcome To YelpCamp
+      p View our hand-picked campgrounds from all over the world
+      a.btn.btn-primary(href="/campgrounds/new") Add new campground
+  .row.text-center.justify-content-center
+    each campground in campgrounds    
+      .campground.col-md-3.col-sm-6
+        .thumbnail
+          img(src=campground.img)
+          .caption
+            h5 #{campground.name}
+include includes/footer
