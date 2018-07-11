@@ -2,9 +2,9 @@ import express from 'express';
 const app = express();
 
 const CAMPGROUNDS = [
-  {name: 'Salmon Creek', img: 'https://pixabay.com/get/e83db50a21f4073ed1584d05fb1d4e97e07ee3d21cac104496f1c07fa7ebb7bd_340.jpg'},
-  {name: 'Granite Hill', img: 'https://pixabay.com/get/e837b1072af4003ed1584d05fb1d4e97e07ee3d21cac104496f1c07fa7ebb7bd_340.jpg'},
-  {name: 'Mountain Goat\'s Rest', img: 'https://pixabay.com/get/e834b5062cf4033ed1584d05fb1d4e97e07ee3d21cac104496f1c07fa7ebb7bd_340.jpg'},
+  {name: 'Salmon Creek', img: 'salmon-creek.jpg'},
+  {name: 'Granite Hill', img: 'granite-hill.jpg'},
+  {name: 'Mountain Goat\'s Rest', img: 'mountain-goats-rest.jpg'},
 ];
 
 app.set('view engine', 'pug');
