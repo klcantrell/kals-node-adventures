@@ -1,5 +1,6 @@
 import db from '../db/models';
 import express from 'express';
+import { create } from 'domain';
 const app = express();
 
 app.set('view engine', 'pug');
@@ -11,16 +12,20 @@ app.get('/', (req, res) => {
 });
 
 app.get('/campgrounds', (req, res) => {
-  res.render('campgrounds', {campgrounds: CAMPGROUNDS});
+  db.Campground.all()
+    .then(campgrounds => {
+      res.status(200).render('campgrounds', {campgrounds});
+    })
+    .catch(err => {
+      res.status(400).send(error);
+    })
 });
 
 app.post('/campgrounds', (req, res) => {
-  const { name, img } = req.body;
-  CAMPGROUNDS.push({
-    name,
-    img,
-  });
-  res.redirect('/campgrounds');
+  const { name, image } = req.body;
+  db.Campground.create({ name, image })
+    .then(() => res.status(200).redirect('/campgrounds'))
+    .catch(err => res.status(400).send(err));
 });
 
 app.get('/campgrounds/new', (req, res) => {

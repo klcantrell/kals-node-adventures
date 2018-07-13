@@ -117,7 +117,18 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _models = __webpack_require__(/*! ../db/models */ \"./db/models/index.js\");\n\nvar _models2 = _interopRequireDefault(_models);\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar _express2 = _interopRequireDefault(_express);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar app = (0, _express2.default)();\n\napp.set('view engine', 'pug');\napp.use(_express2.default.static('public'));\napp.use(_express2.default.urlencoded({ extended: true }));\n\napp.get('/', function (req, res) {\n  res.render('landing');\n});\n\napp.get('/campgrounds', function (req, res) {\n  res.render('campgrounds', { campgrounds: CAMPGROUNDS });\n});\n\napp.post('/campgrounds', function (req, res) {\n  var _req$body = req.body,\n      name = _req$body.name,\n      img = _req$body.img;\n\n  CAMPGROUNDS.push({\n    name: name,\n    img: img\n  });\n  res.redirect('/campgrounds');\n});\n\napp.get('/campgrounds/new', function (req, res) {\n  res.render('new');\n});\n\napp.listen(3000, function () {\n  console.log('YelpCamp server has started');\n});\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("\n\nvar _models = __webpack_require__(/*! ../db/models */ \"./db/models/index.js\");\n\nvar _models2 = _interopRequireDefault(_models);\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar _express2 = _interopRequireDefault(_express);\n\nvar _domain = __webpack_require__(/*! domain */ \"domain\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar app = (0, _express2.default)();\n\napp.set('view engine', 'pug');\napp.use(_express2.default.static('public'));\napp.use(_express2.default.urlencoded({ extended: true }));\n\napp.get('/', function (req, res) {\n  res.render('landing');\n});\n\napp.get('/campgrounds', function (req, res) {\n  _models2.default.Campground.all().then(function (campgrounds) {\n    res.status(200).render('campgrounds', { campgrounds: campgrounds });\n  }).catch(function (err) {\n    res.status(400).send(error);\n  });\n});\n\napp.post('/campgrounds', function (req, res) {\n  var _req$body = req.body,\n      name = _req$body.name,\n      image = _req$body.image;\n\n  _models2.default.Campground.create({ name: name, image: image }).then(function () {\n    return res.status(200).redirect('/campgrounds');\n  }).catch(function (err) {\n    return res.status(400).send(err);\n  });\n});\n\napp.get('/campgrounds/new', function (req, res) {\n  res.render('new');\n});\n\napp.listen(3000, function () {\n  console.log('YelpCamp server has started');\n});\n\n//# sourceURL=webpack:///./src/app.js?");
+
+/***/ }),
+
+/***/ "domain":
+/*!*************************!*\
+  !*** external "domain" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"domain\");\n\n//# sourceURL=webpack:///external_%22domain%22?");
 
 /***/ }),
 
