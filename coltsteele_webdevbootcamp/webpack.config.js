@@ -7,6 +7,10 @@ const serverConfig = {
   mode: 'development',
   entry: path.join(projectDir, 'src', process.argv[2]),
   target: 'node',
+  node: {
+    __dirname: false,
+    __filename: false,
+  },
   externals: [nodeExternals()],
   output: {
     path: path.resolve(projectDir),

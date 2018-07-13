@@ -1,11 +1,6 @@
+import db from '../db/models';
 import express from 'express';
 const app = express();
-
-const CAMPGROUNDS = [
-  {name: 'Salmon Creek', img: 'salmon-creek.jpg'},
-  {name: 'Granite Hill', img: 'granite-hill.jpg'},
-  {name: 'Mountain Goat\'s Rest', img: 'mountain-goats-rest.jpg'},
-];
 
 app.set('view engine', 'pug');
 app.use(express.static('public'));
