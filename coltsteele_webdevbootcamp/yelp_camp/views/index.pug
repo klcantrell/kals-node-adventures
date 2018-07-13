@@ -1,0 +1,16 @@
+extends includes/header
+block content
+  .container
+    header.jumbotron
+      .container
+        h1 Welcome To YelpCamp
+        p View our hand-picked campgrounds from all over the world
+        a.btn.btn-primary(href="/campgrounds/new") Add new campground
+    .row.text-center.justify-content-center
+      each campground in campgrounds    
+        .campground.col-md-3.col-sm-6.mb-3.p-3.d-flex.flex-column
+          .thumbnail
+            img(src=`/${campground.image}`)
+            .caption
+              h5 #{campground.name}
+          a.btn.btn-primary.text-white.mt-auto(href=`/campgrounds/${campground.id}`) More info

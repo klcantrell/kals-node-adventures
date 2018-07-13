@@ -1,16 +1,18 @@
-include includes/header
-.container
-  .row
-    .col
-      h1.text-center Create a new campground
-      .row.justify-content-center.mt-4
-        .col.colt-sm-12.col-md-5
-          form(action="/campgrounds", method="POST")
-            .form-group
-              input.form-control(type="text" placeholder="name" name="name" autocomplete="off")
-            .form-group
-              input.form-control(type="text" placeholder="image url" name="image" autocomplete="off")
-            .form-group
-              button.btn.btn-lg.btn-primary.btn-block(type="submit") Submit
-      a.d-block.text-center(href="/campgrounds") Go Back
-include includes/footer
+extends includes/header
+block content
+  .container
+    .row
+      .col
+        h1.text-center Create a new campground
+        .row.justify-content-center.mt-4
+          .col.colt-sm-12.col-md-5
+            form(action="/campgrounds", method="POST")
+              .form-group
+                input.form-control(type="text" placeholder="name" name="name" autocomplete="off")
+              .form-group
+                input.form-control(type="text" placeholder="image url" name="image" autocomplete="off")
+              .form-group
+                input.form-control(type="text" placeholder="description" name="description" autocomplete="off")
+              .form-group
+                button.btn.btn-lg.btn-primary.btn-block(type="submit") Submit
+        a.d-block.text-center(href="/campgrounds") Go Back

@@ -1,3 +1,4 @@
+import path from 'path';
 import db from '../db/models';
 import express from 'express';
 import { create } from 'domain';
@@ -14,7 +15,7 @@ app.get('/', (req, res) => {
 app.get('/campgrounds', (req, res) => {
   db.Campground.all()
     .then(campgrounds => {
-      res.status(200).render('campgrounds', {campgrounds});
+      res.status(200).render('index', {campgrounds});
     })
     .catch(err => {
       res.status(400).send(error);
@@ -22,8 +23,8 @@ app.get('/campgrounds', (req, res) => {
 });
 
 app.post('/campgrounds', (req, res) => {
-  const { name, image } = req.body;
-  db.Campground.create({ name, image })
+  const { name, image, description } = req.body;
+  db.Campground.create({ name, image, description })
     .then(() => res.status(200).redirect('/campgrounds'))
     .catch(err => res.status(400).send(err));
 });
@@ -31,6 +32,12 @@ app.post('/campgrounds', (req, res) => {
 app.get('/campgrounds/new', (req, res) => {
   res.render('new');
 });
+
+app.get('/campgrounds/:id', (req, res) => {
+  db.Campground.findById(req.params.id)
+    .then(campground => res.status(200).render('show', {campground}))
+    .catch(err => res.status(400).send(err));
+})
 
 app.listen(3000, () => {
   console.log('YelpCamp server has started');
