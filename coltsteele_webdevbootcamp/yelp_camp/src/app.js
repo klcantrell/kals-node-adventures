@@ -1,7 +1,6 @@
-import path from 'path';
-import db from '../db/models';
 import express from 'express';
-import { create } from 'domain';
+import db from '../db/models';
+
 const app = express();
 
 app.set('view engine', 'pug');

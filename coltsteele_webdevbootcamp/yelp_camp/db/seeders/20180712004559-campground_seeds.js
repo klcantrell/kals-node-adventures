@@ -21,8 +21,7 @@ module.exports = {
         description: 'Have a goat time!',
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
-    ], {});
+      }], {});
   },
 
   down: (queryInterface, Sequelize) => {
