@@ -1,8 +1,13 @@
 extends includes/header
 block content
-  .container.main
+  .ui.container.main
     each blog in blogs
-      h2 #{blog.title}
-      img(src=blog.image)
-      p #{blog.createdAt}
-      p #{blog.body}
+      .ui.huge.header #{blog.title}
+      .ui.top.attached
+        .item
+          img(class="ui centered rounded image" src=blog.image)
+        .content
+          p #{blog.createdAt.toDateString()}
+        .description
+          p !{blog.body.substring(0, 100)}...
+        a(href=`/blogs/${blog.id}`) Read more

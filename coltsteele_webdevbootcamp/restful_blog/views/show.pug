@@ -1,0 +1,11 @@
+extends includes/header
+block content
+  .ui.text.container.segment
+    .ui.huge.header #{blog.title}
+    .ui.top.attached
+      .item
+        img(class="ui centered rounded image" src=blog.image)
+        .content
+          p #{blog.createdAt.toDateString()}
+        .description
+          p !{blog.body}

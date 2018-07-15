@@ -26,11 +26,19 @@ app.post('/blogs', (req, res) => {
       res.redirect('/blogs');
     })
     .catch(err => res.send(err));
-});
+  });
+  
 
 app.get('/blogs/new', (req, res) => {
   res.render('new');
 });
+
+app.get('/blogs/:id', (req, res) => {
+  db.Blog.findById(req.params.id)
+    .then(blog => res.render('show', {blog}))
+    .catch(err => res.redirect('/blogs'));
+});
+
 
 app.listen(3000, () => {
   console.log('Restul Blog server is running');
