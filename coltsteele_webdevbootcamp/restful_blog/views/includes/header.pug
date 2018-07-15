@@ -4,19 +4,13 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     meta(http-equiv="X-UA-Compatible", content="ie=edge")
-    title YelpCamp
-    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css")
-    link(rel="stylesheet", href="/app.css")
+    title Blog App
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css")
+    link(rel="stylesheet", href="/stylesheets/app.css")
   body
-    nav.navbar.navbar-expand-lg.navbar-light.bg-light
-      .container-fluid
-        a.navbar-brand(href="/") YelpCamp
-        .collapse.navbar-collapse
-          ul.navbar-nav.ml-auto
-            li.nav-item.active
-              a.nav-link(href="/") Login
-            li.nav-item.active
-              a.nav-link(href="/") Sign Up
-            li.nav-item.active
-              a.nav-link(href="/") Logout
+    nav(class="ui fixed inverted menu")
+      .ui.container
+        .header.item <i class="code icon"></i> Blog Site
+        a(href="/" class="item") Home
+        a(href="/blog/new" class="item") New Post
     block content

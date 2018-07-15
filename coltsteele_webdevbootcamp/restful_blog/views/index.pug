@@ -1,3 +1,9 @@
 extends includes/header
 block content
-  h1 SUPSUP SUP!
+  h1 SUP SUP SUP!
+  each blog in blogs
+    div
+      h2 #{blog.title}
+      img(src=blog.image)
+      p #{blog.createdAt}
+      p #{blog.body}
