@@ -19,6 +19,19 @@ app.get('/blogs', (req, res) => {
     .catch(err => res.send(err));
 });
 
+app.post('/blogs', (req, res) => {
+  const { title, image, body } = req.body.blog;
+  db.Blog.create({title, image, body})
+    .then(() => {
+      res.redirect('/blogs');
+    })
+    .catch(err => res.send(err));
+});
+
+app.get('/blogs/new', (req, res) => {
+  res.render('new');
+});
+
 app.listen(3000, () => {
   console.log('Restul Blog server is running');
 })
