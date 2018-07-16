@@ -9,3 +9,6 @@ block content
           p #{blog.createdAt.toDateString()}
         .description
           p !{blog.body}
+        a(href=`/blogs/${blog.id}/edit` class="ui blue basic button") Edit
+        form(class="delete-form" action=`/blogs/${blog.id}?_method=DELETE` method="POST")
+          button(class="ui red basic button") Delete

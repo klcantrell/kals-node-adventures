@@ -60,9 +60,26 @@ app.put('/blogs/:id', (req, res) => {
         .then(() => {
           res.redirect(`/blogs/${blog.id}`)
         })
+        .catch(err => res.redirect('/blogs'));
     })
     .catch(err => res.redirect('/blogs'));
 });
+
+app.delete('/blogs/:id', (req, res) => {
+  db.Blog.findById(req.params.id)
+  .then(blog => {
+    if (!blog) {
+      return res.status(404).send("Todo not found");
+    }
+    return blog
+      .destroy()
+      .then(() => {
+        res.redirect(`/blogs`)
+      })
+      .catch(err => res.redirect('/blogs'));
+  })
+  .catch(err => res.redirect('/blogs'));
+})
 
 
 app.listen(3000, () => {
