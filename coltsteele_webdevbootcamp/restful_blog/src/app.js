@@ -1,12 +1,14 @@
 import express from 'express';
-import db from '../db/models';
 import methodOverride from 'method-override';
+import expressSanitizer from 'express-sanitizer';
+import db from '../db/models';
 
 const app = express();
 
 app.set('view engine', 'pug');
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
+app.use(expressSanitizer());
 app.use(methodOverride("_method"));
 
 app.get('/', (req, res) => {
@@ -22,7 +24,9 @@ app.get('/blogs', (req, res) => {
 });
 
 app.post('/blogs', (req, res) => {
-  const { title, image, body } = req.body.blog;
+  const { title, image } = req.body.blog;
+  let { body } = req.body.blog;
+  body = req.sanitize(body);
   db.Blog.create({title, image, body})
     .then(() => {
       res.redirect('/blogs');
@@ -49,7 +53,9 @@ app.get('/blogs/:id/edit', (req, res) => {
 });
 
 app.put('/blogs/:id', (req, res) => {
-  const { title, image, body } = req.body.blog;
+  const { title, image } = req.body.blog;
+  let { body } = req.body.blog;
+  body = req.sanitize(body);
   db.Blog.findById(req.params.id)
     .then(blog => {
       if (!blog) {
