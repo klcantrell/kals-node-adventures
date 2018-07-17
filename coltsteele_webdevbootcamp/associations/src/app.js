@@ -1,6 +1,6 @@
-import db from '../db/models';
+import models from '../db/models';
 
-const { User, Post } = db;
+const { User, Post } = models;
 
 // const testUser = User.build({
 //   email: 'cloud@strife.ff',

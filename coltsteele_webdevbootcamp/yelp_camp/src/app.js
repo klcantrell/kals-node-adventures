@@ -1,7 +1,8 @@
 import express from 'express';
-import db from '../db/models';
+import models from '../db/models';
 
 const app = express();
+const { Campground } = models;
 
 app.set('view engine', 'pug');
 app.use(express.static('public'));
@@ -12,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/campgrounds', (req, res) => {
-  db.Campground.all()
+  Campground.all()
     .then(campgrounds => {
       res.status(200).render('index', {campgrounds});
     })
@@ -23,7 +24,7 @@ app.get('/campgrounds', (req, res) => {
 
 app.post('/campgrounds', (req, res) => {
   const { name, image, description } = req.body;
-  db.Campground.create({ name, image, description })
+  Campground.create({ name, image, description })
     .then(() => res.status(200).redirect('/campgrounds'))
     .catch(err => res.status(400).send(err));
 });
@@ -33,7 +34,7 @@ app.get('/campgrounds/new', (req, res) => {
 });
 
 app.get('/campgrounds/:id', (req, res) => {
-  db.Campground.findById(req.params.id)
+  Campground.findById(req.params.id)
     .then(campground => res.status(200).render('show', {campground}))
     .catch(err => res.status(400).send(err));
 })

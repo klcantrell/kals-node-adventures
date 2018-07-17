@@ -1,12 +1,9 @@
-import fs from 'fs';
-import path from 'path';
 import Sequelize from 'sequelize';
+import Campground from './campground';
 
 const env = process.env.NODE_ENV || 'development';
-const modelspath = path.join(__dirname, 'db/models');
 const config = require('../config/config.json')[env];
-const basename = 'index.js';
-const db = {};
+const models = {};
 
 let sequelize;
 if (config.use_env_variable) {
@@ -15,23 +12,22 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-fs
-  .readdirSync(modelspath)
-  .filter(file => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
-  })
-  .forEach(file => {
-    const model = sequelize['import'](path.join(modelspath, file));
-    db[model.name] = model;
-  });
+const modelModules = [
+  Campground,
+];
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
+modelModules.forEach((modelModule) => {
+  const model = modelModule(sequelize, Sequelize);
+  models[model.name] = model;
+})
+
+Object.keys(models).forEach(modelName => {
+  if (models[modelName].associate) {
+    models[modelName].associate(models);
   }
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+models.sequelize = sequelize;
+models.Sequelize = Sequelize;
 
-export default db;
+export default models;
