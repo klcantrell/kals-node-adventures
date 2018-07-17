@@ -20,11 +20,14 @@ const { User, Post } = db;
 //   .then(savedPost => console.log(savedPost))
 //   .catch(err => console.log(err));
 
-User.findAll({
+User.findOne({
+  where: {
+    name: 'Cloud Strife',
+  },
   include: [{
     model: Post,
     as: 'posts',
   }],
 })
-  .then(users => console.log(users))
+  .then(users => console.log(users.posts))
   .catch(err => console.log(err));
