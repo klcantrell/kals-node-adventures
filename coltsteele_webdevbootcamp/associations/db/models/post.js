@@ -7,6 +7,7 @@ export default (sequelize, DataTypes) => {
     Post.belongsTo(models.User, {
       foreignKey: 'userId',
       onDelete: 'CASCADE',
+      as: 'user',
     });
   };
   return Post;
