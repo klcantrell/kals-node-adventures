@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
 import Campground from './campground';
+import Comment from './comment';
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config.json')[env];
@@ -14,6 +15,7 @@ if (config.use_env_variable) {
 
 const modelModules = [
   Campground,
+  Comment,
 ];
 
 modelModules.forEach((modelModule) => {

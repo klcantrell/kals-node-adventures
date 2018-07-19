@@ -4,5 +4,11 @@ export default (sequelize, DataTypes) => {
     image: DataTypes.STRING,
     description: DataTypes.STRING,
   }, {});
+  Campground.associate = models => {
+    Campground.hasMany(models.Comment, {
+      foreignKey: 'campground_id',
+      as: 'comments',
+    });
+  };
   return Campground;
 };

@@ -1,19 +1,13 @@
 export default {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Campgrounds', {
+    return queryInterface.createTable('Comments', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        type: Sequelize.STRING
-      },
-      image: {
-        type: Sequelize.STRING
-      },
-      description: {
+      text: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -25,10 +19,13 @@ export default {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: new Date(),
+      },
+      campground_id: {
+        type: Sequelize.INTEGER,
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Campgrounds');
+    return queryInterface.dropTable('Comments');
   }
 };

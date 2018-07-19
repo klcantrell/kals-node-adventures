@@ -97,6 +97,30 @@ eval("module.exports = {\"development\":{\"username\":\"postgres\",\"password\":
 
 /***/ }),
 
+/***/ "./db/models/campground.js":
+/*!*********************************!*\
+  !*** ./db/models/campground.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nexports.default = function (sequelize, DataTypes) {\n  var Campground = sequelize.define('Campground', {\n    name: DataTypes.STRING,\n    image: DataTypes.STRING,\n    description: DataTypes.STRING\n  }, {});\n  Campground.associate = function (models) {\n    Campground.hasMany(models.Comment, {\n      foreignKey: 'campground_id',\n      as: 'comments'\n    });\n  };\n  return Campground;\n};\n\n//# sourceURL=webpack:///./db/models/campground.js?");
+
+/***/ }),
+
+/***/ "./db/models/comment.js":
+/*!******************************!*\
+  !*** ./db/models/comment.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nexports.default = function (sequelize, DataTypes) {\n  var Comment = sequelize.define('Comment', {\n    text: DataTypes.STRING\n  }, {});\n  Comment.associate = function (models) {\n    Comment.belongsTo(models.Campground, {\n      foreignKey: 'campground_id',\n      as: 'campground'\n    });\n  };\n  return Comment;\n};\n\n//# sourceURL=webpack:///./db/models/comment.js?");
+
+/***/ }),
+
 /***/ "./db/models/index.js":
 /*!****************************!*\
   !*** ./db/models/index.js ***!
@@ -105,7 +129,7 @@ eval("module.exports = {\"development\":{\"username\":\"postgres\",\"password\":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _fs = __webpack_require__(/*! fs */ \"fs\");\n\nvar _fs2 = _interopRequireDefault(_fs);\n\nvar _path = __webpack_require__(/*! path */ \"path\");\n\nvar _path2 = _interopRequireDefault(_path);\n\nvar _sequelize = __webpack_require__(/*! sequelize */ \"sequelize\");\n\nvar _sequelize2 = _interopRequireDefault(_sequelize);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar env = \"development\" || 'development';\nvar modelspath = _path2.default.join(__dirname, 'db/models');\nvar config = __webpack_require__(/*! ../config/config.json */ \"./db/config/config.json\")[env];\nvar basename = 'index.js';\nvar db = {};\n\nvar sequelize = void 0;\nif (config.use_env_variable) {\n  sequelize = new _sequelize2.default(process.env[config.use_env_variable], config);\n} else {\n  sequelize = new _sequelize2.default(config.database, config.username, config.password, config);\n}\n\n_fs2.default.readdirSync(modelspath).filter(function (file) {\n  return file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js';\n}).forEach(function (file) {\n  var model = sequelize['import'](_path2.default.join(modelspath, file));\n  db[model.name] = model;\n});\n\nObject.keys(db).forEach(function (modelName) {\n  if (db[modelName].associate) {\n    db[modelName].associate(db);\n  }\n});\n\ndb.sequelize = sequelize;\ndb.Sequelize = _sequelize2.default;\n\nexports.default = db;\n\n//# sourceURL=webpack:///./db/models/index.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _sequelize = __webpack_require__(/*! sequelize */ \"sequelize\");\n\nvar _sequelize2 = _interopRequireDefault(_sequelize);\n\nvar _campground = __webpack_require__(/*! ./campground */ \"./db/models/campground.js\");\n\nvar _campground2 = _interopRequireDefault(_campground);\n\nvar _comment = __webpack_require__(/*! ./comment */ \"./db/models/comment.js\");\n\nvar _comment2 = _interopRequireDefault(_comment);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar env = \"development\" || 'development';\nvar config = __webpack_require__(/*! ../config/config.json */ \"./db/config/config.json\")[env];\nvar models = {};\n\nvar sequelize = void 0;\nif (config.use_env_variable) {\n  sequelize = new _sequelize2.default(process.env[config.use_env_variable], config);\n} else {\n  sequelize = new _sequelize2.default(config.database, config.username, config.password, config);\n}\n\nvar modelModules = [_campground2.default, _comment2.default];\n\nmodelModules.forEach(function (modelModule) {\n  var model = modelModule(sequelize, _sequelize2.default);\n  models[model.name] = model;\n});\n\nObject.keys(models).forEach(function (modelName) {\n  if (models[modelName].associate) {\n    models[modelName].associate(models);\n  }\n});\n\nmodels.sequelize = sequelize;\nmodels.Sequelize = _sequelize2.default;\n\nexports.default = models;\n\n//# sourceURL=webpack:///./db/models/index.js?");
 
 /***/ }),
 
@@ -117,7 +141,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar _express2 = _interopRequireDefault(_express);\n\nvar _models = __webpack_require__(/*! ../db/models */ \"./db/models/index.js\");\n\nvar _models2 = _interopRequireDefault(_models);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar app = (0, _express2.default)();\n\napp.set('view engine', 'pug');\napp.use(_express2.default.static('public'));\napp.use(_express2.default.urlencoded({ extended: true }));\n\napp.get('/', function (req, res) {\n  res.render('landing');\n});\n\napp.get('/campgrounds', function (req, res) {\n  _models2.default.Campground.all().then(function (campgrounds) {\n    res.status(200).render('index', { campgrounds: campgrounds });\n  }).catch(function (err) {\n    res.status(400).send(error);\n  });\n});\n\napp.post('/campgrounds', function (req, res) {\n  var _req$body = req.body,\n      name = _req$body.name,\n      image = _req$body.image,\n      description = _req$body.description;\n\n  _models2.default.Campground.create({ name: name, image: image, description: description }).then(function () {\n    return res.status(200).redirect('/campgrounds');\n  }).catch(function (err) {\n    return res.status(400).send(err);\n  });\n});\n\napp.get('/campgrounds/new', function (req, res) {\n  res.render('new');\n});\n\napp.get('/campgrounds/:id', function (req, res) {\n  _models2.default.Campground.findById(req.params.id).then(function (campground) {\n    return res.status(200).render('show', { campground: campground });\n  }).catch(function (err) {\n    return res.status(400).send(err);\n  });\n});\n\napp.listen(3000, function () {\n  console.log('YelpCamp server has started');\n});\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar _express2 = _interopRequireDefault(_express);\n\nvar _models = __webpack_require__(/*! ../db/models */ \"./db/models/index.js\");\n\nvar _models2 = _interopRequireDefault(_models);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar app = (0, _express2.default)();\nvar Campground = _models2.default.Campground,\n    Comment = _models2.default.Comment;\n\n\napp.set('view engine', 'pug');\napp.use(_express2.default.static('public'));\napp.use(_express2.default.urlencoded({ extended: true }));\n\napp.get('/', function (req, res) {\n  res.render('landing');\n});\n\napp.get('/campgrounds', function (req, res) {\n  Campground.findAll().then(function (campgrounds) {\n    res.status(200).render('index', { campgrounds: campgrounds });\n  }).catch(function (err) {\n    res.status(400).send(error);\n  });\n});\n\napp.post('/campgrounds', function (req, res) {\n  var _req$body = req.body,\n      name = _req$body.name,\n      image = _req$body.image,\n      description = _req$body.description;\n\n  Campground.create({ name: name, image: image, description: description }).then(function () {\n    return res.status(200).redirect('/campgrounds');\n  }).catch(function (err) {\n    return res.status(400).send(err);\n  });\n});\n\napp.get('/campgrounds/new', function (req, res) {\n  res.render('new');\n});\n\napp.get('/campgrounds/:id', function (req, res) {\n  Campground.findById(req.params.id).then(function (campground) {\n    return res.status(200).render('show', { campground: campground });\n  }).catch(function (err) {\n    return res.status(400).send(err);\n  });\n});\n\napp.get('/comments', function (req, res) {\n  Comment.findAll({\n    include: [{\n      model: Campground,\n      as: 'campground',\n      attributes: ['name']\n    }]\n  }).then(function (comments) {\n    res.send(comments);\n  }).catch(function (err) {\n    res.send(err);\n  });\n});\n\napp.listen(3000, function () {\n  console.log('YelpCamp server has started');\n});\n\n//# sourceURL=webpack:///./src/app.js?");
 
 /***/ }),
 
@@ -129,28 +153,6 @@ eval("\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"express\");\n\n//# sourceURL=webpack:///external_%22express%22?");
-
-/***/ }),
-
-/***/ "fs":
-/*!*********************!*\
-  !*** external "fs" ***!
-  \*********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"fs\");\n\n//# sourceURL=webpack:///external_%22fs%22?");
-
-/***/ }),
-
-/***/ "path":
-/*!***********************!*\
-  !*** external "path" ***!
-  \***********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"path\");\n\n//# sourceURL=webpack:///external_%22path%22?");
 
 /***/ }),
 
