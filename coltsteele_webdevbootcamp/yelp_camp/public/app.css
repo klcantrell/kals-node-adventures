@@ -5,8 +5,11 @@ img {
 .campground {
   border: 1px solid lightgrey;
   padding: 0;
-  margin-left: 5px;
-  margin-right: 5px;
+}
+
+.campground > a {
+  width: 50%;
+  max-width: 200px;
 }
 
 .img-thumbnail {
@@ -15,4 +18,9 @@ img {
 
 .caption-full {
   padding: 9px;
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
 }

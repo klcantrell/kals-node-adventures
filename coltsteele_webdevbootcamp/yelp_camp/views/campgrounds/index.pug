@@ -8,10 +8,13 @@ block content
         a.btn.btn-primary(href="/campgrounds/new") Add new campground
     .row.text-center.justify-content-center
       each campground in campgrounds    
-        .campground.col-md-3.col-sm-6.mb-3.p-3.d-flex.flex-column
+        .campground.col-md-3.col-sm-6.mb-3.d-flex.flex-column.align-items-center
           .img-fluid
             img(src=`/${campground.image}`)
-            .caption
+            .caption.mt-1
               h5 #{campground.name}
-          a.btn.btn-primary.text-white.mt-auto(href=`/campgrounds/${campground.id}`) More info
+          a(
+            class="btn btn-success text-white mt-auto mb-2 "
+            href=`/campgrounds/${campground.id}`
+          ) More info
           

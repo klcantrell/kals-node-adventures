@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import models from '../db/models';
 
@@ -5,7 +6,7 @@ const app = express();
 const { Campground, Comment, User } = models;
 
 app.set('view engine', 'pug');
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname + '/public')));
 app.use(express.urlencoded({extended: true}));
 
 app.get('/', (req, res) => {
