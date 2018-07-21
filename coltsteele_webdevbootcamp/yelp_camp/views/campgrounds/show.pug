@@ -1,7 +1,8 @@
-extends includes/header
+extends ../includes/header
 block content
   h1 #{campground.name}
   img(src=`/${campground.image}`)
   p #{campground.description}
+  a(class="btn btn-success" href=`/campgrounds/${campground.id}/comments/new`) Add new comment
   each comment in campground.comments
     p #[strong #{comment.author.name}:] #{comment.text}

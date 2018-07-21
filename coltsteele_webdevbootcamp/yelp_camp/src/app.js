@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 app.get('/campgrounds', (req, res) => {
   Campground.findAll()
     .then(campgrounds => {
-      res.status(200).render('index', {campgrounds});
+      res.status(200).render('campgrounds/index', {campgrounds});
     })
     .catch(err => {
       res.status(400).send(error);
@@ -30,7 +30,7 @@ app.post('/campgrounds', (req, res) => {
 });
 
 app.get('/campgrounds/new', (req, res) => {
-  res.render('new');
+  res.render('campgrounds/new');
 });
 
 app.get('/campgrounds/:id', (req, res) => {
@@ -44,8 +44,33 @@ app.get('/campgrounds/:id', (req, res) => {
       }]
     }]
   })
-    .then(campground => res.status(200).render('show', {campground}))
+    .then(campground => res.status(200).render('campgrounds/show', {campground}))
     .catch(err => res.status(400).send(err));
+});
+
+app.get('/campgrounds/:id/comments/new', (req, res) => {
+  Campground.findById(req.params.id)
+    .then(campground => {
+      res.render('comments/new', {campground});
+    })
+    .catch(err => res.send(err));
+});
+
+app.post('/campgrounds/:id/comments', (req, res) => {
+  Campground.findById(req.params.id)
+    .then(campground => {
+      const user_id = 1;
+      Comment.create({
+        text: req.body.comment.text,
+        campground_id: campground.id,
+        user_id,
+      })
+        .then(() => res.redirect(`/campgrounds/${campground.id}`)) 
+        .catch(() => res.redirect(`/campgrounds/`));
+    })
+    .catch(err => {
+      res.redirect('/campgrounds');
+    });
 });
 
 app.listen(3000, () => {
