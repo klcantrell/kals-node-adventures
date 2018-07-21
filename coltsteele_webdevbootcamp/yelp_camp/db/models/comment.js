@@ -7,6 +7,10 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'campground_id',
       as: 'campground',
     });
+    Comment.belongsTo(models.User, {
+      foreignKey: 'user_id',
+      as: 'author'
+    });
   };
   return Comment;
 };

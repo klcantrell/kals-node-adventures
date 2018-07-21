@@ -2,7 +2,7 @@ import express from 'express';
 import models from '../db/models';
 
 const app = express();
-const { Campground, Comment } = models;
+const { Campground, Comment, User } = models;
 
 app.set('view engine', 'pug');
 app.use(express.static('public'));
@@ -34,25 +34,18 @@ app.get('/campgrounds/new', (req, res) => {
 });
 
 app.get('/campgrounds/:id', (req, res) => {
-  Campground.findById(req.params.id)
-    .then(campground => res.status(200).render('show', {campground}))
-    .catch(err => res.status(400).send(err));
-});
-
-app.get('/comments', (req, res) => {
-  Comment.findAll({
+  Campground.findById(req.params.id, {
     include: [{
-      model: Campground,
-      as: 'campground',
-      attributes: ['name'],
+      model: Comment,
+      as: 'comments',
+      include: [{
+        model: User,
+        as: 'author'
+      }]
     }]
   })
-    .then(comments => {
-      res.send(comments);
-    })
-    .catch(err => {
-      res.send(err);
-    })
+    .then(campground => res.status(200).render('show', {campground}))
+    .catch(err => res.status(400).send(err));
 });
 
 app.listen(3000, () => {

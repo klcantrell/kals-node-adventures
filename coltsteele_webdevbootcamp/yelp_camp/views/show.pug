@@ -3,3 +3,5 @@ block content
   h1 #{campground.name}
   img(src=`/${campground.image}`)
   p #{campground.description}
+  each comment in campground.comments
+    p #[strong #{comment.author.name}:] #{comment.text}

@@ -1,13 +1,13 @@
 export default {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Comments', {
+    return queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      text: {
+      name: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -19,16 +19,10 @@ export default {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: new Date(),
-      },
-      campground_id: {
-        type: Sequelize.INTEGER,
-      },
-      user_id: {
-        type: Sequelize.INTEGER,
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Comments');
+    return queryInterface.dropTable('Users');
   }
 };
