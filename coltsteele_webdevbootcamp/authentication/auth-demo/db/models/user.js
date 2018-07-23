@@ -8,7 +8,7 @@ export default (sequelize, DataTypes) => {
   User.generateHash = password => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
   };
-  User.validPassword = password => {
+  User.prototype.validPassword = function(password) {
     return bcrypt.compareSync(password, this.password);
   };
   User.serialize = () => {

@@ -1,9 +1,9 @@
 extends includes/header
 block content
-  h1 SIGN UP FORM
+  h1 Login
   if message.length > 0
     p #{message}
-  form(action="/register" method="POST")
+  form(action="/login" method="POST")
     input(type="text" placeholder="username" name="username")
     input(type="password" placeholder="password" name="password")
-    button(type="submit") Sign up
+    button(type="submit") Login
