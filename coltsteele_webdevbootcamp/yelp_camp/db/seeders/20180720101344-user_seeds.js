@@ -1,17 +1,19 @@
+import bcrypt from 'bcrypt';
+
 export default {
   up: (queryInterface, Sequelize) => {
       return queryInterface.bulkInsert('Users', [
         {
           username: 'cloudstrife',
-          password: 'admin'
+          password: bcrypt.hashSync('admin', bcrypt.genSaltSync(8), null),
         },
         {
           username: 'kalcantrell',
-          password: 'admin'
+          password: bcrypt.hashSync('admin', bcrypt.genSaltSync(8), null),
         },
         {
           username: 'squallleonhart',
-          password: 'admin'
+          password: bcrypt.hashSync('admin', bcrypt.genSaltSync(8), null),
         },
       ], {});
   },

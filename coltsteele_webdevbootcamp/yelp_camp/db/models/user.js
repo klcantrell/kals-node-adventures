@@ -26,11 +26,9 @@ export default (sequelize, DataTypes) => {
     return (id, done) => {
       User.findById(id)
         .then(user => {
-          if (user) {
-            done(null, user.get());
-          } else {
-            done(user.errors, null);
-          }
+          done(null, user.get());
+        }).catch(err => {
+          done(err, null);
         });
     };
   }
