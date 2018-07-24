@@ -29,7 +29,9 @@ browsersync.init({
 });
 
 nodemon.on('restart', () => {
-  browsersync.reload();
+  setTimeout(() => {
+    browsersync.reload();
+  }, 1000);
 });
 
 browsersync

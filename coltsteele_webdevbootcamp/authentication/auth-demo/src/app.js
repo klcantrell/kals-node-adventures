@@ -18,6 +18,15 @@ app.use(session({
   saveUninitialized: false,
 }))
 
+// MIDDLEWARE
+
+const isLoggedIn = (req, res, next) => {
+  if(req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+};
+
 // PASSPORT
 
 app.use(passport.initialize());
@@ -83,7 +92,7 @@ passport.use('local-login', new LocalStrategy(
 // ROUTES
 
 app.get('/', (req, res) => {
-  res.render('home');
+  res.render('home', {isLoggedIn: req.isAuthenticated()});
 });
 
 app.get('/register', (req, res) => {
@@ -95,7 +104,7 @@ app.post('/register', passport.authenticate('local-signup', {
   failureRedirect: '/register',
 }));
 
-app.get('/secret', (req, res) => {
+app.get('/secret', isLoggedIn, (req, res) => {
   res.render('secret');
 });
 
@@ -107,6 +116,11 @@ app.post('/login', passport.authenticate('local-login', {
   successRedirect: '/secret',
   failureRedirect: '/login',
 }));
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
 
 app.listen(3000, () => {
   console.log('Server started');
