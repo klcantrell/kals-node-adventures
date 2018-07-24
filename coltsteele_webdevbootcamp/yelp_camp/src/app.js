@@ -97,6 +97,8 @@ app.get('/', (req, res) => {
   res.render('landing');
 });
 
+app.use('/campgrounds', isLoggedIn);
+
 app.get('/campgrounds', (req, res) => {
   Campground.findAll()
     .then(campgrounds => {
@@ -165,6 +167,15 @@ app.get('/register', (req, res) => {
 app.post('/register', passport.authenticate('local-signup', {
   successRedirect: '/campgrounds',
   failureRedirect: '/register',
+}));
+
+app.get('/login', (req, res) => {
+  res.render('login', {message: req.flash('loginMessage')});
+});
+
+app.post('/login', passport.authenticate('local-login', {
+  successRedirect: '/campgrounds',
+  failureRedirect: '/login',
 }));
 
 app.listen(3000, () => {
