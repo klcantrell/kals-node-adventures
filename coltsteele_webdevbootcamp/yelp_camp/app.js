@@ -141,7 +141,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nexports.default = function (sequelize, DataTypes) {\n  var User = sequelize.define('User', {\n    name: DataTypes.STRING\n  }, {});\n  User.associate = function (models) {\n    User.hasMany(models.Comment, {\n      foreignKey: 'user_id',\n      as: 'comments'\n    });\n  };\n  return User;\n};\n\n//# sourceURL=webpack:///./db/models/user.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _bcrypt = __webpack_require__(/*! bcrypt */ \"bcrypt\");\n\nvar _bcrypt2 = _interopRequireDefault(_bcrypt);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nexports.default = function (sequelize, DataTypes) {\n  var User = sequelize.define('User', {\n    username: DataTypes.STRING,\n    password: DataTypes.STRING\n  }, {});\n  User.associate = function (models) {\n    User.hasMany(models.Comment, {\n      foreignKey: 'user_id',\n      as: 'comments'\n    });\n  };\n  User.generateHash = function (password) {\n    return _bcrypt2.default.hashSync(password, _bcrypt2.default.genSaltSync(8), null);\n  };\n  User.prototype.validPassword = function (password) {\n    return _bcrypt2.default.compareSync(password, this.password);\n  };\n  User.serialize = function () {\n    return function (user, done) {\n      done(null, user.id);\n    };\n  };\n  User.deserialize = function () {\n    return function (id, done) {\n      User.findById(id).then(function (user) {\n        if (user) {\n          done(null, user.get());\n        } else {\n          done(user.errors, null);\n        }\n      });\n    };\n  };\n  return User;\n};\n\n//# sourceURL=webpack:///./db/models/user.js?");
 
 /***/ }),
 
@@ -153,7 +153,18 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _path = __webpack_require__(/*! path */ \"path\");\n\nvar _path2 = _interopRequireDefault(_path);\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar _express2 = _interopRequireDefault(_express);\n\nvar _models = __webpack_require__(/*! ../db/models */ \"./db/models/index.js\");\n\nvar _models2 = _interopRequireDefault(_models);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar app = (0, _express2.default)();\nvar Campground = _models2.default.Campground,\n    Comment = _models2.default.Comment,\n    User = _models2.default.User;\n\n\napp.set('view engine', 'pug');\napp.use(_express2.default.static(_path2.default.join(__dirname + '/public')));\napp.use(_express2.default.urlencoded({ extended: true }));\n\napp.get('/', function (req, res) {\n  res.render('landing');\n});\n\napp.get('/campgrounds', function (req, res) {\n  Campground.findAll().then(function (campgrounds) {\n    res.status(200).render('campgrounds/index', { campgrounds: campgrounds });\n  }).catch(function (err) {\n    res.status(400).send(error);\n  });\n});\n\napp.post('/campgrounds', function (req, res) {\n  var _req$body = req.body,\n      name = _req$body.name,\n      image = _req$body.image,\n      description = _req$body.description;\n\n  Campground.create({ name: name, image: image, description: description }).then(function () {\n    return res.status(200).redirect('/campgrounds');\n  }).catch(function (err) {\n    return res.status(400).send(err);\n  });\n});\n\napp.get('/campgrounds/new', function (req, res) {\n  res.render('campgrounds/new');\n});\n\napp.get('/campgrounds/:id', function (req, res) {\n  Campground.findById(req.params.id, {\n    include: [{\n      model: Comment,\n      as: 'comments',\n      include: [{\n        model: User,\n        as: 'author'\n      }]\n    }]\n  }).then(function (campground) {\n    return res.status(200).render('campgrounds/show', { campground: campground });\n  }).catch(function (err) {\n    return res.status(400).send(err);\n  });\n});\n\napp.get('/campgrounds/:id/comments/new', function (req, res) {\n  Campground.findById(req.params.id).then(function (campground) {\n    res.render('comments/new', { campground: campground });\n  }).catch(function (err) {\n    return res.send(err);\n  });\n});\n\napp.post('/campgrounds/:id/comments', function (req, res) {\n  Campground.findById(req.params.id).then(function (campground) {\n    var user_id = 1;\n    Comment.create({\n      text: req.body.comment.text,\n      campground_id: campground.id,\n      user_id: user_id\n    }).then(function () {\n      return res.redirect('/campgrounds/' + campground.id);\n    }).catch(function () {\n      return res.redirect('/campgrounds/');\n    });\n  }).catch(function (err) {\n    res.redirect('/campgrounds');\n  });\n});\n\napp.listen(3000, function () {\n  console.log('YelpCamp server has started');\n});\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("\n\nvar _path = __webpack_require__(/*! path */ \"path\");\n\nvar _path2 = _interopRequireDefault(_path);\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar _express2 = _interopRequireDefault(_express);\n\nvar _passport = __webpack_require__(/*! passport */ \"passport\");\n\nvar _passport2 = _interopRequireDefault(_passport);\n\nvar _passportLocal = __webpack_require__(/*! passport-local */ \"passport-local\");\n\nvar _passportLocal2 = _interopRequireDefault(_passportLocal);\n\nvar _models = __webpack_require__(/*! ../db/models */ \"./db/models/index.js\");\n\nvar _models2 = _interopRequireDefault(_models);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar app = (0, _express2.default)();\nvar LocalStrategy = _passportLocal2.default.Strategy;\nvar Campground = _models2.default.Campground,\n    Comment = _models2.default.Comment,\n    User = _models2.default.User;\n\n\napp.set('view engine', 'pug');\napp.use(_express2.default.static(_path2.default.join(__dirname + '/public')));\napp.use(_express2.default.urlencoded({ extended: true }));\n\napp.get('/', function (req, res) {\n  res.render('landing');\n});\n\napp.get('/campgrounds', function (req, res) {\n  Campground.findAll().then(function (campgrounds) {\n    res.status(200).render('campgrounds/index', { campgrounds: campgrounds });\n  }).catch(function (err) {\n    res.status(400).send(error);\n  });\n});\n\napp.post('/campgrounds', function (req, res) {\n  var _req$body = req.body,\n      name = _req$body.name,\n      image = _req$body.image,\n      description = _req$body.description;\n\n  Campground.create({ name: name, image: image, description: description }).then(function () {\n    return res.status(200).redirect('/campgrounds');\n  }).catch(function (err) {\n    return res.status(400).send(err);\n  });\n});\n\napp.get('/campgrounds/new', function (req, res) {\n  res.render('campgrounds/new');\n});\n\napp.get('/campgrounds/:id', function (req, res) {\n  Campground.findById(req.params.id, {\n    include: [{\n      model: Comment,\n      as: 'comments',\n      include: [{\n        model: User,\n        as: 'author'\n      }]\n    }]\n  }).then(function (campground) {\n    return res.status(200).render('campgrounds/show', { campground: campground });\n  }).catch(function (err) {\n    return res.status(400).send(err);\n  });\n});\n\napp.get('/campgrounds/:id/comments/new', function (req, res) {\n  Campground.findById(req.params.id).then(function (campground) {\n    res.render('comments/new', { campground: campground });\n  }).catch(function (err) {\n    return res.send(err);\n  });\n});\n\napp.post('/campgrounds/:id/comments', function (req, res) {\n  Campground.findById(req.params.id).then(function (campground) {\n    var user_id = 1;\n    Comment.create({\n      text: req.body.comment.text,\n      campground_id: campground.id,\n      user_id: user_id\n    }).then(function () {\n      return res.redirect('/campgrounds/' + campground.id);\n    }).catch(function () {\n      return res.redirect('/campgrounds/');\n    });\n  }).catch(function (err) {\n    res.redirect('/campgrounds');\n  });\n});\n\napp.listen(3000, function () {\n  console.log('YelpCamp server has started');\n});\n\n//# sourceURL=webpack:///./src/app.js?");
+
+/***/ }),
+
+/***/ "bcrypt":
+/*!*************************!*\
+  !*** external "bcrypt" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"bcrypt\");\n\n//# sourceURL=webpack:///external_%22bcrypt%22?");
 
 /***/ }),
 
@@ -165,6 +176,28 @@ eval("\n\nvar _path = __webpack_require__(/*! path */ \"path\");\n\nvar _path2 =
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"express\");\n\n//# sourceURL=webpack:///external_%22express%22?");
+
+/***/ }),
+
+/***/ "passport":
+/*!***************************!*\
+  !*** external "passport" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"passport\");\n\n//# sourceURL=webpack:///external_%22passport%22?");
+
+/***/ }),
+
+/***/ "passport-local":
+/*!*********************************!*\
+  !*** external "passport-local" ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"passport-local\");\n\n//# sourceURL=webpack:///external_%22passport-local%22?");
 
 /***/ }),
 

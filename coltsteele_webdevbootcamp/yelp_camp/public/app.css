@@ -5,6 +5,7 @@ img {
 .campground {
   border: 1px solid lightgrey;
   padding: 0;
+  margin: 10px;
 }
 
 .campground > a {

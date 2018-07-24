@@ -1,8 +1,11 @@
 import path from 'path';
 import express from 'express';
+import passport from 'passport';
+import passportLocal from 'passport-local';
 import models from '../db/models';
 
 const app = express();
+const LocalStrategy = passportLocal.Strategy;
 const { Campground, Comment, User } = models;
 
 app.set('view engine', 'pug');

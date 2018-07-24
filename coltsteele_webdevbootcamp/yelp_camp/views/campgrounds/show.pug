@@ -24,5 +24,5 @@ block content
           hr
           each comment in campground.comments
             .row
-              .col #[strong #{comment.author.name}] #[span(class="float-right") 10 days ago]
+              .col #[strong #{comment.author.username}] #[span(class="float-right") 10 days ago]
                p #{comment.text}

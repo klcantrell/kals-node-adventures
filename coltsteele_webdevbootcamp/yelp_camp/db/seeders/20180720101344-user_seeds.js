@@ -2,13 +2,16 @@ export default {
   up: (queryInterface, Sequelize) => {
       return queryInterface.bulkInsert('Users', [
         {
-          name: 'Cloud Strife',
+          username: 'cloudstrife',
+          password: 'admin'
         },
         {
-          name: 'Kal Cantrell',
+          username: 'kalcantrell',
+          password: 'admin'
         },
         {
-          name: 'Squall Leonhart',
+          username: 'squallleonhart',
+          password: 'admin'
         },
       ], {});
   },
