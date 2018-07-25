@@ -1,12 +1,10 @@
 import express from 'express';
+import { injectUserIntoLocals } from '../src/middleware';
 
 const router = express.Router();
 
 export default passport => {
-  router.use((req, res, next) => {
-    res.locals.currentUser = req.user;
-    next();
-  });
+  router.use(injectUserIntoLocals);
   
   router.get('/', (req, res) => {
     res.render('landing');

@@ -13,14 +13,13 @@ router.get('/new', isLoggedIn, (req, res) => {
     .catch(err => res.send(err));
 });
 
-router.post('/comments', isLoggedIn, (req, res) => {
+router.post('/', isLoggedIn, (req, res) => {
   Campground.findById(req.params.id)
     .then(campground => {
-      const user_id = 1;
       Comment.create({
         text: req.body.comment.text,
         campground_id: campground.id,
-        user_id,
+        user_id: req.user.id,
       })
         .then(() => res.redirect(`/campgrounds/${campground.id}`)) 
         .catch(() => res.redirect(`/campgrounds/`));

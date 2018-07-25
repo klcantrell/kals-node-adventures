@@ -4,3 +4,8 @@ export const isLoggedIn = (req, res, next) => {
   }
   res.redirect('/login');
 };
+
+export const injectUserIntoLocals = (req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+};
