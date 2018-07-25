@@ -33,7 +33,7 @@ const isLoggedIn = (req, res, next) => {
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
+app.use(flash()); 
 passport.serializeUser(User.serialize());
 passport.deserializeUser(User.deserialize());
 passport.use('local-signup', new LocalStrategy(
@@ -92,6 +92,11 @@ passport.use('local-login', new LocalStrategy(
 ));
 
 // ROUTES
+
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
 
 app.get('/', (req, res) => {
   res.render('landing');

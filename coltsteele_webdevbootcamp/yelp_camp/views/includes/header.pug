@@ -13,10 +13,14 @@ html(lang="en")
         a.navbar-brand(href="/") YelpCamp
         .collapse.navbar-collapse
           ul.navbar-nav.ml-auto
-            li.nav-item.active
-              a.nav-link(href="/login") Login
-            li.nav-item.active
-              a.nav-link(href="/register") Sign Up
-            li.nav-item.active
-              a.nav-link(href="/logout") Logout
+            if !currentUser
+              li.nav-item
+                a.nav-link(href="/login") Login
+              li.nav-item
+                a.nav-link(href="/register") Sign Up
+            else
+              li.nav-item
+                p.nav-link Logged in as #[strong #{currentUser.username}]
+              li.nav-item
+                a.nav-link(href="/logout") Logout
     block content
