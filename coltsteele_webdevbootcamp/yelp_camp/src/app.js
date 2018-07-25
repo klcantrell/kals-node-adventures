@@ -97,8 +97,6 @@ app.get('/', (req, res) => {
   res.render('landing');
 });
 
-app.use('/campgrounds', isLoggedIn);
-
 app.get('/campgrounds', (req, res) => {
   Campground.findAll()
     .then(campgrounds => {
@@ -109,14 +107,14 @@ app.get('/campgrounds', (req, res) => {
     })
 });
 
-app.post('/campgrounds', (req, res) => {
+app.post('/campgrounds', isLoggedIn, (req, res) => {
   const { name, image, description } = req.body;
   Campground.create({ name, image, description })
     .then(() => res.status(200).redirect('/campgrounds'))
     .catch(err => res.status(400).send(err));
 });
 
-app.get('/campgrounds/new', (req, res) => {
+app.get('/campgrounds/new', isLoggedIn, (req, res) => {
   res.render('campgrounds/new');
 });
 
@@ -135,7 +133,7 @@ app.get('/campgrounds/:id', (req, res) => {
     .catch(err => res.status(400).send(err));
 });
 
-app.get('/campgrounds/:id/comments/new', (req, res) => {
+app.get('/campgrounds/:id/comments/new', isLoggedIn, (req, res) => {
   Campground.findById(req.params.id)
     .then(campground => {
       res.render('comments/new', {campground});
@@ -143,7 +141,7 @@ app.get('/campgrounds/:id/comments/new', (req, res) => {
     .catch(err => res.send(err));
 });
 
-app.post('/campgrounds/:id/comments', (req, res) => {
+app.post('/campgrounds/:id/comments', isLoggedIn, (req, res) => {
   Campground.findById(req.params.id)
     .then(campground => {
       const user_id = 1;
@@ -177,6 +175,11 @@ app.post('/login', passport.authenticate('local-login', {
   successRedirect: '/campgrounds',
   failureRedirect: '/login',
 }));
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/campgrounds');
+});
 
 app.listen(3000, () => {
   console.log('YelpCamp server has started');
