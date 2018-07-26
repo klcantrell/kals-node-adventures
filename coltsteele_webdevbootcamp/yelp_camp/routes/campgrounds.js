@@ -83,4 +83,20 @@ router.put('/:id', (req, res) => {
     .catch(() => res.redirect('/campgrounds'));
 });
 
+router.delete('/:id', (req, res) => {
+  Campground.findById(req.params.id)
+    .then(campground => {
+      if (!campground) {
+        return res.status(404).send("Campground not found")
+      }
+      return campground
+        .destroy()
+        .then(() => {
+          res.redirect("/campgrounds")
+        })
+        .catch(err => res.redirect('/campgrounds'))
+    })
+    .catch(() => res.redirect('/campgrounds'));
+});
+
 export default router;

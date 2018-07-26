@@ -18,6 +18,8 @@ block content
             p #{campground.description}
             p #[em Submitted by #{campground.user.username}]
             a(class="btn btn-warning" href=`/campgrounds/${campground.id}/edit/`) Edit
+            form(class="u-inline" action=`/campgrounds/${campground.id}?_method=DELETE` method="POST")
+              button(class="btn btn-danger") Delete
         .card.bg-light.my-3.p-3
           a(
             class="btn btn-success ml-auto"
