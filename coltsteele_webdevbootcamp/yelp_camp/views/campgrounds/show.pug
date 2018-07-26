@@ -16,6 +16,7 @@ block content
             h4 
               a(href="#") #{campground.name}
             p #{campground.description}
+            p #[em Submitted by #{campground.user.username}]
         .card.bg-light.my-3.p-3
           a(
             class="btn btn-success ml-auto"
@@ -24,5 +25,5 @@ block content
           hr
           each comment in campground.comments
             .row
-              .col #[strong #{comment.author.username}] #[span(class="float-right") #{comment.createdAt.toDateString()}]
+              .col #[strong #{comment.author.username}] #[span(class="float-right") #{comment.createdAt.toLocaleDateString('en-US', {weekday: "short", month: "2-digit", day: "2-digit", year:"numeric", hour: "numeric", minute: "numeric"})}]
                p #{comment.text}

@@ -10,6 +10,10 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'user_id',
       as: 'comments',
     });
+    User.hasMany(models.Campground, {
+      foreignKey: 'user_id',
+      as: 'campgrounds',
+    });
   };
   User.generateHash = password => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);

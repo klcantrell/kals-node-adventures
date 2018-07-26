@@ -6,19 +6,28 @@ const router = express.Router();
 const { Campground, Comment, User } = models;
 
 router.get('/', (req, res) => {
-  Campground.findAll()
+  Campground.findAll({
+    include: [{
+      model: User,
+      as: 'user',
+    }]
+  })
     .then(campgrounds => {
       res.status(200).render('campgrounds/index', {campgrounds});
     })
     .catch(err => {
-      res.status(400).send(error);
+      res.status(400).send(err);
     })
 });
 
 router.post('/', isLoggedIn, (req, res) => {
   const { name, image, description } = req.body;
-  Campground.create({ name, image, description })
-    .then(() => res.status(200).redirect('/campgrounds'))
+  Campground.create({ 
+    name,
+    image,
+    description,
+    user_id: req.user.id,
+  }).then(() => res.status(200).redirect('/campgrounds'))
     .catch(err => res.status(400).send(err));
 });
 
@@ -28,14 +37,20 @@ router.get('/new', isLoggedIn, (req, res) => {
 
 router.get('/:id', (req, res) => {
   Campground.findById(req.params.id, {
-    include: [{
-      model: Comment,
-      as: 'comments',
-      include: [{
+    include: [
+      {
+        model: Comment,
+        as: 'comments',
+        include: [{
+          model: User,
+          as: 'author'
+        }],
+      }, 
+      {
         model: User,
-        as: 'author'
-      }]
-    }]
+        as: 'user',
+      }
+    ]
   })
     .then(campground => res.status(200).render('campgrounds/show', {campground}))
     .catch(err => res.status(400).send(err));
