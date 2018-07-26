@@ -1,6 +1,6 @@
 import express from 'express';
 import models from '../db/models';
-import { isLoggedIn } from '../src/middleware';
+import { isLoggedIn, isResourceOwner } from '../src/middleware';
 
 const router = express.Router();
 const { Campground, Comment, User } = models;
@@ -51,12 +51,12 @@ router.get('/:id', (req, res) => {
         as: 'user',
       }
     ]
-  })
-    .then(campground => res.status(200).render('campgrounds/show', {campground}))
-    .catch(err => res.status(400).send(err));
+  }).then(campground => {
+      res.status(200).render('campgrounds/show', {campground, message: req.flash('showMessage')});
+    }).catch(err => res.status(400).send(err));
 });
 
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', isResourceOwner, (req, res) => {
   Campground.findById(req.params.id)
     .then(campground => {
       res.render('campgrounds/edit', {campground});
@@ -67,7 +67,7 @@ router.get('/:id/edit', (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', isResourceOwner, (req, res) => {
   Campground.findById(req.params.id)
     .then(campground => {
       if (!campground) {
@@ -83,7 +83,7 @@ router.put('/:id', (req, res) => {
     .catch(() => res.redirect('/campgrounds'));
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', isResourceOwner, (req, res) => {
   Campground.findById(req.params.id)
     .then(campground => {
       if (!campground) {

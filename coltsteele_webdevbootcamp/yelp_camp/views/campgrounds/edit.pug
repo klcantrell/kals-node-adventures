@@ -3,7 +3,7 @@ block content
   .container
     .row
       .col
-        h1.text-center Edit your campground
+        h1.text-center Edit #{campground.name}
         .row.justify-content-center.mt-4
           .col.colt-sm-12.col-md-5
             form(action=`/campgrounds/${campground.id}?_method=PUT`, method="POST")
