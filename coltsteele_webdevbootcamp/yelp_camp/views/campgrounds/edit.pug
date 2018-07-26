@@ -1,0 +1,18 @@
+extends ../includes/header
+block content
+  .container
+    .row
+      .col
+        h1.text-center Edit your campground
+        .row.justify-content-center.mt-4
+          .col.colt-sm-12.col-md-5
+            form(action=`/campgrounds/${campground.id}?_method=PUT`, method="POST")
+              .form-group
+                input.form-control(type="text" value=campground.name name="campground[name]" autocomplete="off")
+              .form-group
+                input.form-control(type="text" value=campground.image name="campground[image]" autocomplete="off")
+              .form-group
+                input.form-control(type="text" value=campground.description name="campground[description]" autocomplete="off")
+              .form-group
+                button.btn.btn-lg.btn-primary.btn-block(type="submit") Submit
+        a.d-block.text-center(href="/campgrounds") Go Back

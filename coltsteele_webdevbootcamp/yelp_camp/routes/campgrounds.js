@@ -56,4 +56,31 @@ router.get('/:id', (req, res) => {
     .catch(err => res.status(400).send(err));
 });
 
+router.get('/:id/edit', (req, res) => {
+  Campground.findById(req.params.id)
+    .then(campground => {
+      res.render('campgrounds/edit', {campground});
+    })
+    .catch(err => {
+      console.log(err);
+      res.redirect('/campgrounds');
+    });
+});
+
+router.put('/:id', (req, res) => {
+  Campground.findById(req.params.id)
+    .then(campground => {
+      if (!campground) {
+        return res.status(404).send("Campground not found")
+      }
+      return campground
+        .update(req.body.campground)
+        .then(() => {
+          res.redirect(`/campgrounds/${campground.id}`)
+        })
+        .catch(err => res.redirect('/campgrounds'))
+    })
+    .catch(() => res.redirect('/campgrounds'));
+});
+
 export default router;

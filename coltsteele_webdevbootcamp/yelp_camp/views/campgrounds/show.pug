@@ -17,6 +17,7 @@ block content
               a(href="#") #{campground.name}
             p #{campground.description}
             p #[em Submitted by #{campground.user.username}]
+            a(class="btn btn-warning" href=`/campgrounds/${campground.id}/edit/`) Edit
         .card.bg-light.my-3.p-3
           a(
             class="btn btn-success ml-auto"
