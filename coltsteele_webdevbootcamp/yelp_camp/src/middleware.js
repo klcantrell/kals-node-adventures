@@ -18,6 +18,10 @@ export const isCampgroundOwner = (req, res, next) => {
         as: 'user',
       }]
     }).then(campground => {
+      if (!campground) {
+        req.flash('showMessage', 'You do not have permission for that');
+        return res.redirect(`back`);
+      }
       if (campground.user.id === req.user.id) {
         next();
       } else {
@@ -43,6 +47,10 @@ export const isCommentOwner = (req, res, next) => {
         attributes: ['id'],
       }]
     }).then(comment => {
+      if (!comment) {
+        req.flash('showMessage', 'You do not have permission for that');
+        return res.redirect(`back`);
+      }
       if (comment.author.id === req.user.id) {
         next();
       } else {
@@ -50,7 +58,7 @@ export const isCommentOwner = (req, res, next) => {
         res.redirect('back');
       }
     }).catch(err => {
-      console.log(err);
+      req.flash('showMessage', 'Something went wrong');
       res.redirect('back');
     })
   } else {

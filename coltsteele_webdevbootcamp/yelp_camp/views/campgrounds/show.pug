@@ -36,8 +36,8 @@ block content
                   strong #{comment.author.username}
                   span(class="float-right")
                     if currentUser && currentUser.id === comment.author.id
-                      a(class="btn btn-warning" href=`/campgrounds/${campground.id}/comments/${comment.id}/edit`) Edit
+                      a(class="btn btn-sm btn-warning" href=`/campgrounds/${campground.id}/comments/${comment.id}/edit`) Edit
                       form(class="u-inline" action=`/campgrounds/${campground.id}/comments/${comment.id}?_method=DELETE` method="POST")
-                        button(class="btn btn-danger") Delete
+                        button(class="btn btn-sm btn-danger") Delete
                     span #{comment.updatedAt.toLocaleDateString('en-US', {weekday: "short", month: "2-digit", day: "2-digit", year:"numeric", hour: "numeric", minute: "numeric"})}
                 p #{comment.text}
