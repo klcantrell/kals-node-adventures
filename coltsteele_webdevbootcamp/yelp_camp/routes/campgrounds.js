@@ -1,6 +1,6 @@
 import express from 'express';
 import models from '../db/models';
-import { isLoggedIn, isResourceOwner } from '../src/middleware';
+import { isLoggedIn, isCampgroundOwner } from '../src/middleware';
 
 const router = express.Router();
 const { Campground, Comment, User } = models;
@@ -56,7 +56,7 @@ router.get('/:id', (req, res) => {
     }).catch(err => res.status(400).send(err));
 });
 
-router.get('/:id/edit', isResourceOwner, (req, res) => {
+router.get('/:id/edit', isCampgroundOwner, (req, res) => {
   Campground.findById(req.params.id)
     .then(campground => {
       res.render('campgrounds/edit', {campground});
@@ -67,7 +67,7 @@ router.get('/:id/edit', isResourceOwner, (req, res) => {
     });
 });
 
-router.put('/:id', isResourceOwner, (req, res) => {
+router.put('/:id', isCampgroundOwner, (req, res) => {
   Campground.findById(req.params.id)
     .then(campground => {
       if (!campground) {
@@ -78,12 +78,18 @@ router.put('/:id', isResourceOwner, (req, res) => {
         .then(() => {
           res.redirect(`/campgrounds/${campground.id}`)
         })
-        .catch(err => res.redirect('/campgrounds'))
+        .catch(err => {
+          req.flash('showMessage', 'Something went wrong');
+          res.redirect('back');
+        });
     })
-    .catch(() => res.redirect('/campgrounds'));
+    .catch(() => {
+      req.flash('showMessage', 'Something went wrong');
+      res.redirect('back');
+    })
 });
 
-router.delete('/:id', isResourceOwner, (req, res) => {
+router.delete('/:id', isCampgroundOwner, (req, res) => {
   Campground.findById(req.params.id)
     .then(campground => {
       if (!campground) {
@@ -94,9 +100,15 @@ router.delete('/:id', isResourceOwner, (req, res) => {
         .then(() => {
           res.redirect("/campgrounds")
         })
-        .catch(err => res.redirect('/campgrounds'))
+        .catch(err => {
+          req.flash('showMessage', 'Something went wrong');
+          res.redirect('back');
+        })
     })
-    .catch(() => res.redirect('/campgrounds'));
+    .catch(() => {
+      req.flash('showMessage', 'Something went wrong');
+      res.redirect('back');   
+    })
 });
 
 export default router;

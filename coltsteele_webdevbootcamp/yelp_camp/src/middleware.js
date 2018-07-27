@@ -1,6 +1,6 @@
 import models from '../db/models';
 
-const { Campground, User } = models;
+const { Campground, Comment, User } = models;
 
 export const isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -10,7 +10,7 @@ export const isLoggedIn = (req, res, next) => {
   res.redirect('/login');
 };
 
-export const isResourceOwner = (req, res, next) => {
+export const isCampgroundOwner = (req, res, next) => {
   if (req.isAuthenticated()) {
     Campground.findById(req.params.id, {
       include: [{
@@ -22,17 +22,42 @@ export const isResourceOwner = (req, res, next) => {
         next();
       } else {
         req.flash('showMessage', 'You do not have permission for that');
-        res.redirect(`/campgrounds/${req.params.id}`);
+        res.redirect(`back`);
       }
     }).catch(err => {
-      console.log(err);
-      res.redirect('/login');
+      req.flash('showMessage', 'Something went wrong');
+      res.redirect('back');
     })
   } else {
     req.flash('loginMessage', 'You need to be logged in for that');
     res.redirect('/login');
   }
 }
+
+export const isCommentOwner = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    Comment.findById(req.params.comment_id, {
+      include: [{
+        model: User,
+        as: 'author',
+        attributes: ['id'],
+      }]
+    }).then(comment => {
+      if (comment.author.id === req.user.id) {
+        next();
+      } else {
+        req.flash('showMessage', 'You do not have permission for that');
+        res.redirect('back');
+      }
+    }).catch(err => {
+      console.log(err);
+      res.redirect('back');
+    })
+  } else {
+    req.flash('loginMessage', 'You need to be logged in for that');
+    res.redirect('/login');
+  }
+};
 
 export const injectUserIntoLocals = (req, res, next) => {
   res.locals.currentUser = req.user;

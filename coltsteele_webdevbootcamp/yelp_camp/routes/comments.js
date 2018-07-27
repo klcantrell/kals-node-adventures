@@ -1,6 +1,6 @@
 import express from 'express';
 import models from '../db/models';
-import { isLoggedIn } from '../src/middleware';
+import { isLoggedIn, isCommentOwner } from '../src/middleware';
 
 const router = express.Router({mergeParams: true});
 const { Campground, Comment, User } = models;
@@ -27,6 +27,68 @@ router.post('/', isLoggedIn, (req, res) => {
     .catch(err => {
       res.redirect('/campgrounds');
     });
+});
+
+router.get('/:comment_id/edit', isCommentOwner, (req, res) => {
+  Comment.findById(req.params.comment_id, {
+    include: [{
+      model: Campground,
+      as: 'campground',
+    }]
+  })
+    .then(comment => {
+      res.render('comments/edit', {comment})
+    })
+    .catch(err => {
+      console.log(err);
+      res.redirect('campgrounds');
+    })
+});
+
+router.put('/:comment_id', isCommentOwner, (req, res) => {
+  Comment.findById(req.params.comment_id)
+    .then(comment => {
+      if (!comment) {
+        req.flash('showMessage', 'Comment not found');
+        return res.redirect('back');
+      }
+      return comment
+        .update(req.body.comment)
+        .then(() => {
+          res.redirect(`/campgrounds/${req.params.id}`);
+        })
+        .catch(err => {
+          req.flash('showMessage', 'Something went wrong');
+          res.redirect('back');
+        })
+    })
+    .catch(err => {
+      req.flash('showMessage', 'Something went wrong');
+      res.redirect('back');
+    })
+});
+
+router.delete('/:comment_id', isCommentOwner, (req, res) => {
+  Comment.findById(req.params.comment_id)
+    .then(comment => {
+      if (!comment) {
+        req.flash('showMessage', 'Something went wrong');
+        return res.redirect('back');
+      }
+      return comment
+        .destroy()
+        .then(() => {
+          res.redirect(`/campgrounds/${req.params.id}`);
+        })
+        .catch(err => {
+          req.flash('showMessage', 'Something went wrong');
+          res.redirect('back');
+        })
+    })
+    .catch(err => {
+      req.flash('showMessage', 'Something went wrong');
+      res.redirect('back');
+    })
 });
 
 export default router;

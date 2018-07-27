@@ -31,5 +31,13 @@ block content
           hr
           each comment in campground.comments
             .row
-              .col #[strong #{comment.author.username}] #[span(class="float-right") #{comment.createdAt.toLocaleDateString('en-US', {weekday: "short", month: "2-digit", day: "2-digit", year:"numeric", hour: "numeric", minute: "numeric"})}]
-               p #{comment.text}
+              .col 
+                div
+                  strong #{comment.author.username}
+                  span(class="float-right")
+                    if currentUser && currentUser.id === comment.author.id
+                      a(class="btn btn-warning" href=`/campgrounds/${campground.id}/comments/${comment.id}/edit`) Edit
+                      form(class="u-inline" action=`/campgrounds/${campground.id}/comments/${comment.id}?_method=DELETE` method="POST")
+                        button(class="btn btn-danger") Delete
+                    span #{comment.updatedAt.toLocaleDateString('en-US', {weekday: "short", month: "2-digit", day: "2-digit", year:"numeric", hour: "numeric", minute: "numeric"})}
+                p #{comment.text}
