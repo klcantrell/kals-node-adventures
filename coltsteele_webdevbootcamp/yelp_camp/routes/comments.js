@@ -49,7 +49,7 @@ router.put('/:comment_id', isCommentOwner, (req, res) => {
   Comment.findById(req.params.comment_id)
     .then(comment => {
       if (!comment) {
-        req.flash('showMessage', 'Comment not found');
+        req.flash('fail', 'Comment not found');
         return res.redirect('back');
       }
       return comment
@@ -58,12 +58,12 @@ router.put('/:comment_id', isCommentOwner, (req, res) => {
           res.redirect(`/campgrounds/${req.params.id}`);
         })
         .catch(err => {
-          req.flash('showMessage', 'Something went wrong');
+          req.flash('fail', 'Something went wrong');
           res.redirect('back');
         })
     })
     .catch(err => {
-      req.flash('showMessage', 'Something went wrong');
+      req.flash('fail', 'Something went wrong');
       res.redirect('back');
     })
 });
@@ -72,21 +72,22 @@ router.delete('/:comment_id', isCommentOwner, (req, res) => {
   Comment.findById(req.params.comment_id)
     .then(comment => {
       if (!comment) {
-        req.flash('showMessage', 'Something went wrong');
+        req.flash('fail', 'Something went wrong');
         return res.redirect('back');
       }
       return comment
         .destroy()
         .then(() => {
+          req.flash('sucess', 'Successfully deleted');
           res.redirect(`/campgrounds/${req.params.id}`);
         })
         .catch(err => {
-          req.flash('showMessage', 'Something went wrong');
+          req.flash('fail', 'Something went wrong');
           res.redirect('back');
         })
     })
     .catch(err => {
-      req.flash('showMessage', 'Something went wrong');
+      req.flash('fail', 'Something went wrong');
       res.redirect('back');
     })
 });

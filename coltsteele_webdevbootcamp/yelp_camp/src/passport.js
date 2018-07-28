@@ -28,14 +28,14 @@ export default passport => {
           password: User.generateHash(password),
         }).then(user => {
           if (user) {
-            return done(null, user, req.flash('success', 'Successfully logged in'));
+            return done(null, user, req.flash('success', `Welcome to YelpCamp ${user.username}`));
           } else {
             return done(null, false, req.flash('fail', 'Something went wrong'));
           }
         })
       }).catch(err => {
-        req.flash('fail', 'Something went wrong');
         console.log(err);
+        req.flash('fail', 'Something went wrong');
       })
     }
   ));
@@ -57,10 +57,10 @@ export default passport => {
         if (!user.validPassword(password)) {
           return done(null, false, req.flash('fail', 'Password wrong'));
         }
-        return done(null, user, req.flash('success', 'Successfully logged in'));
+        return done(null, user, req.flash('success', `Welcome back ${user.username}`));
       }).catch(err => {
-        req.flash('fail', 'Something went wrong');
         console.log(err);
+        req.flash('fail', 'Something went wrong');
       })
     }
   ));

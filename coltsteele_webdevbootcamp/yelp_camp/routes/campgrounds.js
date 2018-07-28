@@ -28,7 +28,9 @@ router.post('/', isLoggedIn, (req, res) => {
     description,
     user_id: req.user.id,
   }).then(() => res.status(200).redirect('/campgrounds'))
-    .catch(err => res.status(400).send(err));
+    .catch(err => {
+      res.status(400).send(err);
+    });
 });
 
 router.get('/new', isLoggedIn, (req, res) => {
@@ -71,7 +73,8 @@ router.put('/:id', isCampgroundOwner, (req, res) => {
   Campground.findById(req.params.id)
     .then(campground => {
       if (!campground) {
-        return res.status(404).send("Campground not found")
+        req.flash('message', 'Something went wrong');
+        res.redirect('back');
       }
       return campground
         .update(req.body.campground)
