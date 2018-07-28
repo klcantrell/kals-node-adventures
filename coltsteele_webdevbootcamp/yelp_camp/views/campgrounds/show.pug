@@ -12,7 +12,7 @@ block content
         .img-thumbnail.img-fluid
           img(src=`/${campground.image}`)
           .caption-full
-            h4(class="float-right") 9$/night
+            h4(class="float-right") #{campground.price}$/night
             h4 
               a(href="#") #{campground.name}
             p #{campground.description}
@@ -39,3 +39,4 @@ block content
                         button(class="btn btn-sm btn-danger") Delete
                     span #{comment.updatedAt.toLocaleDateString('en-US', {weekday: "short", month: "2-digit", day: "2-digit", year:"numeric", hour: "numeric", minute: "numeric"})}
                 p #{comment.text}
+  include ../includes/footer

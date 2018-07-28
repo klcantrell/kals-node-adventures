@@ -16,6 +16,9 @@ export default {
       description: {
         type: Sequelize.STRING
       },
+      price: {
+        type: Sequelize.STRING,
+      },
       user_id: {
         type: Sequelize.INTEGER,
       },

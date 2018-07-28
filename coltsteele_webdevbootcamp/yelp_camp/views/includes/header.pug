@@ -11,17 +11,20 @@ html(lang="en")
     nav.navbar.navbar-expand-lg.navbar-light.bg-light
       .container-fluid
         a.navbar-brand(href="/") YelpCamp
-        .collapse.navbar-collapse
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        div(class="collapse navbar-collapse" id="navbarContent")
           ul.navbar-nav.ml-auto
             if !currentUser
-              li.nav-item
+              li.nav-item.d-flex.justify-content-end
                 a.nav-link(href="/login") Login
-              li.nav-item
+              li.nav-item.d-flex.justify-content-end
                 a.nav-link(href="/register") Sign Up
             else
-              li.nav-item
+              li.nav-item.d-flex.justify-content-end
                 p.nav-link Logged in as #[strong #{currentUser.username}]
-              li.nav-item
+              li.nav-item.d-flex.justify-content-end
                 a.nav-link(href="/logout") Logout
     if failMessage.length > 0
       .container

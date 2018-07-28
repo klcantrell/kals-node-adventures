@@ -14,5 +14,8 @@ block content
               .form-group
                 input.form-control(type="text" value=campground.description name="campground[description]" autocomplete="off")
               .form-group
+                input.form-control(type="number" value=campground.price name="campground[price]" autocomplete="off" min="1.00" step="1.00")
+              .form-group
                 button.btn.btn-lg.btn-primary.btn-block(type="submit") Submit
         a.d-block.text-center(href="/campgrounds") Go Back
+  include ../includes/footer

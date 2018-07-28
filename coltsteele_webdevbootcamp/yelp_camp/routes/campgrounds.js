@@ -21,11 +21,12 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', isLoggedIn, (req, res) => {
-  const { name, image, description } = req.body;
+  const { name, image, description, price } = req.body;
   Campground.create({ 
     name,
     image,
     description,
+    price,
     user_id: req.user.id,
   }).then(() => res.status(200).redirect('/campgrounds'))
     .catch(err => {

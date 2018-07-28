@@ -3,6 +3,7 @@ export default (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     image: DataTypes.STRING,
     description: DataTypes.STRING,
+    price: DataTypes.STRING,
   }, {});
   Campground.associate = models => {
     Campground.hasMany(models.Comment, {
