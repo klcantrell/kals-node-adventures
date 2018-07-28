@@ -21,19 +21,20 @@ export default passport => {
         }
       }).then(user => {
         if (user) {
-          return done(null, false, req.flash('signupMessage', 'That username already exists'));
+          return done(null, false, req.flash('fail', 'That username already exists'));
         }
         User.create({
           username,
           password: User.generateHash(password),
         }).then(user => {
           if (user) {
-            return done(null, user);
+            return done(null, user, req.flash('success', 'Successfully logged in'));
           } else {
-            return done(null, false);
+            return done(null, false, req.flash('fail', 'Something went wrong'));
           }
         })
       }).catch(err => {
+        req.flash('fail', 'Something went wrong');
         console.log(err);
       })
     }
@@ -51,14 +52,15 @@ export default passport => {
         }
       }).then(user => {
         if (!user) {
-          return done(null, false, req.flash('loginMessage', 'No user found'));
+          return done(null, false, req.flash('fail', 'No user found'));
         }
         if (!user.validPassword(password)) {
-          return done(null, false, req.flash('loginMessage', 'Password wrong'));
+          return done(null, false, req.flash('fail', 'Password wrong'));
         }
-        return done(null, user);
+        return done(null, user, req.flash('success', 'Successfully logged in'));
       }).catch(err => {
-        throw err;
+        req.flash('fail', 'Something went wrong');
+        console.log(err);
       })
     }
   ));

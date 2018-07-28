@@ -23,4 +23,10 @@ html(lang="en")
                 p.nav-link Logged in as #[strong #{currentUser.username}]
               li.nav-item
                 a.nav-link(href="/logout") Logout
+    if failMessage.length > 0
+      .container
+        p(class="alert alert-danger") #{failMessage}
+    if successMessage.length > 0
+      .container
+        p(class="alert alert-success") #{successMessage}
     block content

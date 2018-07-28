@@ -52,7 +52,7 @@ router.get('/:id', (req, res) => {
       }
     ]
   }).then(campground => {
-      res.status(200).render('campgrounds/show', {campground, message: req.flash('showMessage')});
+      res.status(200).render('campgrounds/show', {campground});
     }).catch(err => res.status(400).send(err));
 });
 
@@ -79,12 +79,12 @@ router.put('/:id', isCampgroundOwner, (req, res) => {
           res.redirect(`/campgrounds/${campground.id}`)
         })
         .catch(err => {
-          req.flash('showMessage', 'Something went wrong');
+          req.flash('message', 'Something went wrong');
           res.redirect('back');
         });
     })
     .catch(() => {
-      req.flash('showMessage', 'Something went wrong');
+      req.flash('fail', 'Something went wrong');
       res.redirect('back');
     })
 });
@@ -93,7 +93,8 @@ router.delete('/:id', isCampgroundOwner, (req, res) => {
   Campground.findById(req.params.id)
     .then(campground => {
       if (!campground) {
-        return res.status(404).send("Campground not found")
+        req.flash('fail', 'Something went wrong');
+        res.redirect('back');
       }
       return campground
         .destroy()
@@ -101,13 +102,13 @@ router.delete('/:id', isCampgroundOwner, (req, res) => {
           res.redirect("/campgrounds")
         })
         .catch(err => {
-          req.flash('showMessage', 'Something went wrong');
+          req.flash('fail', 'Something went wrong');
           res.redirect('back');
         })
     })
     .catch(() => {
-      req.flash('showMessage', 'Something went wrong');
-      res.redirect('back');   
+      req.flash('fail', 'Something went wrong');
+      res.redirect('back');  
     })
 });
 

@@ -1,17 +1,17 @@
 import express from 'express';
-import { injectUserIntoLocals } from '../src/middleware';
+import { injectUserIntoLocals, injectMessageIntoLocals } from '../src/middleware';
 
 const router = express.Router();
 
 export default passport => {
-  router.use(injectUserIntoLocals);
+  router.use(injectUserIntoLocals, injectMessageIntoLocals);
   
   router.get('/', (req, res) => {
     res.render('landing');
   });
   
   router.get('/register', (req, res) => {
-    res.render('register', {message: req.flash('signupMessage')});
+    res.render('register');
   });
   
   router.post('/register', passport.authenticate('local-signup', {
@@ -20,7 +20,7 @@ export default passport => {
   }));
   
   router.get('/login', (req, res) => {
-    res.render('login', {message: req.flash('loginMessage')});
+    res.render('login');
   });
   
   router.post('/login', passport.authenticate('local-login', {
@@ -30,6 +30,7 @@ export default passport => {
   
   router.get('/logout', (req, res) => {
     req.logout();
+    req.flash('success', 'You logged out');
     res.redirect('/campgrounds');
   });
 
