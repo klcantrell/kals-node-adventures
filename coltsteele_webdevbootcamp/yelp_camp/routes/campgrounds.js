@@ -103,47 +103,31 @@ router.get('/:id/edit', isCampgroundOwner, (req, res) => {
 
 router.put('/:id', isCampgroundOwner, upload.single('image'), (req, res) => {
   Campground.findById(req.params.id)
-    .then(campground => {
+    .then(async (campground) => {
       if (!campground) {
         req.flash('message', 'Something went wrong');
         return res.redirect('back');
       }
+      let updatedCampground = {...campground.values};
       if (req.file) {
-        cloudinary.v2.uploader.destroy(campground.imageId, (err, result) => {
-          if (err) {
-            req.flash('fail', 'Something went wrong');
-            res.redirect('back');
-          } else {
-            cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
-              if (err) {
-                req.flash('fail', 'Something went wrong');
-                res.redirect('back');
-              } else {
-                campground
-                  .update({
-                    image: result.secure_url,
-                    imageId: result.public_id,
-                    ...req.body.campground,
-                  }).then(() => {
-                      res.redirect(`/campgrounds/${campground.id}`)
-                    }).catch(err => {
-                      req.flash('message', 'Something went wrong');
-                      res.redirect('back');
-                    });
-              }
-            });
-          }
-        });
-      } else {
-        campground.update(req.body.campground)
-          .then(() => {
-            res.redirect(`/campgrounds/${campground.id}`)
-          })
-          .catch(err => {
-            req.flash('message', 'Something went wrong');
-            res.redirect('back');
-          });
+        try {
+          await cloudinary.v2.uploader.destroy(campground.imageId);
+          const result = await cloudinary.v2.uploader.upload(req.file.path);
+          updatedCampground.image = result.secure_url; 
+          updatedCampground.imageId = result.public_id; 
+        } catch(err) {
+          req.flash('fail', 'Something went wrong');
+          res.redirect('back');
+        }
       }
+      campground.update(updatedCampground)
+        .then(() => {
+          res.redirect(`/campgrounds/${campground.id}`)
+        })
+        .catch(err => {
+          req.flash('message', 'Something went wrong');
+          res.redirect('back');
+        });
     }).catch(() => {
       req.flash('fail', 'Something went wrong');
       res.redirect('back');
@@ -152,22 +136,20 @@ router.put('/:id', isCampgroundOwner, upload.single('image'), (req, res) => {
 
 router.delete('/:id', isCampgroundOwner, (req, res) => {
   Campground.findById(req.params.id)
-    .then(campground => {
+    .then(async (campground) => {
       if (!campground) {
         req.flash('fail', 'Something went wrong');
         res.redirect('back');
       }
-      return campground
-        .destroy()
-        .then(() => {
-          res.redirect("/campgrounds")
-        })
-        .catch(err => {
-          req.flash('fail', 'Something went wrong');
-          res.redirect('back');
-        })
-    })
-    .catch(() => {
+      try {
+        await cloudinary.v2.uploader.destroy(campground.imageId);
+        await campground.destroy();
+        res.redirect("/campgrounds")
+      } catch(err) {
+        req.flash('fail', 'Something went wrong');
+        res.redirect('back');
+      }
+    }).catch(() => {
       req.flash('fail', 'Something went wrong');
       res.redirect('back');  
     })

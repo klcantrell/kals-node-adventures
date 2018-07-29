@@ -10,7 +10,18 @@
   "license": "ISC",
   "babel": {
     "presets": [
-      "env"
+      [
+        "env", {
+          "targets": {
+            "node": "current"
+          },
+          "useBuiltIns": true,
+          "exclude": [
+            "babel-plugin-transform-regenerator",
+            "transform-async-to-generator"
+          ]
+        }
+      ]
     ],
     "plugins": [
       "transform-object-rest-spread"
