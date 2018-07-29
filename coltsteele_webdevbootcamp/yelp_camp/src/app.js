@@ -4,6 +4,7 @@ import session from 'express-session';
 import flash from 'connect-flash';
 import passport from 'passport';
 import methodOverride from 'method-override';
+import env from './env';
 import passportConfig from '../src/passport';
 import indexRoutes from '../routes/index';
 import campgroundsRoutes from '../routes/campgrounds';

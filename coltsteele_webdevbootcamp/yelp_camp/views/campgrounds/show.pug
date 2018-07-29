@@ -5,12 +5,17 @@ block content
       .col-md-3.mb-3
         p(class="lead") YelpCamp
         ul(class="list-group")
-          li(class="list-group-item active") Info 1
-          li(class="list-group-item") Info 2
-          li(class="list-group-item") Info 3
+        each cg in allCampgrounds
+          if cg.id === campground.id
+            li(class="list-group-item active") #[a(class="text-light" href=`/campgrounds/${cg.id}`) #{cg.name}]
+          else
+            li(class="list-group-item") #[a(class="text-secondary" href=`/campgrounds/${cg.id}`) #{cg.name}]
       .col-md-9
         .img-thumbnail.img-fluid
-          img(src=`/${campground.image}`)
+          if campground.image.match(/^https?:\/\//)
+            img(src=campground.image)
+          else
+            img(src=`/${campground.image}`)
           .caption-full
             h4(class="float-right") #{campground.price}$/night
             h4 
