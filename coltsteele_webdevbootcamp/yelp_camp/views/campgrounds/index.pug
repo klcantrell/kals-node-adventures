@@ -10,7 +10,10 @@ block content
       each campground in campgrounds    
         .campground.col-md-3.col-sm-6.mb-3.d-flex.flex-column.align-items-center
           .img-fluid
-            img(src=`/${campground.image}`)
+            if campground.image.match(/^https?:\/\//)
+              img(src=campground.image)
+            else
+              img(src=`/${campground.image}`)
             .caption.mt-1
               h5 #{campground.name}
           a(

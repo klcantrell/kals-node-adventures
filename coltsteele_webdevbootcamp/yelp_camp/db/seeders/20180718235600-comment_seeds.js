@@ -3,18 +3,18 @@ export default {
     return queryInterface.bulkInsert('Comments', [
       {
         text: 'This place is great!',
-        campground_id: 1,
-        user_id: 3,
+        campgroundId: 1,
+        userId: 3,
       },
       {
         text: 'Why no internets?',
-        campground_id: 2,
-        user_id: 2,
+        campgroundId: 2,
+        userId: 2,
       },
       {
         text: 'I miss my dog',
-        campground_id: 3,
-        user_id: 1,
+        campgroundId: 3,
+        userId: 1,
       },
     ], {});
   },

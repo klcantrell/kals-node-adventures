@@ -20,10 +20,10 @@ export default {
         type: Sequelize.DATE,
         defaultValue: new Date(),
       },
-      campground_id: {
+      campgroundId: {
         type: Sequelize.INTEGER,
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
       }
     });

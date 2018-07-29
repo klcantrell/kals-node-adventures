@@ -49,7 +49,8 @@ router.post('/', isLoggedIn, upload.single('image'), (req, res) => {
       return res.redirect('back');
     }
     req.body.campground.image = result.secure_url;
-    req.body.campground.user_id = req.user.id;
+    req.body.campground.imageId = result.public_id;
+    req.body.campground.userId = req.user.id;
     Campground.create(req.body.campground)
       .then(() => res.status(200).redirect('/campgrounds'))
       .catch(err => {
@@ -83,6 +84,7 @@ router.get('/:id', (req, res) => {
       const featuredCampground = allCampgrounds.filter(c => c.id === Number(req.params.id))[0];
       res.render('campgrounds/show', {campground: featuredCampground, allCampgrounds});
     }).catch(err => {
+      console.log(err);
       req.flash('fail', 'Something went wrong');
       res.redirect('back');
     });
@@ -99,24 +101,50 @@ router.get('/:id/edit', isCampgroundOwner, (req, res) => {
     });
 });
 
-router.put('/:id', isCampgroundOwner, (req, res) => {
+router.put('/:id', isCampgroundOwner, upload.single('image'), (req, res) => {
   Campground.findById(req.params.id)
     .then(campground => {
       if (!campground) {
         req.flash('message', 'Something went wrong');
-        res.redirect('back');
+        return res.redirect('back');
       }
-      return campground
-        .update(req.body.campground)
-        .then(() => {
-          res.redirect(`/campgrounds/${campground.id}`)
-        })
-        .catch(err => {
-          req.flash('message', 'Something went wrong');
-          res.redirect('back');
+      if (req.file) {
+        cloudinary.v2.uploader.destroy(campground.imageId, (err, result) => {
+          if (err) {
+            req.flash('fail', 'Something went wrong');
+            res.redirect('back');
+          } else {
+            cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+              if (err) {
+                req.flash('fail', 'Something went wrong');
+                res.redirect('back');
+              } else {
+                campground
+                  .update({
+                    image: result.secure_url,
+                    imageId: result.public_id,
+                    ...req.body.campground,
+                  }).then(() => {
+                      res.redirect(`/campgrounds/${campground.id}`)
+                    }).catch(err => {
+                      req.flash('message', 'Something went wrong');
+                      res.redirect('back');
+                    });
+              }
+            });
+          }
         });
-    })
-    .catch(() => {
+      } else {
+        campground.update(req.body.campground)
+          .then(() => {
+            res.redirect(`/campgrounds/${campground.id}`)
+          })
+          .catch(err => {
+            req.flash('message', 'Something went wrong');
+            res.redirect('back');
+          });
+      }
+    }).catch(() => {
       req.flash('fail', 'Something went wrong');
       res.redirect('back');
     })

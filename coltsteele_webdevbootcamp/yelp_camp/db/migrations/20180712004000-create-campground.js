@@ -13,13 +13,16 @@ export default {
       image: {
         type: Sequelize.STRING
       },
+      imageId: {
+        type: Sequelize.STRING,
+      },
       description: {
         type: Sequelize.STRING
       },
       price: {
         type: Sequelize.STRING,
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
       },
       createdAt: {

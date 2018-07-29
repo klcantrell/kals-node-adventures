@@ -4,11 +4,11 @@ export default (sequelize, DataTypes) => {
   }, {});
   Comment.associate = models => {
     Comment.belongsTo(models.Campground, {
-      foreignKey: 'campground_id',
+      foreignKey: 'campgroundId',
       as: 'campground',
     });
     Comment.belongsTo(models.User, {
-      foreignKey: 'user_id',
+      foreignKey: 'userId',
       as: 'author'
     });
   };
