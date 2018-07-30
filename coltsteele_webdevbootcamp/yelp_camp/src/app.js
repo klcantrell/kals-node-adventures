@@ -10,6 +10,7 @@ import indexRoutes from '../routes/index';
 import campgroundsRoutes from '../routes/campgrounds';
 import commentsRoutes from '../routes/comments';
 
+const PORT = process.env.PORT || 3000;
 const app = express();
 app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname + '/public')));
@@ -31,6 +32,6 @@ app.use('/campgrounds', campgroundsRoutes);
 app.use('/campgrounds/:id/comments', commentsRoutes);
 
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log('YelpCamp server has started');
 });

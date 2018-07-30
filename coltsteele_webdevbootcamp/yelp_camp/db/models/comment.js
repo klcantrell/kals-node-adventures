@@ -6,10 +6,12 @@ export default (sequelize, DataTypes) => {
     Comment.belongsTo(models.Campground, {
       foreignKey: 'campgroundId',
       as: 'campground',
+      onDelete: 'CASCADE',
     });
     Comment.belongsTo(models.User, {
       foreignKey: 'userId',
-      as: 'author'
+      as: 'author',
+      onDelete: 'CASCADE',
     });
   };
   return Comment;

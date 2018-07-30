@@ -22,9 +22,19 @@ export default {
       },
       campgroundId: {
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Campgrounds',
+          key: 'id',
+        }
       },
       userId: {
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Users',
+          key: 'id',
+        }
       }
     });
   },

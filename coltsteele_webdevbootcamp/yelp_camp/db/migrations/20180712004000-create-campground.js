@@ -24,6 +24,11 @@ export default {
       },
       userId: {
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Users',
+          key: 'id',
+        }
       },
       createdAt: {
         allowNull: false,

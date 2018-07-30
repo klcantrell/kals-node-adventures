@@ -18,8 +18,8 @@ router.post('/', isLoggedIn, (req, res) => {
     .then(campground => {
       Comment.create({
         text: req.body.comment.text,
-        campground_id: campground.id,
-        user_id: req.user.id,
+        campgroundId: campground.id,
+        userId: req.user.id,
       })
         .then(() => res.redirect(`/campgrounds/${campground.id}`)) 
         .catch(() => res.redirect(`/campgrounds/`));

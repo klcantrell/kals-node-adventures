@@ -2,9 +2,8 @@ import Sequelize from 'sequelize';
 import Campground from './campground';
 import Comment from './comment';
 import User from './user';
+import config from '../config/config.js';
 
-const env = process.env.NODE_ENV || 'development';
-const config = require('../config/config.json')[env];
 const models = {};
 
 let sequelize;

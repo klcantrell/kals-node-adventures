@@ -14,6 +14,7 @@ export default (sequelize, DataTypes) => {
     Campground.belongsTo(models.User, {
       foreignKey: 'userId',
       as: 'user',
+      onDelete: 'CASCADE',
     })
   };
   return Campground;

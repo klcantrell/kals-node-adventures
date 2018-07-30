@@ -4,14 +4,16 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node start.js"
+    "start": "node start.js",
+    "build": "node build.js"
   },
   "author": "",
   "license": "ISC",
   "babel": {
     "presets": [
       [
-        "env", {
+        "env",
+        {
           "targets": {
             "node": "current"
           },

@@ -4,7 +4,7 @@ const nodeExternals = require('webpack-node-externals');
 const projectDir = process.env.PWD;
 
 const serverConfig = {
-  mode: 'development',
+  mode: 'production',
   entry: path.join(projectDir, 'src', process.argv[2]),
   target: 'node',
   node: {
