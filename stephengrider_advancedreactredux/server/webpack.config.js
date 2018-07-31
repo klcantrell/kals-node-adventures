@@ -11,7 +11,7 @@ const serverConfig = {
   },
   externals: [nodeExternals()],
   output: {
-    path: __dirname,
+    path: path.join(__dirname, 'dist'),
     filename: 'server.js',
   },
   module: {

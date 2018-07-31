@@ -1,5 +1,8 @@
+import models from './db/models';
+import * as Auth from './controllers/authentication';
+
+const { User } = models;
+
 export default app => {
-  app.get('/', (req, res) => {
-    res.send(['waterbottle', 'phone', 'things']);
-  });
+  app.post('/signup', Auth.signUp);
 };

@@ -7,6 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // APP SETUP
+app.set('view engine', 'pug');
 app.use(morgan('combined'));
 app.use(express.json({type: '*/*'}));
 router(app);
