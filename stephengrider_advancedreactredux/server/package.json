@@ -44,6 +44,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "browser-sync": "^2.24.6",
+    "dotenv": "^6.0.0",
     "nodemon": "^1.18.3",
     "sequelize-cli": "^4.0.0",
     "webpack": "^4.16.3",

@@ -1,6 +1,7 @@
 import express from 'express';
 import http from 'http';
 import morgan from 'morgan';
+import env from './env';
 import router from './router';
 
 const app = express();

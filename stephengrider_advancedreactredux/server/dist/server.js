@@ -94,7 +94,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nconst signUp = (req, res) => {\n  res.send({ success: 'true' });\n};\n\nexports.signUp = signUp;\n\n//# sourceURL=webpack:///./controllers/authentication.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.signUp = undefined;\n\nvar _models = __webpack_require__(/*! ../db/models */ \"./db/models/index.js\");\n\nvar _models2 = _interopRequireDefault(_models);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nconst { User } = _models2.default;\n\nconst signUp = (req, res, next) => {\n  const { email, password } = req.body;\n  // See if a user with given email exists\n  User.findOne({\n    where: {\n      email\n    }\n  }).then(user => {\n    // If user with email exists, return error\n    if (user) {\n      return res.status(422).send({ error: 'Email is in use' });\n    }\n    // If a user with email does NOT exist, create and save user\n    User.create({\n      email,\n      password\n    }).then(user => {\n      // Respond to request indicating user was created\n      res.json(user);\n    }).catch(err => {\n      return next(err);\n    });\n  }).catch(err => {\n    return next(err);\n  });\n};\n\nexports.signUp = signUp;\n\n//# sourceURL=webpack:///./controllers/authentication.js?");
 
 /***/ }),
 
@@ -106,7 +106,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nconst env = \"development\" || 'development';\n\nconst config = {\n  development: {\n    username: process.env.DB_USERNAME,\n    password: process.env.DB_PASSWORD,\n    database: \"grider_auth\",\n    host: \"127.0.0.1\",\n    port: \"5432\",\n    dialect: \"postgres\"\n  },\n  production: {\n    use_env_variable: \"DATABASE_URL\",\n    dialect: \"postgres\"\n  }\n};\n\nmodule.exports = config[env];\n\n//# sourceURL=webpack:///./db/config/config.js?");
+eval("\n\n__webpack_require__(/*! ../../env */ \"./env.js\");\nconst env = \"development\" || 'development';\n\nconst config = {\n  development: {\n    username: process.env.DB_USERNAME,\n    password: process.env.DB_PASSWORD,\n    database: \"grider_auth\",\n    host: \"127.0.0.1\",\n    port: \"5432\",\n    dialect: \"postgres\"\n  },\n  production: {\n    use_env_variable: \"DATABASE_URL\",\n    dialect: \"postgres\"\n  }\n};\n\nmodule.exports = config[env];\n\n//# sourceURL=webpack:///./db/config/config.js?");
 
 /***/ }),
 
@@ -134,6 +134,18 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 
 /***/ }),
 
+/***/ "./env.js":
+/*!****************!*\
+  !*** ./env.js ***!
+  \****************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _dotenv = __webpack_require__(/*! dotenv */ \"dotenv\");\n\nvar _dotenv2 = _interopRequireDefault(_dotenv);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\n_dotenv2.default.config({ silent: true });\n\n//# sourceURL=webpack:///./env.js?");
+
+/***/ }),
+
 /***/ "./index.js":
 /*!******************!*\
   !*** ./index.js ***!
@@ -142,7 +154,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar _express2 = _interopRequireDefault(_express);\n\nvar _http = __webpack_require__(/*! http */ \"http\");\n\nvar _http2 = _interopRequireDefault(_http);\n\nvar _morgan = __webpack_require__(/*! morgan */ \"morgan\");\n\nvar _morgan2 = _interopRequireDefault(_morgan);\n\nvar _router = __webpack_require__(/*! ./router */ \"./router.js\");\n\nvar _router2 = _interopRequireDefault(_router);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nconst app = (0, _express2.default)();\nconst PORT = process.env.PORT || 3000;\n\n// APP SETUP\napp.set('view engine', 'pug');\napp.use((0, _morgan2.default)('combined'));\napp.use(_express2.default.json({ type: '*/*' }));\n(0, _router2.default)(app);\n\n// SERVER SETUP\nconst server = _http2.default.createServer(app);\nserver.listen(PORT);\nconsole.log('Server listening on:', PORT);\n\n//# sourceURL=webpack:///./index.js?");
+eval("\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar _express2 = _interopRequireDefault(_express);\n\nvar _http = __webpack_require__(/*! http */ \"http\");\n\nvar _http2 = _interopRequireDefault(_http);\n\nvar _morgan = __webpack_require__(/*! morgan */ \"morgan\");\n\nvar _morgan2 = _interopRequireDefault(_morgan);\n\nvar _env = __webpack_require__(/*! ./env */ \"./env.js\");\n\nvar _env2 = _interopRequireDefault(_env);\n\nvar _router = __webpack_require__(/*! ./router */ \"./router.js\");\n\nvar _router2 = _interopRequireDefault(_router);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nconst app = (0, _express2.default)();\nconst PORT = process.env.PORT || 3000;\n\n// APP SETUP\napp.set('view engine', 'pug');\napp.use((0, _morgan2.default)('combined'));\napp.use(_express2.default.json({ type: '*/*' }));\n(0, _router2.default)(app);\n\n// SERVER SETUP\nconst server = _http2.default.createServer(app);\nserver.listen(PORT);\nconsole.log('Server listening on:', PORT);\n\n//# sourceURL=webpack:///./index.js?");
 
 /***/ }),
 
@@ -154,7 +166,18 @@ eval("\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _models = __webpack_require__(/*! ./db/models */ \"./db/models/index.js\");\n\nvar _models2 = _interopRequireDefault(_models);\n\nvar _authentication = __webpack_require__(/*! ./controllers/authentication */ \"./controllers/authentication.js\");\n\nvar Auth = _interopRequireWildcard(_authentication);\n\nfunction _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nconst { User } = _models2.default;\n\nexports.default = app => {\n  app.post('/signup', Auth.signUp);\n};\n\n//# sourceURL=webpack:///./router.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _authentication = __webpack_require__(/*! ./controllers/authentication */ \"./controllers/authentication.js\");\n\nvar Auth = _interopRequireWildcard(_authentication);\n\nfunction _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }\n\nexports.default = app => {\n  app.post('/signup', Auth.signUp);\n};\n\n//# sourceURL=webpack:///./router.js?");
+
+/***/ }),
+
+/***/ "dotenv":
+/*!*************************!*\
+  !*** external "dotenv" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"dotenv\");\n\n//# sourceURL=webpack:///external_%22dotenv%22?");
 
 /***/ }),
 
