@@ -1,8 +1,14 @@
+import jwt from 'jwt-simple';
 import models from '../db/models';
 
 const { User } = models;
 
-const signUp = (req, res, next) => {
+const tokenForUser = user => {
+  const timestamp = new Date().getTime();
+  return jwt.encode({ sub: user.id, iat: timestamp }, process.env.SECRET);
+}
+
+const signup = (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(422).send({error: 'You must provide a email and password'});
@@ -23,7 +29,7 @@ const signUp = (req, res, next) => {
       password,
     }).then(user => {
   // Respond to request indicating user was created
-      res.json({success: true});
+      res.json({token: tokenForUser(user)});
     }).catch(err => {
       return next(err);
     });
@@ -33,4 +39,4 @@ const signUp = (req, res, next) => {
 
 };
 
-export { signUp };
+export { signup };

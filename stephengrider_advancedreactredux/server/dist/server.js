@@ -86,6 +86,28 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "../../node_modules/jwt-simple/index.js":
+/*!********************************************************************************************!*\
+  !*** C:/Users/kcantrell/Desktop/dev/kals-node-adventures/node_modules/jwt-simple/index.js ***!
+  \********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("module.exports = __webpack_require__(/*! ./lib/jwt */ \"../../node_modules/jwt-simple/lib/jwt.js\");\n\n\n//# sourceURL=webpack:///C:/Users/kcantrell/Desktop/dev/kals-node-adventures/node_modules/jwt-simple/index.js?");
+
+/***/ }),
+
+/***/ "../../node_modules/jwt-simple/lib/jwt.js":
+/*!**********************************************************************************************!*\
+  !*** C:/Users/kcantrell/Desktop/dev/kals-node-adventures/node_modules/jwt-simple/lib/jwt.js ***!
+  \**********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("/*\n * jwt-simple\n *\n * JSON Web Token encode and decode module for node.js\n *\n * Copyright(c) 2011 Kazuhito Hokamura\n * MIT Licensed\n */\n\n/**\n * module dependencies\n */\nvar crypto = __webpack_require__(/*! crypto */ \"crypto\");\n\n\n/**\n * support algorithm mapping\n */\nvar algorithmMap = {\n  HS256: 'sha256',\n  HS384: 'sha384',\n  HS512: 'sha512',\n  RS256: 'RSA-SHA256'\n};\n\n/**\n * Map algorithm to hmac or sign type, to determine which crypto function to use\n */\nvar typeMap = {\n  HS256: 'hmac',\n  HS384: 'hmac',\n  HS512: 'hmac',\n  RS256: 'sign'\n};\n\n\n/**\n * expose object\n */\nvar jwt = module.exports;\n\n\n/**\n * version\n */\njwt.version = '0.5.1';\n\n/**\n * Decode jwt\n *\n * @param {Object} token\n * @param {String} key\n * @param {Boolean} noVerify\n * @param {String} algorithm\n * @return {Object} payload\n * @api public\n */\njwt.decode = function jwt_decode(token, key, noVerify, algorithm) {\n  // check token\n  if (!token) {\n    throw new Error('No token supplied');\n  }\n  // check segments\n  var segments = token.split('.');\n  if (segments.length !== 3) {\n    throw new Error('Not enough or too many segments');\n  }\n\n  // All segment should be base64\n  var headerSeg = segments[0];\n  var payloadSeg = segments[1];\n  var signatureSeg = segments[2];\n\n  // base64 decode and parse JSON\n  var header = JSON.parse(base64urlDecode(headerSeg));\n  var payload = JSON.parse(base64urlDecode(payloadSeg));\n\n  if (!noVerify) {\n    var signingMethod = algorithmMap[algorithm || header.alg];\n    var signingType = typeMap[algorithm || header.alg];\n    if (!signingMethod || !signingType) {\n      throw new Error('Algorithm not supported');\n    }\n\n    // verify signature. `sign` will return base64 string.\n    var signingInput = [headerSeg, payloadSeg].join('.');\n    if (!verify(signingInput, key, signingMethod, signingType, signatureSeg)) {\n      throw new Error('Signature verification failed');\n    }\n\n    // Support for nbf and exp claims.\n    // According to the RFC, they should be in seconds.\n    if (payload.nbf && Date.now() < payload.nbf*1000) {\n      throw new Error('Token not yet active');\n    }\n\n    if (payload.exp && Date.now() > payload.exp*1000) {\n      throw new Error('Token expired');\n    }\n  }\n\n  return payload;\n};\n\n\n/**\n * Encode jwt\n *\n * @param {Object} payload\n * @param {String} key\n * @param {String} algorithm\n * @param {Object} options\n * @return {String} token\n * @api public\n */\njwt.encode = function jwt_encode(payload, key, algorithm, options) {\n  // Check key\n  if (!key) {\n    throw new Error('Require key');\n  }\n\n  // Check algorithm, default is HS256\n  if (!algorithm) {\n    algorithm = 'HS256';\n  }\n\n  var signingMethod = algorithmMap[algorithm];\n  var signingType = typeMap[algorithm];\n  if (!signingMethod || !signingType) {\n    throw new Error('Algorithm not supported');\n  }\n\n  // header, typ is fixed value.\n  var header = { typ: 'JWT', alg: algorithm };\n  if (options && options.header) {\n    assignProperties(header, options.header);\n  }\n\n  // create segments, all segments should be base64 string\n  var segments = [];\n  segments.push(base64urlEncode(JSON.stringify(header)));\n  segments.push(base64urlEncode(JSON.stringify(payload)));\n  segments.push(sign(segments.join('.'), key, signingMethod, signingType));\n\n  return segments.join('.');\n};\n\n/**\n * private util functions\n */\n\nfunction assignProperties(dest, source) {\n  for (var attr in source) {\n    if (source.hasOwnProperty(attr)) {\n      dest[attr] = source[attr];\n    }\n  }\n}\n\nfunction verify(input, key, method, type, signature) {\n  if(type === \"hmac\") {\n    return (signature === sign(input, key, method, type));\n  }\n  else if(type == \"sign\") {\n    return crypto.createVerify(method)\n                 .update(input)\n                 .verify(key, base64urlUnescape(signature), 'base64');\n  }\n  else {\n    throw new Error('Algorithm type not recognized');\n  }\n}\n\nfunction sign(input, key, method, type) {\n  var base64str;\n  if(type === \"hmac\") {\n    base64str = crypto.createHmac(method, key).update(input).digest('base64');\n  }\n  else if(type == \"sign\") {\n    base64str = crypto.createSign(method).update(input).sign(key, 'base64');\n  }\n  else {\n    throw new Error('Algorithm type not recognized');\n  }\n\n  return base64urlEscape(base64str);\n}\n\nfunction base64urlDecode(str) {\n  return new Buffer(base64urlUnescape(str), 'base64').toString();\n}\n\nfunction base64urlUnescape(str) {\n  str += new Array(5 - str.length % 4).join('=');\n  return str.replace(/\\-/g, '+').replace(/_/g, '/');\n}\n\nfunction base64urlEncode(str) {\n  return base64urlEscape(new Buffer(str).toString('base64'));\n}\n\nfunction base64urlEscape(str) {\n  return str.replace(/\\+/g, '-').replace(/\\//g, '_').replace(/=/g, '');\n}\n\n\n//# sourceURL=webpack:///C:/Users/kcantrell/Desktop/dev/kals-node-adventures/node_modules/jwt-simple/lib/jwt.js?");
+
+/***/ }),
+
 /***/ "./controllers/authentication.js":
 /*!***************************************!*\
   !*** ./controllers/authentication.js ***!
@@ -94,7 +116,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.signUp = undefined;\n\nvar _models = __webpack_require__(/*! ../db/models */ \"./db/models/index.js\");\n\nvar _models2 = _interopRequireDefault(_models);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nconst { User } = _models2.default;\n\nconst signUp = (req, res, next) => {\n  const { email, password } = req.body;\n  if (!email || !password) {\n    return res.status(422).send({ error: 'You must provide a email and password' });\n  }\n  // See if a user with given email exists\n  User.findOne({\n    where: {\n      email\n    }\n  }).then(user => {\n    // If user with email exists, return error\n    if (user) {\n      return res.status(422).send({ error: 'Email is in use' });\n    }\n    // If a user with email does NOT exist, create and save user\n    User.create({\n      email,\n      password\n    }).then(user => {\n      // Respond to request indicating user was created\n      res.json({ success: true });\n    }).catch(err => {\n      return next(err);\n    });\n  }).catch(err => {\n    return next(err);\n  });\n};\n\nexports.signUp = signUp;\n\n//# sourceURL=webpack:///./controllers/authentication.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.signup = undefined;\n\nvar _jwtSimple = __webpack_require__(/*! jwt-simple */ \"../../node_modules/jwt-simple/index.js\");\n\nvar _jwtSimple2 = _interopRequireDefault(_jwtSimple);\n\nvar _models = __webpack_require__(/*! ../db/models */ \"./db/models/index.js\");\n\nvar _models2 = _interopRequireDefault(_models);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nconst { User } = _models2.default;\n\nconst tokenForUser = user => {\n  const timestamp = new Date().getTime();\n  return _jwtSimple2.default.encode({ sub: user.id, iat: timestamp }, process.env.SECRET);\n};\n\nconst signup = (req, res, next) => {\n  const { email, password } = req.body;\n  if (!email || !password) {\n    return res.status(422).send({ error: 'You must provide a email and password' });\n  }\n  // See if a user with given email exists\n  User.findOne({\n    where: {\n      email\n    }\n  }).then(user => {\n    // If user with email exists, return error\n    if (user) {\n      return res.status(422).send({ error: 'Email is in use' });\n    }\n    // If a user with email does NOT exist, create and save user\n    User.create({\n      email,\n      password\n    }).then(user => {\n      // Respond to request indicating user was created\n      res.json({ token: tokenForUser(user) });\n    }).catch(err => {\n      return next(err);\n    });\n  }).catch(err => {\n    return next(err);\n  });\n};\n\nexports.signup = signup;\n\n//# sourceURL=webpack:///./controllers/authentication.js?");
 
 /***/ }),
 
@@ -166,7 +188,7 @@ eval("\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _authentication = __webpack_require__(/*! ./controllers/authentication */ \"./controllers/authentication.js\");\n\nvar Auth = _interopRequireWildcard(_authentication);\n\nfunction _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }\n\nexports.default = app => {\n  app.post('/signup', Auth.signUp);\n};\n\n//# sourceURL=webpack:///./router.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _authentication = __webpack_require__(/*! ./controllers/authentication */ \"./controllers/authentication.js\");\n\nvar Auth = _interopRequireWildcard(_authentication);\n\nfunction _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }\n\nexports.default = app => {\n  app.post('/signup', Auth.signup);\n};\n\n//# sourceURL=webpack:///./router.js?");
 
 /***/ }),
 
@@ -178,6 +200,17 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"bcrypt\");\n\n//# sourceURL=webpack:///external_%22bcrypt%22?");
+
+/***/ }),
+
+/***/ "crypto":
+/*!*************************!*\
+  !*** external "crypto" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"crypto\");\n\n//# sourceURL=webpack:///external_%22crypto%22?");
 
 /***/ }),
 
