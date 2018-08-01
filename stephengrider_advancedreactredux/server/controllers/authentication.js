@@ -4,6 +4,9 @@ const { User } = models;
 
 const signUp = (req, res, next) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(422).send({error: 'You must provide a email and password'});
+  }
   // See if a user with given email exists
   User.findOne({
     where: {
@@ -20,7 +23,7 @@ const signUp = (req, res, next) => {
       password,
     }).then(user => {
   // Respond to request indicating user was created
-      res.json(user);
+      res.json({success: true});
     }).catch(err => {
       return next(err);
     });

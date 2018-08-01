@@ -94,7 +94,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.signUp = undefined;\n\nvar _models = __webpack_require__(/*! ../db/models */ \"./db/models/index.js\");\n\nvar _models2 = _interopRequireDefault(_models);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nconst { User } = _models2.default;\n\nconst signUp = (req, res, next) => {\n  const { email, password } = req.body;\n  // See if a user with given email exists\n  User.findOne({\n    where: {\n      email\n    }\n  }).then(user => {\n    // If user with email exists, return error\n    if (user) {\n      return res.status(422).send({ error: 'Email is in use' });\n    }\n    // If a user with email does NOT exist, create and save user\n    User.create({\n      email,\n      password\n    }).then(user => {\n      // Respond to request indicating user was created\n      res.json(user);\n    }).catch(err => {\n      return next(err);\n    });\n  }).catch(err => {\n    return next(err);\n  });\n};\n\nexports.signUp = signUp;\n\n//# sourceURL=webpack:///./controllers/authentication.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.signUp = undefined;\n\nvar _models = __webpack_require__(/*! ../db/models */ \"./db/models/index.js\");\n\nvar _models2 = _interopRequireDefault(_models);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nconst { User } = _models2.default;\n\nconst signUp = (req, res, next) => {\n  const { email, password } = req.body;\n  if (!email || !password) {\n    return res.status(422).send({ error: 'You must provide a email and password' });\n  }\n  // See if a user with given email exists\n  User.findOne({\n    where: {\n      email\n    }\n  }).then(user => {\n    // If user with email exists, return error\n    if (user) {\n      return res.status(422).send({ error: 'Email is in use' });\n    }\n    // If a user with email does NOT exist, create and save user\n    User.create({\n      email,\n      password\n    }).then(user => {\n      // Respond to request indicating user was created\n      res.json({ success: true });\n    }).catch(err => {\n      return next(err);\n    });\n  }).catch(err => {\n    return next(err);\n  });\n};\n\nexports.signUp = signUp;\n\n//# sourceURL=webpack:///./controllers/authentication.js?");
 
 /***/ }),
 
@@ -130,7 +130,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nexports.default = (sequelize, DataTypes) => {\n  const User = sequelize.define('User', {\n    email: {\n      type: DataTypes.STRING,\n      unique: true\n    },\n    password: DataTypes.STRING\n  }, {});\n  User.associate = models => {};\n  return User;\n};\n\n//# sourceURL=webpack:///./db/models/user.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _bcrypt = __webpack_require__(/*! bcrypt */ \"bcrypt\");\n\nvar _bcrypt2 = _interopRequireDefault(_bcrypt);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nexports.default = (sequelize, DataTypes) => {\n  const User = sequelize.define('User', {\n    email: {\n      type: DataTypes.STRING,\n      unique: true\n    },\n    password: DataTypes.STRING\n  }, {});\n  User.beforeCreate((user, options) => {\n    return _bcrypt2.default.genSalt(10).then(salt => {\n      _bcrypt2.default.hash(user.password, salt).then(hash => {\n        user.password = hash;\n      }).catch(err => {\n        return sequelize.Promise.reject(err);\n      });\n    }).catch(err => {\n      return sequelize.Promise.reject(err);\n    });\n  });\n  return User;\n};\n\n//# sourceURL=webpack:///./db/models/user.js?");
 
 /***/ }),
 
@@ -167,6 +167,17 @@ eval("\n\nvar _express = __webpack_require__(/*! express */ \"express\");\n\nvar
 
 "use strict";
 eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _authentication = __webpack_require__(/*! ./controllers/authentication */ \"./controllers/authentication.js\");\n\nvar Auth = _interopRequireWildcard(_authentication);\n\nfunction _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }\n\nexports.default = app => {\n  app.post('/signup', Auth.signUp);\n};\n\n//# sourceURL=webpack:///./router.js?");
+
+/***/ }),
+
+/***/ "bcrypt":
+/*!*************************!*\
+  !*** external "bcrypt" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"bcrypt\");\n\n//# sourceURL=webpack:///external_%22bcrypt%22?");
 
 /***/ }),
 

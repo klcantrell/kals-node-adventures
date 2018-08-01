@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     email: {
@@ -6,6 +8,18 @@ export default (sequelize, DataTypes) => {
     },
     password: DataTypes.STRING
   }, {});
-  User.associate = models => {};
+  User.beforeCreate((user, options) => {
+    return bcrypt.genSalt(10)
+      .then(salt => {
+        bcrypt.hash(user.password, salt)
+          .then(hash => {
+            user.password = hash;
+          }).catch(err => {
+            return sequelize.Promise.reject(err);
+          })
+      }).catch(err => {
+        return sequelize.Promise.reject(err);
+      })
+  });
   return User;
 };
