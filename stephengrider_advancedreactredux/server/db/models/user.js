@@ -11,7 +11,8 @@ export default (sequelize, DataTypes) => {
   User.beforeCreate((user, options) => {
     return bcrypt.genSalt(10)
       .then(salt => {
-        bcrypt.hash(user.password, salt)
+        // needed to return the promise here for hook to fire
+        return bcrypt.hash(user.password, salt)
           .then(hash => {
             user.password = hash;
           }).catch(err => {
