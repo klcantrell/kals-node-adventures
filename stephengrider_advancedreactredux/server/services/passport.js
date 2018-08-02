@@ -1,6 +1,7 @@
-import passport from 'passport';
-import models from '../db/models';
 import PassportJwt from 'passport-jwt';
+import models from '../db/models';
+
+const { User } = models;
 
 const JwtStrategy = PassportJwt.Strategy;
 const ExtractJwt= PassportJwt.ExtractJwt;
@@ -23,4 +24,7 @@ const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
     })
 });
 
-passport.use(jwtLogin);
+
+export default passport => {
+  passport.use('jwt-login', jwtLogin);
+};
