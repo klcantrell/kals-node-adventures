@@ -1,7 +1,30 @@
 import PassportJwt from 'passport-jwt';
+import LocalStrategy from 'passport-local';
 import models from '../db/models';
 
 const { User } = models;
+
+const localOptions = { usernameField: 'email' };
+const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
+  User.findOne({
+    where: {
+      email,
+    }
+  }).then(user => {
+    if (!user) {
+      return done(null, false);
+    }
+    user.validPassword(password)
+      .then(isMatch => {
+        if (!isMatch) {
+          return done(null, false);
+        }
+        return done(null, user);
+      })
+  }).catch(err => {
+    return done(err);
+  })
+});
 
 const JwtStrategy = PassportJwt.Strategy;
 const ExtractJwt= PassportJwt.ExtractJwt;
@@ -27,4 +50,5 @@ const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
 
 export default passport => {
   passport.use('jwt-login', jwtLogin);
+  passport.use('local-login', localLogin);
 };

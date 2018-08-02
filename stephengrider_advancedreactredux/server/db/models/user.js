@@ -22,5 +22,13 @@ export default (sequelize, DataTypes) => {
         return sequelize.Promise.reject(err);
       })
   });
+  User.prototype.validPassword = function(password) {
+    return bcrypt.compare(password, this.password)
+      .then(res => {
+        return res;
+      }).catch(err => {
+        return err;
+      });
+  };
   return User;
 };

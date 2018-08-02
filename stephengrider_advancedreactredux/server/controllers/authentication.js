@@ -8,6 +8,10 @@ const tokenForUser = user => {
   return jwt.encode({ sub: user.id, iat: timestamp }, process.env.SECRET);
 }
 
+const signin = (req, res, next) => {
+
+};
+
 const signup = (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
