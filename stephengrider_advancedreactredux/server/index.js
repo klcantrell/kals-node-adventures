@@ -5,7 +5,7 @@ import env from './env';
 import router from './router';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3090;
 
 // APP SETUP
 app.set('view engine', 'pug');
