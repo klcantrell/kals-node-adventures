@@ -9,7 +9,7 @@ const tokenForUser = user => {
 }
 
 const signin = (req, res, next) => {
-
+  res.send({token: tokenForUser(req.user)});
 };
 
 const signup = (req, res, next) => {
@@ -33,7 +33,7 @@ const signup = (req, res, next) => {
       password,
     }).then(user => {
   // Respond to request indicating user was created
-      res.json({token: tokenForUser(user)});
+      res.send({token: tokenForUser(user)});
     }).catch(err => {
       return next(err);
     });
@@ -43,4 +43,4 @@ const signup = (req, res, next) => {
 
 };
 
-export { signup };
+export { signup, signin };
