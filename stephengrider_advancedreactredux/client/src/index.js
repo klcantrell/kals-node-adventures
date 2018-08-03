@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import reduxPromise from 'redux-promise';
+import reduxThunk from 'redux-thunk';
 
 import App from './components/App';
 import Welcome from './components/Welcome';
@@ -13,7 +13,7 @@ import reducers from './reducers';
 const store = createStore(
   reducers,
   {},
-  applyMiddleware(reduxPromise),
+  applyMiddleware(reduxThunk),
 );
 
 ReactDOM.render(
