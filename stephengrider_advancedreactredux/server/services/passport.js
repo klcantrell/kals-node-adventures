@@ -12,12 +12,12 @@ const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
     }
   }).then(user => {
     if (!user) {
-      return done(null, false);
+      return done(null, false, { message: 'Invalid credentials' });
     }
     user.validPassword(password)
       .then(isMatch => {
         if (!isMatch) {
-          return done(null, false);
+          return done(null, false, { message: 'Incorrect password' });
         }
         return done(null, user);
       })
