@@ -1,5 +1,7 @@
-require('../../env');
+require('../../src/env');
 const env = process.env.NODE_ENV || 'development';
+
+console.log(env);
 
 const config = {
   development: {
@@ -13,7 +15,19 @@ const config = {
   production: {
     use_env_variable: "DATABASE_URL",
     dialect: "postgres",
-  }
+  },
+  ssh: {
+    username: process.env.HEROKUDB_USERNAME,
+    password: process.env.HEROKUDB_PASSWORD,
+    database: process.env.HEROKUDB_NAME,
+    host: process.env.HEROKUDB_HOST,
+    port: "5432",
+    ssl: true,
+    dialect: "postgres",
+    dialectOptions: {
+      ssl: true,
+    },
+  },
 };
 
 module.exports = config[env];
