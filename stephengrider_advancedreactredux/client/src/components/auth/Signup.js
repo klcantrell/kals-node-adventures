@@ -5,6 +5,11 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
 class Signup extends Component {
+  componentDidMount() {
+    if (this.props.errorMessage) {
+      this.props.clearError();
+    }
+  }
   onSubmit = formProps => {
     this.props.signup(formProps, () => {
       this.props.history.push('/feature');

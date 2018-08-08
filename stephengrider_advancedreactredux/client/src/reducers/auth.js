@@ -1,8 +1,9 @@
-import { AUTH_USER, AUTH_ERROR, CLEAR_ERROR } from '../actions/types';
+import { AUTH_USER, AUTH_ERROR, CLEAR_ERROR, GET_FEATURE } from '../actions/types';
 
 const INITIAL_STATE = {
   authenticated: '',
   errorMessage: '',
+  feature: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -18,6 +19,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, errorMessage: action.payload};
     case CLEAR_ERROR:
       return {...state, errorMessage: ''};
+    case GET_FEATURE:
+      return {...state, feature: action.payload};
     default:
       return state;
   }

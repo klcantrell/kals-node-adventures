@@ -40,7 +40,10 @@ const signup = (req, res, next) => {
   }).catch(err => {
     return next(err);
   });
-
 };
 
-export { signup, signin };
+const getFeature = (req, res, next) => {
+  res.send({feature: req.user.email});
+};
+
+export { signup, signin, getFeature };

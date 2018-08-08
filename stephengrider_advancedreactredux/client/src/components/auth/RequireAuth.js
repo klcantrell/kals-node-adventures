@@ -12,11 +12,12 @@ class RequireAuth extends Component {
     if (!this.props.auth) {
       this.props.history.push('/');
     }
+
   }
   render() {
     return (
       <div>
-        {this.props.render()}
+        {this.props.render(this.props.auth)}
       </div>
     )
   }
@@ -34,7 +35,7 @@ const withRequireAuth = ChildComponent => {
   return class extends Component {
     render() {
       return (
-        <ConnectedRequireAuth {...this.props} render={() => <ChildComponent />} />
+        <ConnectedRequireAuth {...this.props} render={auth => <ChildComponent token={auth} />} />
       );
     }
   }
