@@ -1,17 +1,29 @@
 console.log('starting app');
 
 const fs = require('fs');
-const os = require('os');
-const notes = require('./notes');
 const _ = require('lodash');
+const readline = require('readline');
 
-const filteredArray = _.uniq([1, 2, 2, 2, 4, 3, 'kalalau', 'kalalau']);
-console.log(filteredArray);
+const notes = require('./notes');
 
-// const user = os.userInfo();
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: false,
+});
 
-// fs.appendFile('greetings.txt', `Hello ${user.username}, you are ${notes.age}`, (err) => {
-//   if (err) {
-//     console.log('Unable to write to file');
-//   }
-// });
+rl.on('line', (line) => {
+  const [command, argument] = line.trim().split(' ');
+  switch (command) {
+    case 'add':
+      return console.log('*****\n adding new note');
+    case 'list':
+      return console.log('*****\n listing notes');
+    case 'read':
+      return console.log('*****\n reading a note');
+    case 'delete':
+      return console.log('*****\n deleting a note');
+    default:
+      return console.log('*****\n command not recognized');
+  }
+});
