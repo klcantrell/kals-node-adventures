@@ -6,7 +6,32 @@ const yargs = require('yargs');
 
 const notes = require('./notes');
 
-const argv = yargs.argv;
+const titleOptions =  {
+    describe: 'Title of the note',
+    demand: true,
+    alias: 't',
+};
+
+const bodyOptions = {
+  describe: 'Body of the note',
+  demand: true,
+  alias: 'b',
+};
+
+const argv = yargs
+  .command('add', 'Add a new note', {
+    title: titleOptions,
+    body: bodyOptions,
+  })
+  .command('list', 'List all notes')
+  .command('read', 'Read a single note', {
+    title: titleOptions,
+  })
+  .command('remove', 'Delete a single note', {
+    title: titleOptions,
+  })
+  .help()
+  .argv;
 const command = argv._[0];
 let note;
 
