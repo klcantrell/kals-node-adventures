@@ -17,7 +17,11 @@ switch (command) {
       ? console.log(`Added new note: ${notes.logNote(note)}`)
       : console.log('Note already exists!');
   case 'list':
-    return notes.getAll();
+    const allNotes = notes.getAll();
+    console.log(`Printing ${allNotes.length} notes`);
+    return allNotes.forEach(n => {
+      console.log(notes.logNote(n));
+    });
   case 'read':
     note = notes.getNote(argv.title);
     return note
