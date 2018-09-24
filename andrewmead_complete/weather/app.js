@@ -26,16 +26,18 @@ const getLocation = async () => {
         'Content-Type': 'application/json',
       },
     });
-    const {
-      results: [
-        {
-          geometry: { location },
-        },
-      ],
-    } = await res.json();
-    console.log(JSON.stringify(location, undefined, 2));
+    const body = await res.json();
+    if (body.status === 'ZERO_RESULTS') {
+      return console.log('Unable to find that address');
+    } else if (body.status === 'OK') {
+      const {
+        results: [data],
+      } = body;
+      console.log(data.formatted_address);
+      console.log(data.geometry.location);
+    }
   } catch (e) {
-    console.log(`Error is: ${e}`);
+    console.log(`Unable to connect to Google servers ${e}`);
   }
 };
 
