@@ -32,7 +32,7 @@ const argv = yargs
       );
     }
   )
-  .command('$0', 'Default command', {
+  .command('$0', 'If no default address set, run with --address argument', {
     address: {
       describe: 'Address to fetch weather for',
       alias: 'a',
