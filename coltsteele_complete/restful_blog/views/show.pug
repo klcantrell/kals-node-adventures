@@ -1,0 +1,14 @@
+extends includes/header
+block content
+  .ui.text.container.segment
+    .ui.huge.header #{blog.title}
+    .ui.top.attached
+      .item
+        img(class="ui centered rounded image" src=blog.image)
+        .content
+          p #{blog.createdAt.toDateString()}
+        .description
+          p !{blog.body}
+        a(href=`/blogs/${blog.id}/edit` class="ui blue basic button") Edit
+        form(class="delete-form" action=`/blogs/${blog.id}?_method=DELETE` method="POST")
+          button(class="ui red basic button") Delete
