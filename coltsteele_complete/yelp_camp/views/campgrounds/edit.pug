@@ -1,0 +1,22 @@
+extends ../includes/header
+block content
+  .container
+    .row
+      .col
+        h1.text-center Edit #{campground.name}
+        .row.justify-content-center.mt-4
+          .col.colt-sm-12.col-md-5
+            form(action=`/campgrounds/${campground.id}?_method=PUT` method="POST" enctype="multipart/form-data")
+              .form-group
+                input.form-control(type="text" value=campground.name name="campground[name]" autocomplete="off")
+              .form-group
+                label(for ="image") Image
+                input.form-control(type="file" id="image" name="image" accept="image/*")
+              .form-group
+                input.form-control(type="text" value=campground.description name="campground[description]" autocomplete="off")
+              .form-group
+                input.form-control(type="number" value=campground.price name="campground[price]" autocomplete="off" min="1.00" step="1.00")
+              .form-group
+                button.btn.btn-lg.btn-primary.btn-block(type="submit") Submit
+        a.d-block.text-center(href="/campgrounds") Go Back
+  include ../includes/footer

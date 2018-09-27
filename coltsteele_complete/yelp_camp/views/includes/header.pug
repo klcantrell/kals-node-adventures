@@ -1,0 +1,35 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title YelpCamp
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/app.css")
+  body
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+      .container-fluid
+        a.navbar-brand(href="/") YelpCamp
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        div(class="collapse navbar-collapse" id="navbarContent")
+          ul.navbar-nav.ml-auto
+            if !currentUser
+              li.nav-item.d-flex.justify-content-end
+                a.nav-link(href="/login") Login
+              li.nav-item.d-flex.justify-content-end
+                a.nav-link(href="/register") Sign Up
+            else
+              li.nav-item.d-flex.justify-content-end
+                p.nav-link Logged in as #[strong #{currentUser.username}]
+              li.nav-item.d-flex.justify-content-end
+                a.nav-link(href="/logout") Logout
+    if failMessage.length > 0
+      .container
+        p(class="alert alert-danger") #{failMessage}
+    if successMessage.length > 0
+      .container
+        p(class="alert alert-success") #{successMessage}
+    block content

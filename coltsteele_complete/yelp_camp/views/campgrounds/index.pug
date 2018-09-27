@@ -1,0 +1,23 @@
+extends ../includes/header
+block content
+  .container
+    header.jumbotron
+      .container
+        h1 Welcome To YelpCamp
+        p View our hand-picked campgrounds from all over the world
+        a.btn.btn-primary(href="/campgrounds/new") Add new campground
+    .row.text-center.justify-content-center
+      each campground in campgrounds    
+        .campground.col-md-3.col-sm-6.mb-3.d-flex.flex-column.align-items-center
+          .img-fluid
+            if campground.image.match(/^https?:\/\//)
+              img(src=campground.image)
+            else
+              img(src=`/${campground.image}`)
+            .caption.mt-1
+              h5 #{campground.name}
+          a(
+            class="btn btn-success text-white mt-auto mb-2 "
+            href=`/campgrounds/${campground.id}`
+          ) More info
+  include ../includes/footer

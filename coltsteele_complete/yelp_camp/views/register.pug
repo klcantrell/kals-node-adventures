@@ -1,0 +1,16 @@
+extends includes/header
+block content
+  .container
+    .row
+      .col
+        h1.text-center Sign Up
+        .row.justify-content-center.mt-4
+          .col.colt-sm-12.col-md-5
+            form(action="/register" method="POST")
+              .form-group
+                input(class="form-control" type="text" name="username" placeholder="username")
+              .form-group
+                input(class="form-control" type="password" name="password" placeholder="password")
+              .form-group
+                button(class="btn btn-lg btn-primary btn-block" type="submit") Sign up
+  include includes/footer

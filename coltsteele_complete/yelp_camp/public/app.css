@@ -1,0 +1,32 @@
+img {
+  width: 100%;
+}
+
+.campground {
+  border: 1px solid lightgrey;
+  padding: 0;
+  margin: 10px;
+}
+
+.campground > a {
+  width: 50%;
+  max-width: 200px;
+}
+
+.img-thumbnail {
+  padding: 0;
+}
+
+.caption-full {
+  padding: 9px;
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.u-inline {
+  display: inline;
+  margin: 0 5px;
+}
