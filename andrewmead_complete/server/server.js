@@ -3,21 +3,22 @@ const express = require('express');
 
 const app = express();
 
+app.set('view engine', 'hbs');
 app.use(express.static(path.resolve('public')));
 
 app.get('/', (req, res) => {
-  res.send({
-    name: 'Kal',
-    likes: ['coding', 'ice cream'],
+  res.render('home', {
+    pageTitle: 'Home',
+    currentYear: new Date().getFullYear(),
+    welcomeMessage: 'Hey there you!',
   });
 });
 
 app.get('/about', (req, res) => {
-  res.send('About page');
-});
-
-app.get('/help', (req, res) => {
-  res.send('About page');
+  res.render('about', {
+    pageTitle: 'About Page',
+    currentYear: new Date().getFullYear(),
+  });
 });
 
 app.listen(3000, () => {
