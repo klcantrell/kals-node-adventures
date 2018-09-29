@@ -1,7 +1,11 @@
 module.exports = {
-  add: (a, b) => a + b,
-  square: x => x ** 2,
-  setName: (user, fullName) => {
+  add(a, b) {
+    return a + b;
+  },
+  square(x) {
+    return x ** 2;
+  },
+  setName(user, fullName) {
     const names = fullName.split(' ');
     return Object.assign(
       {},
@@ -11,7 +15,7 @@ module.exports = {
       }
     );
   },
-  asyncAdd: (a, b, cb) => {
+  asyncAdd(a, b, cb) {
     setTimeout(() => {
       cb(a + b);
     }, 1000);
