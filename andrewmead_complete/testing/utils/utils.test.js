@@ -1,15 +1,35 @@
+const expect = require('expect');
 const utils = require('./utils');
 
 it('should add two numbers and return the result', () => {
   const res = utils.add(33, 11);
-  if (res !== 44) {
-    throw Error(`Expected 44 but got ${res}`);
-  }
+  expect(res).toBe(44);
+  expect(typeof res).toBe('number');
 });
 
 it('should square the input and return the result', () => {
   const res = utils.square(2);
-  if (res !== 4) {
-    throw Error(`Expected 4 but got ${res}`);
-  }
+  expect(res).toBe(4);
+  expect(typeof res).toBe('number');
+});
+
+it('should not be equal', () => {
+  const testObj = { name: 'Kalalau' };
+  expect(testObj).not.toEqual({ name: 'Cloud' });
+});
+
+it('should include some number', () => {
+  expect([1, 2, 3]).toContain(2);
+});
+
+it('should have the same property', () => {
+  expect({ name: 'Kalalau', age: 29 }).toHaveProperty('age', 29);
+});
+
+it('verify first and last names added to object', () => {
+  const obj = {};
+  const testObj = utils.setName(obj, 'Cloud Strife');
+  expect(testObj).toHaveProperty('firstName', 'Cloud');
+  expect(testObj).toHaveProperty('lastName', 'Strife');
+  expect(typeof testObj).toBe('object');
 });
