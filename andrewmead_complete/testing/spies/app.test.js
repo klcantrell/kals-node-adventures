@@ -1,13 +1,11 @@
 const expect = require('expect');
-const rewire = require('rewire');
 
-const app = rewire('./app');
+const app = require('./app');
+const db = require('./db');
+
+jest.mock('./db');
 
 it('should call saveUser with the user object', () => {
-  const db = {
-    saveUser: jest.fn(),
-  };
-  app.__set__('db', db);
   app.handleSignup('cloudstrife@ff.com', 17);
   expect(db.saveUser).toHaveBeenCalledWith({
     email: 'cloudstrife@ff.com',

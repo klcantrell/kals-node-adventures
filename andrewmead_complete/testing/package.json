@@ -12,7 +12,6 @@
   "license": "ISC",
   "devDependencies": {
     "jest": "^23.6.0",
-    "rewire": "^4.0.1",
     "supertest": "^3.3.0"
   },
   "dependencies": {
