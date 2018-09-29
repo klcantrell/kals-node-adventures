@@ -7,6 +7,14 @@ it('should add two numbers and return the result', () => {
   expect(typeof res).toBe('number');
 });
 
+it('should add two numbers and return the result asynchronously', done => {
+  utils.asyncAdd(33, 11, sum => {
+    expect(sum).toBe(44);
+    expect(typeof sum).toBe('number');
+    done();
+  });
+});
+
 it('should square the input and return the result', () => {
   const res = utils.square(2);
   expect(res).toBe(4);
