@@ -24,7 +24,7 @@ myTypedAge = 29;
 let hobbies: string[] = ['cooking', 'sports'];
 // hobbies = 123;
 // hobbies[0] = 123;
-console.log(hobbies[0], typeof hobbies);
+// console.log(hobbies[0], typeof hobbies);
 
 // tuples
 let address: [string, number] = ['Superstreet', 99];
@@ -37,11 +37,33 @@ enum Color {
 }
 
 let myColor: Color = Color.Green;
-console.log(myColor);
+// console.log(myColor);
 
 // any (try to avoid this)
 let car: any;
 car = 'BMW';
-console.log(car);
+// console.log(car);
 car = { brand: 'BMW', series: 3 };
-console.log(car);
+// console.log(car);
+
+// functions
+function returnMyName(): string {
+  return myName;
+}
+
+function logMyAge(): void {
+  console.log(myName);
+}
+
+// argument types
+function multiply(value1: number, value2: number): number {
+  return value1 * value2;
+}
+// console.log(multiply(3, 2));
+
+// function types
+let myMultiply: (val1: number, val2: number) => number;
+// myMultiply = logMyAge;
+// myMultiply();
+myMultiply = multiply;
+console.log(myMultiply(3, 5));

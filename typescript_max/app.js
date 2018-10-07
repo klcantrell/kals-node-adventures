@@ -20,7 +20,7 @@ myTypedAge = 29;
 var hobbies = ['cooking', 'sports'];
 // hobbies = 123;
 // hobbies[0] = 123;
-console.log(hobbies[0], typeof hobbies);
+// console.log(hobbies[0], typeof hobbies);
 // tuples
 var address = ['Superstreet', 99];
 // enums
@@ -31,10 +31,28 @@ var Color;
     Color[Color["Blue"] = 2] = "Blue";
 })(Color || (Color = {}));
 var myColor = Color.Green;
-console.log(myColor);
+// console.log(myColor);
 // any (try to avoid this)
 var car;
 car = 'BMW';
-console.log(car);
+// console.log(car);
 car = { brand: 'BMW', series: 3 };
-console.log(car);
+// console.log(car);
+// functions
+function returnMyName() {
+    return myName;
+}
+function logMyAge() {
+    console.log(myName);
+}
+// argument types
+function multiply(value1, value2) {
+    return value1 * value2;
+}
+// console.log(multiply(3, 2));
+// function types
+var myMultiply;
+// myMultiply = logMyAge;
+// myMultiply();
+myMultiply = multiply;
+console.log(myMultiply(3, 5));
