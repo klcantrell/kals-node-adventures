@@ -66,4 +66,29 @@ let myMultiply: (val1: number, val2: number) => number;
 // myMultiply = logMyAge;
 // myMultiply();
 myMultiply = multiply;
-console.log(myMultiply(3, 5));
+// console.log(myMultiply(3, 5));
+
+// objects
+let userData: { name: string; age: number } = {
+  name: 'Kal',
+  age: 29,
+};
+
+// userData = {
+//   hi: 'Max',
+//   there: 25,
+// };
+
+userData = {
+  name: 'Max',
+  age: 25,
+};
+
+let complex: { data: number[]; output: (all: boolean) => number[] } = {
+  data: [100, 3.99, 10],
+  output(all: boolean): number[] {
+    return this.data;
+  },
+};
+
+// complex = {};

@@ -55,4 +55,23 @@ var myMultiply;
 // myMultiply = logMyAge;
 // myMultiply();
 myMultiply = multiply;
-console.log(myMultiply(3, 5));
+// console.log(myMultiply(3, 5));
+// objects
+var userData = {
+    name: 'Kal',
+    age: 29,
+};
+// userData = {
+//   hi: 'Max',
+//   there: 25,
+// };
+userData = {
+    name: 'Max',
+    age: 25,
+};
+var complex = {
+    data: [100, 3.99, 10],
+    output: function (all) {
+        return this.data;
+    },
+};
