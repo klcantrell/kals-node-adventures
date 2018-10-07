@@ -92,3 +92,18 @@ let complex: { data: number[]; output: (all: boolean) => number[] } = {
 };
 
 // complex = {};
+
+// type alias
+type Complex = { data: number[]; output: (all: boolean) => number[] };
+
+let complex2: Complex = {
+  data: [3, 4, 5],
+  output(all: boolean): number[] {
+    return this.data;
+  },
+};
+
+// union types
+let myRealRealAge: number | string;
+myRealRealAge = 29;
+myRealRealAge = '29';
