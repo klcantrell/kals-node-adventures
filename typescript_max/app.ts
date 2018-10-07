@@ -337,57 +337,67 @@ let right = OnlyOne.getInstance();
 // Classes in TS exercises
 
 // Exercise 1 - How was your TypeScript Class?
-function Car(name) {
-  this.name = name;
-  this.acceleration = 0;
+class MyCar {
+  name: string;
+  acceleration: number = 0;
+  constructor(name: string) {
+    this.name = name;
+  }
 
-  this.honk = function() {
+  honk(): void {
     console.log('Toooooooooot!');
-  };
+  }
 
-  this.accelerate = function(speed) {
+  accelerate(speed: number): void {
     this.acceleration = this.acceleration + speed;
-  };
+  }
 }
-var car = new Car('BMW');
-car.honk();
-console.log(car.acceleration);
-car.accelerate(10);
-console.log(car.acceleration);
+const myCar = new MyCar('BMW');
+// myCar.honk();
+// console.log(myCar.acceleration);
+myCar.accelerate(10);
+// console.log(myCar.acceleration);
 
 // Exercise 2 - Two objects, based on each other ...
-var baseObject = {
-  width: 0,
-  length: 0,
-};
-var rectangle = Object.create(baseObject);
-rectangle.width = 5;
-rectangle.length = 2;
-rectangle.calcSize = function() {
-  return this.width * this.length;
-};
-console.log(rectangle.calcSize());
+class BaseObject {
+  width: number = 0;
+  length: number = 0;
+  constructor(width: number, length: number) {
+    this.width = width;
+    this.length = length;
+  }
+}
+
+class Rectangle extends BaseObject {
+  constructor(width: number, length: number) {
+    super(width, length);
+  }
+  calcSize(): number {
+    return this.width * this.length;
+  }
+}
+
+const rectangle = new Rectangle(5, 2);
+// console.log(rectangle.calcSize());
 
 // Exercise 3 - Make sure to compile to ES5 (set the target in tsconfig.json)
-var person = {
-  _firstName: '',
-};
-Object.defineProperty(person, 'firstName', {
-  get: function() {
-    return this._firstName;
-  },
-  set: function(value) {
-    if (value.length > 3) {
-      this._firstName = value;
+class MyPerson {
+  private _firstName: string = '';
+  set firstName(val: string) {
+    if (val.length > 3) {
+      this._firstName = val;
     } else {
       this._firstName = '';
     }
-  },
-  enumerable: true,
-  configurable: true,
-});
-console.log(person.firstName);
-person.firstName = 'Ma';
-console.log(person.firstName);
-person.firstName = 'Maximilian';
-console.log(person.firstName);
+  }
+  get firstName() {
+    return this._firstName;
+  }
+}
+
+const myPerson = new MyPerson();
+// console.log(myPerson.firstName);
+myPerson.firstName = 'Ma';
+// console.log(myPerson.firstName);
+myPerson.firstName = 'Maximilian';
+// console.log(myPerson.firstName);

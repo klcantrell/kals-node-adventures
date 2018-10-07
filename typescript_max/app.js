@@ -305,3 +305,73 @@ var OnlyOne = /** @class */ (function () {
 // let wrong = new OnlyOne('I AM THE ONLY ONE');
 var right = OnlyOne.getInstance();
 // console.log(right.name);
+// Classes in TS exercises
+// Exercise 1 - How was your TypeScript Class?
+var MyCar = /** @class */ (function () {
+    function MyCar(name) {
+        this.acceleration = 0;
+        this.name = name;
+    }
+    MyCar.prototype.honk = function () {
+        console.log('Toooooooooot!');
+    };
+    MyCar.prototype.accelerate = function (speed) {
+        this.acceleration = this.acceleration + speed;
+    };
+    return MyCar;
+}());
+var myCar = new MyCar('BMW');
+// myCar.honk();
+// console.log(myCar.acceleration);
+myCar.accelerate(10);
+// console.log(myCar.acceleration);
+// Exercise 2 - Two objects, based on each other ...
+var BaseObject = /** @class */ (function () {
+    function BaseObject(width, length) {
+        this.width = 0;
+        this.length = 0;
+        this.width = width;
+        this.length = length;
+    }
+    return BaseObject;
+}());
+var Rectangle = /** @class */ (function (_super) {
+    __extends(Rectangle, _super);
+    function Rectangle(width, length) {
+        return _super.call(this, width, length) || this;
+    }
+    Rectangle.prototype.calcSize = function () {
+        return this.width * this.length;
+    };
+    return Rectangle;
+}(BaseObject));
+var rectangle = new Rectangle(5, 2);
+// console.log(rectangle.calcSize());
+// Exercise 3 - Make sure to compile to ES5 (set the target in tsconfig.json)
+var MyPerson = /** @class */ (function () {
+    function MyPerson() {
+        this._firstName = '';
+    }
+    Object.defineProperty(MyPerson.prototype, "firstName", {
+        get: function () {
+            return this._firstName;
+        },
+        set: function (val) {
+            if (val.length > 3) {
+                this._firstName = val;
+            }
+            else {
+                this._firstName = '';
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return MyPerson;
+}());
+var myPerson = new MyPerson();
+// console.log(myPerson.firstName);
+myPerson.firstName = 'Ma';
+// console.log(myPerson.firstName);
+myPerson.firstName = 'Maximilian';
+// console.log(myPerson.firstName);
