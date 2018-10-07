@@ -1,35 +1,21 @@
-const mongoose = require('mongoose');
+const express = require('express');
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/TodoApp');
+const { mongoose } = require('./db/mongoose');
+const { Todo } = require('./db/models/todo');
 
-const Todo = mongoose.model('Todo', {
-  text: {
-    type: String,
-    required: true,
-    minlength: 1,
-    trim: true,
-  },
-  completed: {
-    type: Boolean,
-    default: false,
-  },
-  completedAt: {
-    type: Number,
-    default: null,
-  },
+const app = express();
+
+app.use(express.json());
+
+app.post('/todos', async (req, res) => {
+  try {
+    const result = await Todo.create(req.body);
+    return res.send(result);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
-async function addTodo({ text }) {
-  try {
-    const result = await Todo.create({
-      text,
-    });
-    console.log(result);
-  } catch (err) {
-    console.log('unable to create todo', err);
-  }
-}
-
-// trim validator will remove whitespace
-addTodo({ text: '   Learn Typescript!  ' });
+app.listen(3000, () => {
+  console.log('Started on port 3000');
+});
