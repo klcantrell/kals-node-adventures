@@ -90,3 +90,23 @@ var finalValue = 29;
 if (typeof finalValue === 'number') {
     console.log("Final value is a number: " + finalValue);
 }
+// never
+function neverReturns() {
+    throw Error('An error!');
+}
+// nullable types
+var canBeNull = 12;
+canBeNull = null;
+var bankAccount = {
+    money: 2000,
+    deposit: function (value) {
+        this.money += value;
+    },
+};
+var myself = {
+    name: 'Max',
+    bankAccount: bankAccount,
+    hobbies: ['Sports', 'Cooking'],
+};
+myself.bankAccount.deposit(3000);
+console.log(myself);
