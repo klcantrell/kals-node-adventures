@@ -110,3 +110,10 @@ var myself = {
 };
 myself.bankAccount.deposit(3000);
 console.log(myself);
+// no implicity any
+var returnAny = function () {
+    var x;
+    return x;
+};
+returnAny();
+//# sourceMappingURL=app.js.map

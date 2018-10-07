@@ -143,3 +143,8 @@ let myself: { name: string; bankAccount: BankAccount; hobbies: string[] } = {
 myself.bankAccount.deposit(3000);
 
 console.log(myself);
+
+// no implicity any
+// const returnAny = x => {
+//   return x;
+// };
