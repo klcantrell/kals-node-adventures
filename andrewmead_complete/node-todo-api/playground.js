@@ -7,12 +7,66 @@ const { MongoClient, ObjectId } = require('mongodb');
   try {
     await client.connect();
     const db = client.db(dbName);
-    playInsertTodo(db);
+    // insert play functions here
   } catch (err) {
     console.log(err.stack);
   }
   client.close();
 })();
+
+async function playFindOneAndUpdate(db) {
+  try {
+    const result = await db.collection('Todos').findOneAndUpdate(
+      {
+        _id: new ObjectId('5bb94cc2dafb1c325c4c491d'),
+      },
+      {
+        $set: {
+          completed: true,
+        },
+      },
+      {
+        returnOriginal: false,
+      }
+    );
+    console.log('Update successful', result);
+  } catch (err) {
+    console.log('unable to update', err);
+  }
+}
+
+async function playFindOneAndDelete(db) {
+  try {
+    const result = await db
+      .collection('Todos')
+      .findOneAndDelete({ _id: new ObjectId('5bb950ca84cfb216e452a4ec') });
+    console.log('Deletion successful', result);
+  } catch (err) {
+    console.log('unable to delete', err);
+  }
+}
+
+async function playDeleteOne(db) {
+  try {
+    const result = await db
+      .collection('Todos')
+      .deleteOne({ text: 'Eat lunch' });
+    console.log('Deletion successful', result);
+  } catch (err) {
+    console.log('unable to delete', err);
+  }
+}
+
+async function playDeleteMany(db) {
+  try {
+    const result = await db
+      .collection('Todos')
+      .deleteMany({ text: 'Eat lunch' });
+    console.log('Deletion successful', result);
+  } catch (err) {
+    console.log('could not delete', err);
+  }
+}
 
 async function playFind(db) {
   try {
@@ -53,7 +107,7 @@ async function playFindById(db) {
 async function playInsertTodo(db) {
   try {
     const result = await db.collection('Todos').insertOne({
-      text: 'Go to bed',
+      text: 'Eat lunch',
       completed: false,
     });
     console.log(result.ops);
