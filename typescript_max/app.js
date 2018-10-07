@@ -88,7 +88,7 @@ myRealRealAge = '29';
 // check types
 var finalValue = 29;
 if (typeof finalValue === 'number') {
-    console.log("Final value is a number: " + finalValue);
+    // console.log(`Final value is a number: ${finalValue}`);
 }
 // never
 function neverReturns() {
@@ -109,17 +109,41 @@ var myself = {
     hobbies: ['Sports', 'Cooking'],
 };
 myself.bankAccount.deposit(3000);
-console.log(myself);
+// console.log(myself);
 // no implicity any
 // const returnAny = x => {
 //   return x;
 // };
-// strict null checking
-function controlMe(isTrue, somethingElse) {
-    var result;
-    if (isTrue) {
-        result = 12;
+// strict null checking + no unused parameters
+// function controlMe(isTrue: boolean, somethingElse: boolean) {
+//   let result: number;
+//   if (isTrue) {
+//     result = 12;
+//   }
+//   return result;
+// }
+// const and let block scoping
+var testval = 45;
+function logTestVal() {
+    // console.log(testval);
+    var testval = 55;
+    console.log(testval);
+}
+// default paramters
+var countdown = function (start) {
+    if (start === void 0) { start = 10; }
+    while (start > 0) {
+        console.log(start);
+        start--;
     }
-    result = 33;
-    return result;
+    console.log('Done', start);
+};
+// countdown();
+// spread operator in TS
+function makeArray() {
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    return args;
 }

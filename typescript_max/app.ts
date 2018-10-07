@@ -111,7 +111,7 @@ myRealRealAge = '29';
 // check types
 let finalValue = 29;
 if (typeof finalValue === 'number') {
-  console.log(`Final value is a number: ${finalValue}`);
+  // console.log(`Final value is a number: ${finalValue}`);
 }
 
 // never
@@ -124,7 +124,6 @@ let canBeNull: number | null = 12;
 canBeNull = null;
 
 // exercise
-
 type BankAccount = { money: number; deposit: (value: number) => void };
 
 let bankAccount: BankAccount = {
@@ -142,7 +141,7 @@ let myself: { name: string; bankAccount: BankAccount; hobbies: string[] } = {
 
 myself.bankAccount.deposit(3000);
 
-console.log(myself);
+// console.log(myself);
 
 // no implicity any
 // const returnAny = x => {
@@ -151,11 +150,75 @@ console.log(myself);
 
 // strict null checking + no unused parameters
 
-function controlMe(isTrue: boolean, somethingElse: boolean) {
-  let result: number;
-  if (isTrue) {
-    result = 12;
-  }
-  // result = 33;
-  return result;
+// function controlMe(isTrue: boolean, somethingElse: boolean) {
+//   let result: number;
+//   if (isTrue) {
+//     result = 12;
+//   }
+//   return result;
+// }
+
+// const and let block scoping
+let testval = 45;
+
+function logTestVal() {
+  // console.log(testval);
+  let testval = 55;
+  console.log(testval);
 }
+
+// default paramters
+const countdown = (start: number = 10): void => {
+  while (start > 0) {
+    console.log(start);
+    start--;
+  }
+  console.log('Done', start);
+};
+
+// countdown();
+
+// spread operator in TS
+function makeArray(...args: number[]) {
+  return args;
+}
+
+// ES6 in TS exercises
+
+// Exercise 1 - Maybe use an Arrow Function?
+var double = function(value) {
+  return value * 2;
+};
+console.log(double(10));
+
+// Exercise 2 - If only we could provide some default values...
+var greet = function(name) {
+  if (name === undefined) {
+    name = 'Max';
+  }
+  console.log('Hello, ' + name);
+};
+greet();
+greet('Anna');
+
+// Exercise 3 - Isn't there a shorter way to get all these Values?
+var numbers = [-3, 33, 38, 5];
+console.log(Math.min.apply(Math, numbers));
+
+// Exercise 4 - I have to think about Exercise 3 ...
+var newArray = [55, 20];
+Array.prototype.push.apply(newArray, numbers);
+console.log(newArray);
+
+// Exercise 5 - That's a well-constructed array.
+var testResults = [3.89, 2.99, 1.38];
+var result1 = testResults[0];
+var result2 = testResults[1];
+var result3 = testResults[2];
+console.log(result1, result2, result3);
+
+// Exercise 6 - And a well-constructed object!
+var scientist = { firstName: 'Will', experience: 12 };
+var firstName = scientist.firstName;
+var experience = scientist.experience;
+console.log(firstName, experience);
