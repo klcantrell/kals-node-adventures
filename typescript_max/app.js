@@ -111,9 +111,15 @@ var myself = {
 myself.bankAccount.deposit(3000);
 console.log(myself);
 // no implicity any
-var returnAny = function () {
-    var x;
-    return x;
-};
-returnAny();
-//# sourceMappingURL=app.js.map
+// const returnAny = x => {
+//   return x;
+// };
+// strict null checking
+function controlMe(isTrue, somethingElse) {
+    var result;
+    if (isTrue) {
+        result = 12;
+    }
+    result = 33;
+    return result;
+}

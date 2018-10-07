@@ -148,3 +148,14 @@ console.log(myself);
 // const returnAny = x => {
 //   return x;
 // };
+
+// strict null checking + no unused parameters
+
+function controlMe(isTrue: boolean, somethingElse: boolean) {
+  let result: number;
+  if (isTrue) {
+    result = 12;
+  }
+  // result = 33;
+  return result;
+}
