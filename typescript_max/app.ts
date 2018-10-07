@@ -107,3 +107,14 @@ let complex2: Complex = {
 let myRealRealAge: number | string;
 myRealRealAge = 29;
 myRealRealAge = '29';
+
+// check types
+let finalValue = 29;
+if (typeof finalValue === 'number') {
+  console.log(`Final value is a number: ${finalValue}`);
+}
+
+// never
+function neverReturns(): never {
+  throw Error('An error!');
+}

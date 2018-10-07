@@ -75,3 +75,18 @@ var complex = {
         return this.data;
     },
 };
+var complex2 = {
+    data: [3, 4, 5],
+    output: function (all) {
+        return this.data;
+    },
+};
+// union types
+var myRealRealAge;
+myRealRealAge = 29;
+myRealRealAge = '29';
+// check types
+var finalValue = 29;
+if (typeof finalValue === 'number') {
+    console.log("Final value is a number: " + finalValue);
+}
