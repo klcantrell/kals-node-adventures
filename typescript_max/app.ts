@@ -401,3 +401,12 @@ myPerson.firstName = 'Ma';
 // console.log(myPerson.firstName);
 myPerson.firstName = 'Maximilian';
 // console.log(myPerson.firstName);
+
+// classes as types
+class myFunc {
+  saySup() {
+    console.log('sup');
+  }
+}
+
+let myOtherFunc: myFunc;

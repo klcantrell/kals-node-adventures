@@ -375,3 +375,13 @@ myPerson.firstName = 'Ma';
 // console.log(myPerson.firstName);
 myPerson.firstName = 'Maximilian';
 // console.log(myPerson.firstName);
+// classes as types
+var myFunc = /** @class */ (function () {
+    function myFunc() {
+    }
+    myFunc.prototype.saySup = function () {
+        console.log('sup');
+    };
+    return myFunc;
+}());
+var myOtherFunc;
