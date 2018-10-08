@@ -417,7 +417,6 @@ awesomePerson.firstName = 'Kalalau';
 var myMultiplyFunction = function (val1, val2) {
     return val1 * val2;
 };
-console.log(myMultiplyFunction(3, 2));
 var oldPerson = {
     age: 29,
     firstName: 'Kal',
@@ -441,3 +440,61 @@ function betterEcho(data) {
 // console.log(betterEcho('next'));
 // console.log(betterEcho(29));
 // console.log(betterEcho({ name: 'Kal', age: 29 }));
+// built-in generics
+var arrayOfResults = [1.94, 2.33];
+arrayOfResults.push(4.67);
+// generics and arrays
+function printAll(args) {
+    args.forEach(function (element) { return console.log(element); });
+}
+// printAll(['Apple', 'Banana']);
+// generic types.  this lets you use generics in a function type.
+var echo2 = echo;
+// generic classes
+var SimpleMath = /** @class */ (function () {
+    function SimpleMath(baseValue, mutliplyValue) {
+        this.baseValue = baseValue;
+        this.multiplyValue = mutliplyValue;
+    }
+    SimpleMath.prototype.calculate = function () {
+        return Number(this.baseValue) * Number(this.multiplyValue);
+    };
+    return SimpleMath;
+}());
+// generic classes with multiple generics
+var SimpleMath__multipleGenerics = /** @class */ (function () {
+    function SimpleMath__multipleGenerics(baseValue, mutliplyValue) {
+        this.baseValue = baseValue;
+        this.multiplyValue = mutliplyValue;
+    }
+    SimpleMath__multipleGenerics.prototype.calculate = function () {
+        return Number(this.baseValue) * Number(this.multiplyValue);
+    };
+    return SimpleMath__multipleGenerics;
+}());
+// const simpleMath__multipleGenerics = new SimpleMath__multipleGenerics(10, true);
+// generic map exercise
+var MyMap = /** @class */ (function () {
+    function MyMap() {
+        this.map = {};
+    }
+    MyMap.prototype.setItem = function (key, value) {
+        this.map[key] = value;
+    };
+    MyMap.prototype.getItem = function (key) {
+        return this.map[key];
+    };
+    MyMap.prototype.clear = function () {
+        this.map = {};
+    };
+    MyMap.prototype.printMap = function () {
+        console.log(JSON.stringify(this.map, null, 2));
+    };
+    return MyMap;
+}());
+var myMap = new MyMap();
+myMap.setItem('name', 'Kalalau');
+console.log(myMap.getItem('name'));
+myMap.clear();
+myMap.setItem('iceCream', 'Cookies and Cream');
+myMap.printMap();

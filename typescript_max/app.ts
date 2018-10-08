@@ -478,7 +478,7 @@ const myMultiplyFunction: DoubleValueFunc = (
   return val1 * val2;
 };
 
-console.log(myMultiplyFunction(3, 2));
+// console.log(myMultiplyFunction(3, 2));
 
 // interface inheritance
 
@@ -515,3 +515,75 @@ function betterEcho<T>(data: T) {
 // console.log(betterEcho('next'));
 // console.log(betterEcho(29));
 // console.log(betterEcho({ name: 'Kal', age: 29 }));
+
+// built-in generics
+const arrayOfResults: Array<number> = [1.94, 2.33];
+arrayOfResults.push(4.67);
+
+// generics and arrays
+function printAll<T>(args: T[]) {
+  args.forEach(element => console.log(element));
+}
+
+// printAll(['Apple', 'Banana']);
+
+// generic types.  this lets you use generics in a function type.
+const echo2: <T>(data: T) => T = echo;
+
+// generic classes
+
+class SimpleMath<T extends number | string> {
+  baseValue: T;
+  multiplyValue: T;
+  constructor(baseValue: T, mutliplyValue: T) {
+    this.baseValue = baseValue;
+    this.multiplyValue = mutliplyValue;
+  }
+  calculate() {
+    return Number(this.baseValue) * Number(this.multiplyValue);
+  }
+}
+
+// generic classes with multiple generics
+
+class SimpleMath__multipleGenerics<
+  T extends number | string,
+  U extends number | string
+> {
+  baseValue: T;
+  multiplyValue: U;
+  constructor(baseValue: T, mutliplyValue: U) {
+    this.baseValue = baseValue;
+    this.multiplyValue = mutliplyValue;
+  }
+  calculate() {
+    return Number(this.baseValue) * Number(this.multiplyValue);
+  }
+}
+
+// const simpleMath__multipleGenerics = new SimpleMath__multipleGenerics(10, true);
+
+// generic map exercise
+
+class MyMap<T> {
+  private map: { [key: string]: T } = {};
+  setItem(key: string, value: T): void {
+    this.map[key] = value;
+  }
+  getItem(key: string): T {
+    return this.map[key];
+  }
+  clear(): void {
+    this.map = {};
+  }
+  printMap(): void {
+    console.log(JSON.stringify(this.map, null, 2));
+  }
+}
+
+const myMap = new MyMap<string>();
+myMap.setItem('name', 'Kalalau');
+console.log(myMap.getItem('name'));
+myMap.clear();
+myMap.setItem('iceCream', 'Cookies and Cream');
+myMap.printMap();
