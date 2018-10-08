@@ -426,3 +426,18 @@ var oldPerson = {
     },
 };
 // oldPerson.greet('Cantrell');
+// Generics
+// this function is generic but doesn't let TS know anything
+function echo(data) {
+    return data;
+}
+// console.log(echo('next'));
+// console.log(echo(29));
+// console.log(echo({ name: 'Kal', age: 29 }));
+// TS generic
+function betterEcho(data) {
+    return data;
+}
+// console.log(betterEcho('next'));
+// console.log(betterEcho(29));
+// console.log(betterEcho({ name: 'Kal', age: 29 }));
