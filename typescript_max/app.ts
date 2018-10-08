@@ -410,3 +410,42 @@ class myFunc {
 }
 
 let myOtherFunc: myFunc;
+
+// modules
+
+// import { PI, calculateCircumference } from './math/circle';
+// import { calculateRectangle } from './math/rectangle';
+
+// console.log(PI);
+// console.log(calculateCircumference(2));
+// console.log(calculateRectangle(2, 5));
+
+// interfaces
+
+interface NamedPerson {
+  firstName: string;
+  age?: number; // optional property
+  // [propName: string]: any; // for dynamically added properties
+  greet(lastName: string): void;
+}
+
+function iGreet(person: NamedPerson) {
+  console.log(`Hello my name is ${person.firstName}`);
+}
+
+function changeName(person: NamedPerson) {
+  person.firstName = 'Anna';
+}
+
+const iPerson = {
+  firstName: 'Kal',
+  age: 29,
+  hobbies: ['Coding', 'Sleeping'],
+  greet(lastName: string) {
+    console.log(`Hi I am ${this.firstName} ${lastName}`);
+  },
+};
+
+// iGreet({ firstName: 'Kal', age: 29 }); // object literals get checked more strictly
+iGreet(iPerson);
+iPerson.greet('Cantrell');

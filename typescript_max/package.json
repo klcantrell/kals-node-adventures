@@ -12,5 +12,8 @@
   "license": "ISC",
   "devDependencies": {
     "typescript": "^3.1.1"
+  },
+  "dependencies": {
+    "systemjs": "^0.21.5"
   }
 }

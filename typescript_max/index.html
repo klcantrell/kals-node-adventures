@@ -8,6 +8,17 @@
 </head>
 <body>
   <button id="testBtn">Greet</button>
-  <script src="/app.js"></script>
+  <script src="/node_modules/systemjs/dist/system.js"></script>
+  <script>
+    SystemJS.config({
+      baseURL: '/',
+      packages: {
+        '/': {
+          defaultExtension: 'js',
+        }
+      }
+    });
+    SystemJS.import('/app.js');
+  </script>
 </body>
 </html>

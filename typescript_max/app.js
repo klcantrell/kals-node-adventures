@@ -385,3 +385,20 @@ var myFunc = /** @class */ (function () {
     return myFunc;
 }());
 var myOtherFunc;
+function iGreet(person) {
+    console.log("Hello my name is " + person.firstName);
+}
+function changeName(person) {
+    person.firstName = 'Anna';
+}
+var iPerson = {
+    firstName: 'Kal',
+    age: 29,
+    hobbies: ['Coding', 'Sleeping'],
+    greet: function (lastName) {
+        console.log("Hi I am " + this.firstName + " " + lastName);
+    },
+};
+// iGreet({ firstName: 'Kal', age: 29 }); // object literals get checked more strictly
+iGreet(iPerson);
+iPerson.greet('Cantrell');
