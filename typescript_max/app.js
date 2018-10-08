@@ -400,5 +400,21 @@ var iPerson = {
     },
 };
 // iGreet({ firstName: 'Kal', age: 29 }); // object literals get checked more strictly
-iGreet(iPerson);
-iPerson.greet('Cantrell');
+// iGreet(iPerson);
+// iPerson.greet('Cantrell');
+// interfaces with classes
+var AwesomePerson = /** @class */ (function () {
+    function AwesomePerson() {
+        this.firstName = '';
+    }
+    AwesomePerson.prototype.greet = function (lastName) {
+        console.log("Hi I am " + this.firstName + " " + lastName);
+    };
+    return AwesomePerson;
+}());
+var awesomePerson = new AwesomePerson();
+awesomePerson.firstName = 'Kalalau';
+var myMultiplyFunction = function (val1, val2) {
+    return val1 * val2;
+};
+console.log(myMultiplyFunction(3, 2));

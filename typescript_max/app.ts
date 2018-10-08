@@ -447,5 +447,33 @@ const iPerson = {
 };
 
 // iGreet({ firstName: 'Kal', age: 29 }); // object literals get checked more strictly
-iGreet(iPerson);
-iPerson.greet('Cantrell');
+// iGreet(iPerson);
+// iPerson.greet('Cantrell');
+
+// interfaces with classes
+
+class AwesomePerson implements NamedPerson {
+  public firstName: string = '';
+  greet(lastName: string) {
+    console.log(`Hi I am ${this.firstName} ${lastName}`);
+  }
+}
+
+const awesomePerson = new AwesomePerson();
+awesomePerson.firstName = 'Kalalau';
+// awesomePerson.greet('Cantrell');
+
+// interfaces with function types
+
+interface DoubleValueFunc {
+  (number1: number, number2: number): number;
+}
+
+const myMultiplyFunction: DoubleValueFunc = (
+  val1: number,
+  val2: number
+): number => {
+  return val1 * val2;
+};
+
+console.log(myMultiplyFunction(3, 2));
