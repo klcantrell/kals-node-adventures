@@ -418,3 +418,11 @@ var myMultiplyFunction = function (val1, val2) {
     return val1 * val2;
 };
 console.log(myMultiplyFunction(3, 2));
+var oldPerson = {
+    age: 29,
+    firstName: 'Kal',
+    greet: function (lastName) {
+        console.log("Hi my name is " + this.firstName + " " + lastName);
+    },
+};
+// oldPerson.greet('Cantrell');

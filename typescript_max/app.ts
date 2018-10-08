@@ -422,11 +422,13 @@ let myOtherFunc: myFunc;
 
 // interfaces
 
+type greetType = (lastName: string) => void;
+
 interface NamedPerson {
   firstName: string;
   age?: number; // optional property
   // [propName: string]: any; // for dynamically added properties
-  greet(lastName: string): void;
+  greet: greetType;
 }
 
 function iGreet(person: NamedPerson) {
@@ -477,3 +479,19 @@ const myMultiplyFunction: DoubleValueFunc = (
 };
 
 console.log(myMultiplyFunction(3, 2));
+
+// interface inheritance
+
+interface AgedPerson extends NamedPerson {
+  age: number;
+}
+
+const oldPerson: AgedPerson = {
+  age: 29,
+  firstName: 'Kal',
+  greet(lastName: string) {
+    console.log(`Hi my name is ${this.firstName} ${lastName}`);
+  },
+};
+
+// oldPerson.greet('Cantrell');
