@@ -690,7 +690,7 @@ class Course {
     this.name = name;
   }
 
-  printStudentNUmbers(mode: string, @printInfo printAll: boolean) {
+  printStudentNUmbers(mode: string, /*@printInfo*/ printAll: boolean) {
     if (printAll) {
       console.log(10000);
     } else {
@@ -698,3 +698,7 @@ class Course {
     }
   }
 }
+
+// third party libraries
+import 'jQuery';
+$('app').css({ 'background-color': 'green' });
