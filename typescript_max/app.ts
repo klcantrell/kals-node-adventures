@@ -616,3 +616,19 @@ function logging(val: boolean) {
 class Car {
   constructor() {}
 }
+
+// adding methods with decorators (hacky)
+
+function printable(constructorFn: Function) {
+  constructorFn.prototype.print = function() {
+    console.log(this);
+  };
+}
+
+@printable
+class CoolPlant {
+  public name: string = 'Planty';
+}
+
+const coolPlant = new CoolPlant();
+(<any>coolPlant).print();

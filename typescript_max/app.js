@@ -532,3 +532,20 @@ var Car = /** @class */ (function () {
     ], Car);
     return Car;
 }());
+// adding methods with decorators (hacky)
+function printable(constructorFn) {
+    constructorFn.prototype.print = function () {
+        console.log(this);
+    };
+}
+var CoolPlant = /** @class */ (function () {
+    function CoolPlant() {
+        this.name = 'Planty';
+    }
+    CoolPlant = __decorate([
+        printable
+    ], CoolPlant);
+    return CoolPlant;
+}());
+var coolPlant = new CoolPlant();
+coolPlant.print();
