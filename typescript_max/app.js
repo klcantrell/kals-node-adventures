@@ -524,12 +524,10 @@ var Thing = /** @class */ (function () {
 function logging(val) {
     return val ? logged : returnNull;
 }
+// @logging(true)
 var Car = /** @class */ (function () {
     function Car() {
     }
-    Car = __decorate([
-        logging(true)
-    ], Car);
     return Car;
 }());
 // adding methods with decorators (hacky)
@@ -544,8 +542,34 @@ var CoolPlant = /** @class */ (function () {
     }
     CoolPlant = __decorate([
         printable
+        // @logging(true)
     ], CoolPlant);
     return CoolPlant;
 }());
 var coolPlant = new CoolPlant();
-coolPlant.print();
+// (<any>coolPlant).print();
+// method decorator
+function editable(value) {
+    return function (target, propName, descriptor) {
+        descriptor.writable = value;
+    };
+}
+var CoolProject = /** @class */ (function () {
+    function CoolProject(name) {
+        this.projectName = '';
+        this.projectName = name;
+    }
+    CoolProject.prototype.calcBudget = function () {
+        console.log(1000);
+    };
+    __decorate([
+        editable(false)
+    ], CoolProject.prototype, "calcBudget", null);
+    return CoolProject;
+}());
+var coolProject = new CoolProject('awesomeCoolProject');
+// coolProject.calcBudget();
+// coolProject.calcBudget = function() {
+//   console.log('200000');
+// };
+// coolProject.calcBudget();

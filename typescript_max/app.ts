@@ -612,7 +612,7 @@ function logging(val: boolean) {
   return val ? logged : returnNull;
 }
 
-@logging(true)
+// @logging(true)
 class Car {
   constructor() {}
 }
@@ -626,9 +626,40 @@ function printable(constructorFn: Function) {
 }
 
 @printable
+// @logging(true)
 class CoolPlant {
   public name: string = 'Planty';
 }
 
 const coolPlant = new CoolPlant();
-(<any>coolPlant).print();
+// (<any>coolPlant).print();
+
+// method decorator
+
+function editable(value: boolean) {
+  return function(
+    target: any,
+    propName: string,
+    descriptor: PropertyDescriptor
+  ) {
+    descriptor.writable = value;
+  };
+}
+
+class CoolProject {
+  projectName: string = '';
+  constructor(name: string) {
+    this.projectName = name;
+  }
+  @editable(false)
+  calcBudget() {
+    console.log(1000);
+  }
+}
+
+const coolProject = new CoolProject('awesomeCoolProject');
+// coolProject.calcBudget();
+// coolProject.calcBudget = function() {
+//   console.log('200000');
+// };
+// coolProject.calcBudget();
