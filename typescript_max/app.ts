@@ -701,4 +701,4 @@ class Course {
 
 // third party libraries
 import 'jQuery';
-$('app').css({ 'background-color': 'green' });
+$('#app').css({ 'background-color': 'green' });

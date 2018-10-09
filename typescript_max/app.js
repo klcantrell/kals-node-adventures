@@ -604,4 +604,4 @@ var Course = /** @class */ (function () {
 }());
 // third party libraries
 require("jQuery");
-$('app').css({ 'background-color': 'green' });
+$('#app').css({ 'background-color': 'green' });
