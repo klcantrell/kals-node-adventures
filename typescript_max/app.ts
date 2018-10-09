@@ -583,7 +583,36 @@ class MyMap<T> {
 
 const myMap = new MyMap<string>();
 myMap.setItem('name', 'Kalalau');
-console.log(myMap.getItem('name'));
+// console.log(myMap.getItem('name'));
 myMap.clear();
 myMap.setItem('iceCream', 'Cookies and Cream');
-myMap.printMap();
+// myMap.printMap();
+
+// decorators
+
+function logged(constructorFn: Function) {
+  console.log(constructorFn);
+  // return 'sup';
+}
+
+function returnNull() {
+  return null;
+}
+
+// @logged
+class Thing {
+  constructor(public name: string) {
+    this.name = name;
+  }
+}
+
+// factory
+
+function logging(val: boolean) {
+  return val ? logged : returnNull;
+}
+
+@logging(true)
+class Car {
+  constructor() {}
+}
