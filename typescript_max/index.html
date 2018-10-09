@@ -8,20 +8,6 @@
 </head>
 <body>
   <div id="app">Change with jQuery</div>
-  <script src="/node_modules/systemjs/dist/system.js"></script>
-  <script>
-    SystemJS.config({
-      map: {
-        'jQuery': 'node_modules/jquery/dist/jquery.min.js',
-      },
-      baseURL: '/',
-      packages: {
-        '/': {
-          defaultExtension: 'js',
-        }
-      }
-    });
-    SystemJS.import('/app.js');
-  </script>
+  <script src="app.bundle.js"></script>
 </body>
 </html>

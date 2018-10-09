@@ -700,5 +700,5 @@ class Course {
 }
 
 // third party libraries
-import 'jQuery';
+import $ from 'jquery';
 $('#app').css({ 'background-color': 'green' });
