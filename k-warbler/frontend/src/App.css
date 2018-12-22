@@ -1,0 +1,10 @@
+.App {
+  text-align: center;
+}
+
+.App > nav {
+  display: flex;
+  justify-content: space-around;
+  max-width: 500px;
+  margin: auto;
+}
