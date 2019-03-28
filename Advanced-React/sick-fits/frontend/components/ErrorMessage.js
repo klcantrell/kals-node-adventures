@@ -17,7 +17,17 @@ const ErrorStyles = styled.div`
   }
 `;
 
-const DisplayError = ({ error }) => {
+const DisplayError = ({ error, uploadNotReady }) => {
+  if (uploadNotReady) {
+    return (
+      <ErrorStyles>
+        <p>
+          <strong>Shoot!</strong>
+          The upload isn't ready yet
+        </p>
+      </ErrorStyles>
+    );
+  }
   if (!error || !error.message) return null;
   if (
     error.networkError &&

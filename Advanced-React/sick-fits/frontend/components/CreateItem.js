@@ -30,9 +30,10 @@ const CreateItem = () => {
   const [item, setItem] = React.useState({
     title: 'Cool Shoes',
     description: 'Loving these',
-    image: 'shoes.jpg',
-    largeImage: 'largeShoes.jpg',
+    image: '',
+    largeImage: '',
     price: 100000,
+    uploadError: false,
   });
 
   const handleChange = e => {
@@ -44,21 +45,71 @@ const CreateItem = () => {
     });
   };
 
+  const handleSubmit = async (e, createItemHandler) => {
+    e.preventDefault();
+    if (item.image) {
+      setItem({
+        ...item,
+        uploadError: false,
+      });
+      const res = await createItemHandler();
+      Router.push({
+        pathname: '/item',
+        query: { id: res.data.createItem.id },
+      });
+    } else {
+      setItem({
+        ...item,
+        uploadError: true,
+      });
+    }
+  };
+
+  const uploadFile = async e => {
+    setItem({
+      ...item,
+      image: '',
+      largeImage: '',
+    });
+
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch(
+      'https://api.cloudinary.com/v1_1/kalalau/image/upload',
+      {
+        method: 'POST',
+        body: data,
+      }
+    );
+    const file = await res.json();
+    setItem({
+      ...item,
+      image: file.secure_url,
+      largeImage: file.eager[0].secure_url,
+    });
+  };
+
   return (
     <Mutation mutation={CREATE_ITEM_MUTATION} variables={item}>
       {(createItem, { loading, error }) => (
-        <Form
-          onSubmit={async e => {
-            e.preventDefault();
-            const res = await createItem();
-            Router.push({
-              pathname: '/item',
-              query: { id: res.data.createItem.id },
-            });
-          }}
-        >
+        <Form onSubmit={e => handleSubmit(e, createItem)}>
           <fieldset disabled={loading} aria-busy={loading}>
-            <Error error={error} />
+            <Error error={error} uploadNotReady={item.uploadError} />
+            <label htmlFor="file">
+              Image
+              <input
+                type="file"
+                id="file"
+                name="file"
+                placeholder="Upload an image"
+                required
+                onChange={uploadFile}
+              />
+            </label>
+
             <label htmlFor="title">
               Title
               <input
