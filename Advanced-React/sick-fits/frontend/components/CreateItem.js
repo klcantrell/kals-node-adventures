@@ -54,7 +54,7 @@ const CreateItem = () => {
       });
       const res = await createItemHandler();
       Router.push({
-        pathname: '/item',
+        pathname: '/items',
         query: { id: res.data.createItem.id },
       });
     } else {
