@@ -1,19 +1,36 @@
 const Mutations = {
   async createItem(parent, args, ctx, info) {
-    const item = await ctx.db.mutation.createItem({
-      data: {
-        ...args,
+    const item = await ctx.db.mutation.createItem(
+      {
+        data: {
+          ...args,
+        },
       },
-    });
+      info
+    );
 
     return item;
   },
-  async updateItem(parent, args, ctx, info) {
+  updateItem(parent, args, ctx, info) {
     const { id, ...updates } = args;
-    return ctx.db.mutation.updateItem({
-      data: updates,
-      where: { id },
-    });
+    return ctx.db.mutation.updateItem(
+      {
+        data: updates,
+        where: { id },
+      },
+      info
+    );
+  },
+  async deleteItem(parent, args, ctx, info) {
+    const where = { id: args.id };
+    const item = await ctx.db.query.item(
+      { where },
+      `{
+      id
+      title
+    }`
+    );
+    return ctx.db.mutation.deleteItem({ where });
   },
 };
 

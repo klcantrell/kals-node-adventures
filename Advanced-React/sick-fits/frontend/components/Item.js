@@ -5,6 +5,7 @@ import Title from './styles/Title';
 import ItemStyles from './styles/ItemStyles';
 import PriceTag from './styles/PriceTag';
 import formatMoney from '../lib/formatMoney';
+import DeleteItem from '../components/DeleteItem';
 
 const Item = ({ item }) => {
   return (
@@ -32,7 +33,7 @@ const Item = ({ item }) => {
           <a>Edit &#x270F;</a>
         </Link>
         <button>Add To Cart</button>
-        <button>Delete</button>
+        <DeleteItem id={item.id}>Delete</DeleteItem>
       </div>
     </ItemStyles>
   );
