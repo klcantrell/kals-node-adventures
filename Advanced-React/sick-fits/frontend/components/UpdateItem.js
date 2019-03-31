@@ -59,7 +59,7 @@ const UpdateItem = ({ id }) => {
       },
     });
     Router.push({
-      pathname: '/items',
+      pathname: '/item',
       query: { id: res.data.updateItem.id },
     });
   };
