@@ -36,6 +36,13 @@ const CreateItem = () => {
     uploadError: false,
   });
 
+  const mergeNewItemState = newItemState => {
+    setItem(item => ({
+      ...item,
+      ...newItemState,
+    }));
+  };
+
   const handleChange = e => {
     const { name, type, value } = e.target;
     const val = type === 'number' ? parseFloat(value) : value;
@@ -48,26 +55,23 @@ const CreateItem = () => {
   const handleSubmit = async (e, createItemHandler) => {
     e.preventDefault();
     if (item.image) {
-      setItem({
-        ...item,
+      mergeNewItemState({
         uploadError: false,
       });
       const res = await createItemHandler();
       Router.push({
-        pathname: '/items',
+        pathname: '/item',
         query: { id: res.data.createItem.id },
       });
     } else {
-      setItem({
-        ...item,
+      mergeNewItemState({
         uploadError: true,
       });
     }
   };
 
   const uploadFile = async e => {
-    setItem({
-      ...item,
+    mergeNewItemState({
       image: '',
       largeImage: '',
     });
@@ -85,8 +89,7 @@ const CreateItem = () => {
       }
     );
     const file = await res.json();
-    setItem({
-      ...item,
+    mergeNewItemState({
       image: file.secure_url,
       largeImage: file.eager[0].secure_url,
     });
