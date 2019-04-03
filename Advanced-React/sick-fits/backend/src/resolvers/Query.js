@@ -1,11 +1,12 @@
 const Query = {
   async items(parent, args, ctx, info) {
-    const items = await ctx.db.query.items();
-    return items;
+    return await ctx.db.query.items();
   },
   async item(parent, args, ctx, info) {
-    const item = await ctx.db.query.item({ where: args.where });
-    return item;
+    return await ctx.db.query.item({ where: args.where });
+  },
+  async itemsConnection(parent, args, ctx, info) {
+    return await ctx.db.query.itemsConnection({ where: args.where }, info);
   },
 };
 
