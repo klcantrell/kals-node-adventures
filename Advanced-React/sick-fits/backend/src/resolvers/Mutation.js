@@ -30,7 +30,7 @@ const Mutations = {
       title
     }`
     );
-    return ctx.db.mutation.deleteItem({ where });
+    return ctx.db.mutation.deleteItem({ where }, info);
   },
 };
 
