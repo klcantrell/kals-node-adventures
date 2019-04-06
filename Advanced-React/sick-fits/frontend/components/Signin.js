@@ -5,13 +5,9 @@ import Form from './styles/Form';
 import Error from './ErrorMessage';
 import { CURRENT_USER_QUERY } from './User';
 
-const SIGNUP_MUTATION = gql`
-  mutation SIGNUP_MUTATION(
-    $email: String!
-    $name: String!
-    $password: String!
-  ) {
-    signup(email: $email, name: $name, password: $password) {
+const SIGNIN_MUTATION = gql`
+  mutation SIGNIN_MUTATION($email: String!, $password: String!) {
+    signin(email: $email, password: $password) {
       id
       email
       name
@@ -19,7 +15,7 @@ const SIGNUP_MUTATION = gql`
   }
 `;
 
-const Signup = () => {
+const Signin = () => {
   const [form, setForm] = React.useState({
     name: '',
     password: '',
@@ -41,7 +37,7 @@ const Signup = () => {
 
   return (
     <Mutation
-      mutation={SIGNUP_MUTATION}
+      mutation={SIGNIN_MUTATION}
       variables={form}
       refetchQueries={[
         {
@@ -49,13 +45,13 @@ const Signup = () => {
         },
       ]}
     >
-      {(signup, { error, loading }) => {
+      {(signin, { error, loading }) => {
         return (
           <Form
             method="POST"
             onSubmit={async e => {
               e.preventDefault();
-              await signup().catch(e => console.log(e));
+              await signin().catch(e => console.log(e));
               mergeNewFormState({
                 name: '',
                 email: '',
@@ -64,7 +60,7 @@ const Signup = () => {
             }}
           >
             <fieldset disabled={loading} aria-busy={loading}>
-              <h2>Sign up for an account</h2>
+              <h2>Sign into your account</h2>
               <Error error={error} />
               <label htmlFor="email">
                 email
@@ -73,16 +69,6 @@ const Signup = () => {
                   name="email"
                   placeholder="email"
                   value={form.email}
-                  onChange={saveToState}
-                />
-              </label>
-              <label htmlFor="name">
-                name
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="name"
-                  value={form.name}
                   onChange={saveToState}
                 />
               </label>
@@ -96,7 +82,7 @@ const Signup = () => {
                   onChange={saveToState}
                 />
               </label>
-              <button type="submit">Sign Up!</button>
+              <button type="submit">Sign In!</button>
             </fieldset>
           </Form>
         );
@@ -105,4 +91,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Signin;
