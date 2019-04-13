@@ -1,3 +1,5 @@
+const { hasPermission } = require('../utils');
+
 const Query = {
   async items(parent, args, ctx, info) {
     return await ctx.db.query.items(
@@ -25,6 +27,13 @@ const Query = {
       },
       info
     );
+  },
+  async users(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in !');
+    }
+    hasPermission(ctx.request.user, ['ADMIN', 'PERMISSIONUPDATE']);
+    return await ctx.db.query.users({}, info);
   },
 };
 
