@@ -14,7 +14,9 @@ const DELETE_ITEM_MUTATION = gql`
 const DeleteItem = ({ children, id }) => {
   const handleClick = deleteItemHandler => {
     if (confirm('Are you sure you want to delete this item?')) {
-      deleteItemHandler();
+      deleteItemHandler().catch(err => {
+        alert(err.message);
+      });
     }
   };
 

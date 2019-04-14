@@ -38,14 +38,18 @@ const Mutations = {
     );
   },
   async deleteItem(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in!');
+    }
     const where = { id: args.id };
-    const item = await ctx.db.query.item(
-      { where },
-      `{
-      id
-      title
-    }`
+    const item = await ctx.db.query.item({ where }, `{ id user { id } title }`);
+    const ownsItem = item.user.id === ctx.request.userId;
+    const hasPermissions = ctx.request.user.permissions.some(permission =>
+      ['ADMIN', 'ITEMDELETE'].includes(permission)
     );
+    if (!ownsItem || !hasPermissions) {
+      throw new Error("You don't have permission to do that.");
+    }
     return ctx.db.mutation.deleteItem({ where }, info);
   },
   async signup(parent, args, ctx, info) {
