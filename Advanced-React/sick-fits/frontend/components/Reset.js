@@ -40,7 +40,7 @@ const Reset = ({ resetToken }) => {
             method="POST"
             onSubmit={async e => {
               e.preventDefault();
-              await resetPassword().catch(e => console.log(e));
+              await resetPassword().catch(e => alert(e));
               setPassword('');
               setConfirmPassword('');
             }}

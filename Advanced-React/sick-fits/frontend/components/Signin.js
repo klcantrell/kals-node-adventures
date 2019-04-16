@@ -51,7 +51,7 @@ const Signin = () => {
             method="POST"
             onSubmit={async e => {
               e.preventDefault();
-              await signin().catch(e => console.log(e));
+              await signin().catch(e => alert(e));
               mergeNewFormState({
                 name: '',
                 email: '',

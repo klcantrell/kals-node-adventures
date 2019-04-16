@@ -23,7 +23,7 @@ const RequestReset = () => {
             method="POST"
             onSubmit={async e => {
               e.preventDefault();
-              await requestReset().catch(e => console.log(e));
+              await requestReset().catch(e => alert(e));
               setEmail('');
             }}
           >

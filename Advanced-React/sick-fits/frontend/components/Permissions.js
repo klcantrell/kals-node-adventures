@@ -42,7 +42,6 @@ const possiblePermissions = [
 const Permissions = () => (
   <Query query={ALL_USERS_QUERY}>
     {({ data, loading, error }) => {
-      console.log(data);
       if (loading) return <p>Loading...</p>;
       return (
         <div>
