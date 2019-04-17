@@ -17,24 +17,37 @@ const CartItemStyles = styled.li`
   p {
     margin: 0;
   }
+  button {
+    justify-self: flex-end;
+  }
 `;
 
-const CartItem = ({ cartItem }) => (
-  <CartItemStyles>
-    <img src={cartItem.item.image} width="100" alt={cartItem.item.title} />
-    <div className="cart-item-details">
-      <h3>{cartItem.item.title}</h3>
-      <p>
-        {formatMoney(cartItem.item.price * cartItem.quantity)}
-        {' - '}
-        <em>
-          {cartItem.quantity} &times; {formatMoney(cartItem.item.price)} each
-        </em>
-      </p>
-    </div>
-    <RemoveFromCart id={cartItem.id} />
-  </CartItemStyles>
-);
+const CartItem = ({ cartItem }) => {
+  if (!cartItem.item) {
+    return (
+      <CartItemStyles>
+        <p>Item has been removed by the owner</p>
+        <RemoveFromCart id={cartItem.id} />
+      </CartItemStyles>
+    );
+  }
+  return (
+    <CartItemStyles>
+      <img src={cartItem.item.image} width="100" alt={cartItem.item.title} />
+      <div className="cart-item-details">
+        <h3>{cartItem.item.title}</h3>
+        <p>
+          {formatMoney(cartItem.item.price * cartItem.quantity)}
+          {' - '}
+          <em>
+            {cartItem.quantity} &times; {formatMoney(cartItem.item.price)} each
+          </em>
+        </p>
+      </div>
+      <RemoveFromCart id={cartItem.id} />
+    </CartItemStyles>
+  );
+};
 
 CartItem.propTypes = {
   cartItem: PropTypes.object.isRequired,

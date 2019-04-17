@@ -2,6 +2,7 @@ import React from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { ALL_ITEMS_QUERY } from './Items';
+import { CURRENT_USER_QUERY } from './User';
 
 const DELETE_ITEM_MUTATION = gql`
   mutation DELETE_ITEM_MUTATION($id: ID!) {
@@ -35,6 +36,7 @@ const DeleteItem = ({ children, id }) => {
         id,
       }}
       update={update}
+      refetchQueries={[{ query: CURRENT_USER_QUERY }]}
     >
       {(deleteItem, { error }) => (
         <button onClick={() => handleClick(deleteItem)}>{children}</button>
