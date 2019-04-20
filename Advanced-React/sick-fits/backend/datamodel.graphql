@@ -7,30 +7,59 @@ enum Permission {
   PERMISSIONUPDATE
 }
 
-type User {
-  id: ID! @unique
+type User @db(name: "user") {
+  id: ID! @id
   name: String!
   email: String! @unique
   password: String!
   resetToken: String
   resetTokenExpiry: Float
-  permissions: [Permission]
-  cart: [CartItem!]!
+  permissions: [Permission] @scalarList(strategy: RELATION)
+  cart: [CartItem!]! @relation(link: TABLE)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
-type Item {
-  id: ID! @unique
+type Item @db(name: "item") {
+  id: ID! @id
   title: String!
   description: String!
   image: String
   largeImage: String
   price: Int!
-  user: User!
+  user: User! @relation(link: TABLE)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
-type CartItem {
-  id: ID! @unique
+type CartItem @db(name: "cart_item") {
+  id: ID! @id
   quantity: Int! @default(value: 1)
-  item: Item
+  item: Item @relation(link: TABLE)
   user: User!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type OrderItem @db(name: "order_item") {
+  id: ID! @id
+  title: String!
+  description: String!
+  image: String!
+  largeImage: String!
+  price: Int!
+  quantity: Int! @default(value: 1)
+  user: User @relation(link: TABLE)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Order {
+  id: ID! @id
+  items: [OrderItem!]! @relation(link: TABLE)
+  total: Int!
+  user: User!
+  charge: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }

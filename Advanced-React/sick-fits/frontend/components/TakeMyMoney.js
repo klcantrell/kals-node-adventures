@@ -9,6 +9,20 @@ import calcTotalPrice from '../lib/calcTotalPrice';
 import Error from './ErrorMessage';
 import User, { CURRENT_USER_QUERY } from './User';
 
+const CREATE_ORDER_MUTATION = gql`
+  mutation CREATE_ORDER_MUTATION($token: String!) {
+    createOrder(token: $token) {
+      id
+      charge
+      total
+      items {
+        id
+        title
+      }
+    }
+  }
+`;
+
 function totalItems(cart) {
   return cart.reduce((tally, cartItem) => {
     return tally + cartItem.quantity;
@@ -16,26 +30,38 @@ function totalItems(cart) {
 }
 
 const TakeMyMoney = ({ children }) => {
-  const onToken = res => {
+  const onToken = (res, createOrder) => {
     console.log('On Token Called');
     console.log(res);
+    createOrder({
+      variables: {
+        token: res.id,
+      },
+    }).catch(err => alert(err.message));
   };
 
   return (
     <User>
       {({ data: { me } }) => (
-        <StripeCheckout
-          amount={calcTotalPrice(me.cart)}
-          name="Sick Fits"
-          description={`Order of ${totalItems(me.cart)} items`}
-          image={me.cart[0].item && me.cart[0].item.image}
-          stripeKey="pk_test_chkGUsA5T8WUB5vgc1FMoRgX00Qi1Nq1t4"
-          currency="USD"
-          email={me.email}
-          token={res => onToken(res)}
+        <Mutation
+          mutation={CREATE_ORDER_MUTATION}
+          refetchQueries={[{ query: CURRENT_USER_QUERY }]}
         >
-          {children}
-        </StripeCheckout>
+          {createOrder => (
+            <StripeCheckout
+              amount={calcTotalPrice(me.cart)}
+              name="Sick Fits"
+              description={`Order of ${totalItems(me.cart)} items`}
+              image={me.cart[0] && me.cart[0].item && me.cart[0].item.image}
+              stripeKey="pk_test_chkGUsA5T8WUB5vgc1FMoRgX00Qi1Nq1t4"
+              currency="USD"
+              email={me.email}
+              token={res => onToken(res, createOrder)}
+            >
+              {children}
+            </StripeCheckout>
+          )}
+        </Mutation>
       )}
     </User>
   );
