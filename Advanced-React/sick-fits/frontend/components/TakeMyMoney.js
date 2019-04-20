@@ -30,14 +30,15 @@ function totalItems(cart) {
 }
 
 const TakeMyMoney = ({ children }) => {
-  const onToken = (res, createOrder) => {
+  const onToken = async (res, createOrder) => {
     console.log('On Token Called');
     console.log(res);
-    createOrder({
+    const order = await createOrder({
       variables: {
         token: res.id,
       },
     }).catch(err => alert(err.message));
+    console.log(order);
   };
 
   return (
@@ -52,7 +53,10 @@ const TakeMyMoney = ({ children }) => {
               amount={calcTotalPrice(me.cart)}
               name="Sick Fits"
               description={`Order of ${totalItems(me.cart)} items`}
-              image={me.cart[0] && me.cart[0].item && me.cart[0].item.image}
+              image={
+                (me.cart.length && me.cart[0].item && me.cart[0].item.image) ||
+                ''
+              }
               stripeKey="pk_test_chkGUsA5T8WUB5vgc1FMoRgX00Qi1Nq1t4"
               currency="USD"
               email={me.email}
