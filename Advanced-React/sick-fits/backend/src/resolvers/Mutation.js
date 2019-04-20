@@ -264,7 +264,7 @@ const Mutations = {
       const orderItem = {
         ...cartItem.item,
         quantity: cartItem.quantity,
-        title: { connect: { id: userId } },
+        user: { connect: { id: userId } },
       };
       delete orderItem.id;
       return orderItem;
