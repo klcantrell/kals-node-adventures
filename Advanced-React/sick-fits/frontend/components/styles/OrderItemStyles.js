@@ -26,8 +26,8 @@ const OrderItemStyles = styled.li`
   .order-meta {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
-    display: grid;
     grid-gap: 1rem;
+    align-items: flex-start;
     text-align: center;
     & > * {
       margin: 0;
