@@ -9,7 +9,7 @@ import Signout from '../components/Signout';
 const Nav = () => (
   <User>
     {({ data: { me } }) => (
-      <NavStyles>
+      <NavStyles data-test="nav">
         <Link href="/items">
           <a>Shop</a>
         </Link>
@@ -30,6 +30,7 @@ const Nav = () => (
                 <button onClick={toggleCart}>
                   My Cart
                   <CartCount
+                    data-test="count"
                     count={me.cart.reduce(
                       (tally, cartItem) => tally + cartItem.quantity,
                       0

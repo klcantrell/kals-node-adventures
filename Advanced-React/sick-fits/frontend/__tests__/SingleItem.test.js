@@ -4,7 +4,6 @@ import { MockedProvider } from 'react-apollo/test-utils';
 import wait from 'waait';
 import SingleItem, { SINGLE_ITEM_QUERY } from '../components/SingleItem';
 import { fakeItem } from '../lib/testUtils';
-import { wrap } from 'module';
 
 describe('<SingleItem', () => {
   it('renders with proper data', async () => {
