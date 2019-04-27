@@ -23,7 +23,7 @@ const Pagination = ({ page }) => (
       const count = data.itemsConnection.aggregate.count;
       const pages = Math.ceil(count / perPage);
       return (
-        <PaginationStyles>
+        <PaginationStyles data-test="pagination">
           <Head>
             <title>
               Sick Fits! - Page {page} of {pages}
@@ -41,7 +41,7 @@ const Pagination = ({ page }) => (
             </a>
           </Link>
           <p>
-            Page {page} of {pages}
+            Page {page} of <span className="totalPages">{pages}</span>
           </p>
           <p>{count} Items Total</p>
           <Link
@@ -62,3 +62,4 @@ const Pagination = ({ page }) => (
 );
 
 export default Pagination;
+export { PAGINATION_QUERY };
