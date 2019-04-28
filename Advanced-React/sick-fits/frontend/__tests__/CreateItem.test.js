@@ -7,10 +7,6 @@ import { act } from 'react-dom/test-utils';
 import CreateItem, { CREATE_ITEM_MUTATION } from '../components/CreateItem';
 import { fakeItem } from '../lib/testUtils';
 
-jest.mock('next/router', () => ({
-  push: jest.fn(),
-}));
-
 const dogImage = 'https://dog.com/dog.jpg';
 global.fetch = jest.fn().mockResolvedValue({
   json: () => ({
@@ -49,7 +45,6 @@ describe('<CreateItem />', () => {
         body: data,
       }
     );
-    global.fetch.mockReset();
   });
 
   it('creates an item when form is submitted', async () => {
@@ -61,16 +56,17 @@ describe('<CreateItem />', () => {
           variables: {
             title: item.title,
             description: item.description,
-            image: '',
-            largeImage: '',
+            image: 'https://dog.com/dog.jpg',
+            largeImage: 'https://dog.com/dog.jpg',
             price: item.price,
+            uploadError: false,
           },
         },
         result: {
           data: {
             createItem: {
-              ...fakeItem,
-              __typeName: 'Item',
+              ...fakeItem(),
+              __typename: 'Item',
             },
           },
         },
@@ -90,9 +86,15 @@ describe('<CreateItem />', () => {
     wrapper.find('#description').simulate('change', {
       target: { value: item.description, name: 'description' },
     });
+    wrapper
+      .find('#file')
+      .simulate('change', { target: { files: ['dog.jpg'], name: 'file' } });
+    await wait();
+    Router.router = {
+      push: jest.fn(),
+    };
     wrapper.find('form').simulate('submit');
     await wait(50);
-    //this does not work - perhaps has somerthing to do with Hooks
-    // expect(Router.push).toHaveBeenCalled();
+    expect(Router.router.push).toHaveBeenCalled();
   });
 });
