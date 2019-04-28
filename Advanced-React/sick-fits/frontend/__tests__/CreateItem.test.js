@@ -3,6 +3,7 @@ import { MockedProvider } from 'react-apollo/test-utils';
 import wait from 'waait';
 import Router from 'next/router';
 import toJSON from 'enzyme-to-json';
+import { act } from 'react-dom/test-utils';
 import CreateItem, { CREATE_ITEM_MUTATION } from '../components/CreateItem';
 import { fakeItem } from '../lib/testUtils';
 
