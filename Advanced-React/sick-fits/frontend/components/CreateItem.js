@@ -28,11 +28,11 @@ const CREATE_ITEM_MUTATION = gql`
 
 const CreateItem = () => {
   const [item, setItem] = React.useState({
-    title: 'Cool Shoes',
-    description: 'Loving these',
+    title: '',
+    description: '',
     image: '',
     largeImage: '',
-    price: 100000,
+    price: 0,
     uploadError: false,
   });
 
@@ -98,7 +98,7 @@ const CreateItem = () => {
   return (
     <Mutation mutation={CREATE_ITEM_MUTATION} variables={item}>
       {(createItem, { loading, error }) => (
-        <Form onSubmit={e => handleSubmit(e, createItem)}>
+        <Form onSubmit={e => handleSubmit(e, createItem)} data-test="form">
           <fieldset disabled={loading} aria-busy={loading}>
             <Error error={error} uploadNotReady={item.uploadError} />
             <label htmlFor="file">

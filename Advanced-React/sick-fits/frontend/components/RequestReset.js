@@ -26,6 +26,7 @@ const RequestReset = () => {
               await requestReset().catch(e => alert(e));
               setEmail('');
             }}
+            data-test="form"
           >
             <fieldset disabled={loading} aria-busy={loading}>
               <h2>Request a password reset</h2>
@@ -53,3 +54,4 @@ const RequestReset = () => {
 };
 
 export default RequestReset;
+export { REQUEST_RESET_MUTATION };
