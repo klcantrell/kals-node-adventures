@@ -14,15 +14,17 @@ function type(wrapper, name, value) {
   });
 }
 
+global.alert = console.log;
+
 const me = fakeUser();
 const mocks = [
   {
     request: {
       query: SIGNUP_MUTATION,
-      variabeles: {
-        email: me.email,
+      variables: {
         name: me.name,
         password: 'kalalau',
+        email: me.email,
       },
     },
     result: {

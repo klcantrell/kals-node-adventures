@@ -7,13 +7,16 @@ import { act } from 'react-dom/test-utils';
 import CreateItem, { CREATE_ITEM_MUTATION } from '../components/CreateItem';
 import { fakeItem } from '../lib/testUtils';
 
-const dogImage = 'https://dog.com/dog.jpg';
 global.fetch = jest.fn().mockResolvedValue({
   json: () => ({
     secure_url: dogImage,
     eager: [{ secure_url: dogImage }],
   }),
 });
+
+global.alert = console.log;
+
+const dogImage = 'https://dog.com/dog.jpg';
 
 describe('<CreateItem />', () => {
   it('renders and matches snapshot', async () => {
