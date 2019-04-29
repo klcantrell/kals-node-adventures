@@ -8,7 +8,6 @@ import RemoveFromCart, {
 } from '../components/RemoveFromCart';
 import { CURRENT_USER_QUERY } from '../components/User';
 import { fakeUser, fakeCartItem } from '../lib/testUtils';
-import { wrap } from 'module';
 
 global.alert = console.log;
 
